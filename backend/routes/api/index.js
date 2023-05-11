@@ -1,10 +1,18 @@
 const router = require('express').Router();
 
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth.js');
+const sessionRouter = require('./session.js');
+const usersRouter = require('./users.js');
+
+//for testing those 2 functions
+//const { setTokenCookie, requireAuth } = require('../../utils/auth.js');
+const { restoreUser } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
 
 //must run before anything else!!
 router.use(restoreUser);
+
+router.use("/session", sessionRouter);
+router.use("/users", usersRouter);
 
 //for testing only
 // router.get('/set-token-cookie', async (_req, res) => {
