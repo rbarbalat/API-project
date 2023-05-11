@@ -44,6 +44,13 @@ router.post('/', async (req, res, next) => {
     }
   );
 
+//Log out
+//Remember, you need to pass in the value of the XSRF-TOKEN cookie as a header in the fetch request because the logout route has a DELETE HTTP verb.
+router.delete('/', (_req, res) => {
+    res.clearCookie('token');
+    return res.json({ message: 'success' });
+    }
+);
 
 
 
