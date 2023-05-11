@@ -6,7 +6,7 @@ const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
-const routes = require('./routes');
+const routes = require('./routes');//routes/index.js
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';
@@ -44,7 +44,8 @@ if (!isProduction) {
     })
   );
 
-  app.use(routes);
+//everything handled through routers, routes is required at the top
+app.use(routes);
 
 // Catch unhandled requests and forward to error handler.
 //_req and _res b/c they aren't used?
