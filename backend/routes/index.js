@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 
-const apiRouter = require('./api');
+const apiRouter = require('./api');//api/index.js
 
 // //initial testing route
 // router.get('/hello/world', function(req, res) {
