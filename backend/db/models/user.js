@@ -1,14 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
     }
@@ -22,7 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         len: [4,30],
         isNotEmail(value)
         {
-          if(validator.isEmail(value))
+          //unfortunately had v instead of V
+          //when merged auth-setup branch, fixed on signup branch
+          if(Validator.isEmail(value))
           throw new Error("Cannot be an email")
         }
       }
