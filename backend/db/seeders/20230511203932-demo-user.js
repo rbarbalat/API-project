@@ -12,17 +12,23 @@ const arr =
   {
     email: "abc@gmail.com",
     username: "wolverine",
-    hashedPassword: bcrypt.hashSync('first')
+    hashedPassword: bcrypt.hashSync('first'),
+    firstName: "James",
+    lastName: "Howlett"
   },
   {
     email: "mno@yahoo.com",
     username: "gambit",
-    hashedPassword: bcrypt.hashSync('second')
+    hashedPassword: bcrypt.hashSync('second'),
+    firstName: "Remy",
+    lastName: "Lebeau"
   },
   {
     email: "xyz@bing.com",
     username: "cyclops",
-    hashedPassword: bcrypt.hashSync('third')
+    hashedPassword: bcrypt.hashSync('third'),
+    firstName: "Scott",
+    lastName: "Summers"
   }
 ];
 module.exports = {
