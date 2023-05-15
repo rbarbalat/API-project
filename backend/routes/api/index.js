@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
+const groupsRouter = require("./groups.js");
 
 //for testing those 2 functions
 //const { setTokenCookie, requireAuth } = require('../../utils/auth.js');
@@ -13,6 +14,7 @@ router.use(restoreUser);
 
 router.use("/session", sessionRouter);
 router.use("/users", usersRouter);
+router.use("/groups", groupsRouter);
 
 //for testing only
 // router.get('/set-token-cookie', async (_req, res) => {
