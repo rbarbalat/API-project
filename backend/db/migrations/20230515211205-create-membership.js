@@ -8,46 +8,40 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return await queryInterface.createTable('Groups', {
+    return await queryInterface.createTable('Memberships', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      organizerId: {
-        type: Sequelize.INTEGER,
+      userId: {
         allowNull: false,
+        type: Sequelize.INTEGER,
         references: {
           model: "Users",
           key: "id"
         },
-        //onDelete set null, deleting organizer shouldn't delete group?
-        //but then allowNull conflict?
+        onDelete: "CASCADE"
       },
-      name: {
-        type: Sequelize.STRING(60),
+      groupId: {
         allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Groups",
+          key: "id"
+        },
+        onDelete: "CASCADE"
       },
-      about: {
-        type: Sequelize.TEXT,//check how to add a min 50 char limit
+      status: {
+        //may have to check regular host and cap O on organizer
+        type: Sequelize.ENUM("pending", "member", "co-host", "host", "Organizer"),
         allowNull: false,
+        //defaulValue pending?
       },
-      type: {
-        type: Sequelize.ENUM("Online", "In person"),
-        allowNull: false,
-      },
-      private: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-      },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      state: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      memberId: {
+        //prob can be null while pending, check later
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -62,7 +56,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Groups";
+    options.tableName = "Memberships"
     return await queryInterface.dropTable(options);
   }
 };

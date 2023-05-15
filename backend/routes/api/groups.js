@@ -12,16 +12,27 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 //GET all groups, authentication = false
 router.get("/", async (req, res) => {
-    let allGroups = await Group.findAll();
-    //include memberships to get an array of members
-    //then get the length of that array or there is an assoc function(N+1)
+    let allGroups = await Group.findAll({
+        include: User
+        //include: [User, {
+        //     model: GroupImage,
+        //     where: {
+        //         preview: true
+        //     }
+        // }]
+    });
     //include group images where preview:true
-    //loop through allGroups and apply .toJSON
-    //add properties of numMembers andn preview image to each ele
+    //add preview image property to each ele whose value is a string url
+
+    //maybe scope it so you can access the length but it doesn't show?
+    allGroups = allGroups.map(ele => ele.toJSON());
     allGroups.forEach(ele => {
-        ele = ele.toJSON();
-        ele.numMembers = 10;
-    })
+        ele.numMembers = ele.Users.length;
+        ele.previewImage = "some_url";
+        delete ele.Users;
+    });
+    //console.log(Object.getOwnPropertyNames(Group.prototype));
+    //console.log(await allGroups[0].countUsers()); //works but not in a loop....
     res.json({
         Groups: allGroups
     })
@@ -36,15 +47,17 @@ router.get("/:groupdId", async(req, res) => {
         where: {
             id: req.params.groupdId
         },
-        //include: "Organizer"
-        include: {
-            model: User,
-            as: "Organizer",
-            //can scope this later
-            attributes: ["id", "firstName", "lastName"]
-        }
         //need to include venues and group images as well
-        //include: [{}, {}, {}]
+        include: [
+                    {
+                        model: User,
+                        as: "Organizer",
+                        attributes: ["id", "firstName", "lastName"]
+                    },
+                    {
+                        model: User
+                    }
+                 ]
     });
     if(group == null){
         res.status(404);
@@ -52,6 +65,9 @@ router.get("/:groupdId", async(req, res) => {
             message: "Group couldn't be found"
         })
     }
+    group = group.toJSON();
+    group.numMembers = group.Users.length;
+    delete group.Users;
     res.json(group);
 })
 

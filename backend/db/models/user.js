@@ -10,6 +10,13 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         hooks: true,
         //onUpdate?
+      });
+      //a (regular) User belongsToMany Groups
+      User.belongsToMany(models.Group, {
+        through: models.Membership,
+        foreignKey: "userId",
+        otherKey: "groupId"
+        //onDelete goes in the migr file if nec
       })
     }
   }
