@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Group, User } = require('../../db/models');
+const { Group, User, Membership } = require('../../db/models');
 const router = express.Router();
 
 const { check } = require('express-validator');
@@ -68,7 +68,10 @@ router.get("/:groupdId", async(req, res) => {
     group = group.toJSON();
     group.numMembers = group.Users.length;
     delete group.Users;
-    res.json(group);
+    //res.json(group);
+
+    let allMemberships = await Membership.findAll();
+    res.json(allMemberships);
 })
 
 //Create a group, authent = true
