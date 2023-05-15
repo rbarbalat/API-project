@@ -3,7 +3,14 @@ const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // define association here
+      // A user(organizer) hasMany Groups
+      User.hasMany(models.Group, {
+        foreignKey: "organizerId",
+        //check if actually need cascade
+        onDelete: "CASCADE",
+        hooks: true,
+        //onUpdate?
+      })
     }
   }
   User.init({
