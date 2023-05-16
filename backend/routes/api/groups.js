@@ -19,15 +19,22 @@ router.get("/", async (req, res) => {
         }
     });
     //include group images where preview:true and done
+
+    //lazyLoad version to get numMembers
+    for(let i = 0; i<allGroups.length; i++)
+    {
+        console.log(await allGroups[i].countRegulars())
+    }
     allGroups = allGroups.map(ele => ele.toJSON());
-    allGroups.forEach(ele => {
+    allGroups.forEach(async ele => {
         ele.numMembers = ele.Regulars.length;
         //ADJUST THIS AND DONE
         ele.previewImage = "some_url";
         delete ele.Regulars;
     });
     //console.log(Object.getOwnPropertyNames(User.prototype));
-    console.log(Object.getOwnPropertyNames(Group.prototype))
+    //console.log(Object.getOwnPropertyNames(Group.prototype));
+
     res.json({
         Groups: allGroups
     })
