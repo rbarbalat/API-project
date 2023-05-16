@@ -28,6 +28,12 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         hooks: true
         //onUpdate?
+      });
+      //A group hasMany venues
+      Group.hasMany(models.Venue, {
+        foreignKey: "groupId",
+        onDelete: "CASCADE",
+        hooks: true
       })
     }
   }
