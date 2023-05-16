@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Group, User, Membership } = require('../../db/models');
+const { Group, User, Membership, GroupImage } = require('../../db/models');
 const router = express.Router();
 
 const { check } = require('express-validator');
@@ -13,24 +13,36 @@ const { handleValidationErrors } = require('../../utils/validation');
 //GET all groups, authentication = false
 router.get("/", async (req, res) => {
     let allGroups = await Group.findAll({
-        include: {
-            model: User,
-            as: "Regulars"
-        }
+        include:
+        [
+            {
+                model: User,
+                as: "Regulars"
+            },
+            {
+                model: GroupImage,
+                attributes: {
+                    include: ["url"]
+                }
+            }
+        ]
     });
-    //include group images where preview:true and done
-
-    //lazyLoad version to get numMembers
-    for(let i = 0; i<allGroups.length; i++)
-    {
-        console.log(await allGroups[i].countRegulars())
-    }
+    // //lazyLoad version to get numMembers, N+1 query
+    // for(let i = 0; i<allGroups.length; i++)
+    // {
+    //     //console.log(await allGroups[i].countRegulars())
+    //     console.log(await allGroups[i].getGroupImages());
+    // }
     allGroups = allGroups.map(ele => ele.toJSON());
     allGroups.forEach(async ele => {
         ele.numMembers = ele.Regulars.length;
-        //ADJUST THIS AND DONE
         ele.previewImage = "some_url";
+        // if(ele.GroupImages){
+        //     ele.previewImage = ele.GroupImages[0].url;
+        //     delete ele.GroupImages;
+        // }
         delete ele.Regulars;
+        delete ele.GroupImages;
     });
     //console.log(Object.getOwnPropertyNames(User.prototype));
     //console.log(Object.getOwnPropertyNames(Group.prototype));
