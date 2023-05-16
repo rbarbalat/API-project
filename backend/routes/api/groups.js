@@ -41,7 +41,7 @@ router.get("/", async (req, res) => {
     allGroups.forEach(async ele => {
         ele.numMembers = ele.Regulars.length;
         if(ele.GroupImages.length != 0) ele.previewImage = ele.GroupImages[0].url;
-        else ele.previewImage = "";
+        else ele.previewImage = "no preview image available";
         delete ele.Regulars;
         delete ele.GroupImages;
     });
