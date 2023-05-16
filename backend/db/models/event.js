@@ -10,10 +10,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // An event belongs to many users
+      Event.belongsToMany(models.User, {
+        through: models.Attendance,
+        foreignKey: "eventId",
+        otherKey: "userId"
+      });
     }
   }
   Event.init({
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     venueId: DataTypes.INTEGER,
     groupId: DataTypes.INTEGER,
     name: DataTypes.STRING,

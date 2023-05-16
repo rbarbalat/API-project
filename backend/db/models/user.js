@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         otherKey: "groupId"
         //onDelete goes in the migr file if nec
+      });
+      User.belongsToMany(models.Event, {
+        through: models.Attendance,
+        foreignKey: "userId",
+        otherKey: "eventId"
       })
     }
   }
