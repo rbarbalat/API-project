@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Group, User, Membership, GroupImage } = require('../../db/models');
+const { Group, User, Membership, GroupImage, Venue } = require('../../db/models');
 const router = express.Router();
 
 const { check } = require('express-validator');
@@ -23,29 +23,28 @@ router.get("/", async (req, res) => {
                 model: GroupImage,
                 attributes: {
                     include: ["url"]
-                }
+                },
+                where: {
+                    preview: true
+                },
+                required: false
             }
         ]
     });
-    // //lazyLoad version to get numMembers, N+1 query
-    // for(let i = 0; i<allGroups.length; i++)
-    // {
-    //     //console.log(await allGroups[i].countRegulars())
-    //     console.log(await allGroups[i].getGroupImages());
-    // }
+    //console.log(Object.getOwnPropertyNames(User.prototype));
+    //console.log(Object.getOwnPropertyNames(Group.prototype));
+    //lazyLoad alternative version to get numMembers/prevImages
+    //N+1 query loop and use .allGroups[i].countRegulars() and .getGroupImages()
+
+    //eager load version
     allGroups = allGroups.map(ele => ele.toJSON());
     allGroups.forEach(async ele => {
         ele.numMembers = ele.Regulars.length;
-        ele.previewImage = "some_url";
-        // if(ele.GroupImages){
-        //     ele.previewImage = ele.GroupImages[0].url;
-        //     delete ele.GroupImages;
-        // }
+        if(ele.GroupImages.length != 0) ele.previewImage = ele.GroupImages[0].url;
+        else ele.previewImage = "";
         delete ele.Regulars;
         delete ele.GroupImages;
     });
-    //console.log(Object.getOwnPropertyNames(User.prototype));
-    //console.log(Object.getOwnPropertyNames(Group.prototype));
 
     res.json({
         Groups: allGroups
@@ -68,7 +67,7 @@ router.get("/current", async (req,res) => {
 
 //Get details of a group from an Id, authentication = false
 router.get("/:groupdId", async(req, res) => {
-    if(Number(req.params.groupId) != req.params.groupId)
+    if(Number(req.params.groupdId) != req.params.groupdId)
     {
         res.status(404);
         return res.json({
@@ -89,6 +88,16 @@ router.get("/:groupdId", async(req, res) => {
                     {
                         model: User,
                         as: "Regulars"
+                    },
+                    {
+                       model: GroupImage,
+                       attributes: ["id", "url", "preview"]
+                    },
+                    {
+                        model: Venue,
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt"]
+                        }
                     }
                  ]
     });

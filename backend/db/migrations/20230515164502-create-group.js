@@ -22,9 +22,9 @@ module.exports = {
           model: "Users",
           key: "id"
         },
-        //onDelete set null, deleting organizer shouldn't delete group?
-        //but then allowNull conflict?
-        //onUpdate cascade?
+        //added onDelete after the migration file was already run on postgress
+        //might need to rebuild or recreate database
+        onDelete: "CASCADE"
       },
       name: {
         type: Sequelize.STRING(60),
