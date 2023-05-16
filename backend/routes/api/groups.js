@@ -25,6 +25,7 @@ router.get("/", async (req, res) => {
     //add preview image property to each ele whose value is a string url
 
     //maybe scope it so you can access the length but it doesn't show?
+    //trying something
     allGroups = allGroups.map(ele => ele.toJSON());
     allGroups.forEach(ele => {
         ele.numMembers = ele.Users.length;
