@@ -13,13 +13,10 @@ const { handleValidationErrors } = require('../../utils/validation');
 //GET all groups, authentication = false
 router.get("/", async (req, res) => {
     let allGroups = await Group.findAll({
-        include: User
-        //include: [User, {
-        //     model: GroupImage,
-        //     where: {
-        //         preview: true
-        //     }
-        // }]
+        include: {
+            model: User,
+            as: "Regulars"
+        }
     });
     //include group images where preview:true
     //add preview image property to each ele whose value is a string url
@@ -28,9 +25,9 @@ router.get("/", async (req, res) => {
     //trying something
     allGroups = allGroups.map(ele => ele.toJSON());
     allGroups.forEach(ele => {
-        ele.numMembers = ele.Users.length;
+        ele.numMembers = ele.Regulars.length;
         ele.previewImage = "some_url";
-        delete ele.Users;
+        delete ele.Regulars;
     });
     //console.log(Object.getOwnPropertyNames(Group.prototype));
     //console.log(await allGroups[0].countUsers()); //works but not in a loop....
@@ -56,7 +53,8 @@ router.get("/:groupdId", async(req, res) => {
                         attributes: ["id", "firstName", "lastName"]
                     },
                     {
-                        model: User
+                        model: User,
+                        as: "Regulars"
                     }
                  ]
     });
@@ -67,12 +65,13 @@ router.get("/:groupdId", async(req, res) => {
         })
     }
     group = group.toJSON();
-    group.numMembers = group.Users.length;
-    delete group.Users;
-    //res.json(group);
+    group.numMembers = group.Regulars.length;
+    group.previewImage = "some_url";
+    delete group.Regulars;
+    res.json(group);
 
-    let allMemberships = await Membership.findAll();
-    res.json(allMemberships);
+    // let allMemberships = await Membership.findAll();
+    // res.json(allMemberships);
 })
 
 //Create a group, authent = true
