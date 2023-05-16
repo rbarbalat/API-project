@@ -5,42 +5,26 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return await queryInterface.createTable('Groups', {
+    return await queryInterface.createTable('Venues', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      organizerId: {
+      groupId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: "Users",
+          model: "Groups",
           key: "id"
         },
-        //onDelete set null, deleting organizer shouldn't delete group?
-        //but then allowNull conflict?
-        //onUpdate cascade?
+        onDelete: "CASCADE"
       },
-      name: {
-        type: Sequelize.STRING(60),
-        allowNull: false,
-      },
-      about: {
-        type: Sequelize.TEXT,//check how to add a min 50 char limit
-        allowNull: false,
-      },
-      type: {
-        type: Sequelize.ENUM("Online", "In person"),
-        allowNull: false,
-      },
-      private: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
+      address: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       city: {
         type: Sequelize.STRING,
@@ -48,7 +32,15 @@ module.exports = {
       },
       state: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
+      },
+      lat: {
+        type: Sequelize.DECIMAL,
+        allowNull: false
+      },
+      lng: {
+        type: Sequelize.DECIMAL,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -63,7 +55,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Groups";
-    return await queryInterface.dropTable(options);
+    options.tableName = "Venues"
+    await queryInterface.dropTable(options);
   }
 };
