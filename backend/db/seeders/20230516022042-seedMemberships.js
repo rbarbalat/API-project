@@ -30,18 +30,6 @@ const arr =
     groupId: 1,
     status: "pending",
     memberId: 4
-  },
-  {
-    userId: 5,
-    groupId: 1,
-    status: "host",
-    memberId: 5
-  },
-  {
-    userId: 6,
-    groupId: 1,
-    status: "member",
-    memberId: 6
   }
 ];
 
@@ -55,7 +43,7 @@ module.exports = {
     options.tableName = "Memberships";
     return await queryInterface.bulkDelete(options, {
       memberId: {
-      [Op.in]: [1, 2, 3, 4, 5, 6]
+      [Op.in]: [1, 2, 3, 4]
     }
   }, {});
   }
