@@ -14,10 +14,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Membership.init({
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     userId: DataTypes.INTEGER,
     groupId: DataTypes.INTEGER,
     status: {
       type: DataTypes.ENUM,
+      //might have to remove host as host and Organizer interchangeable
       values: ["pending", "member", "co-host", "host", "Organizer"],
       validate: {
         isValidStatus(value)
