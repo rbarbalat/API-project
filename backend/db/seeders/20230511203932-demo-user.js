@@ -29,6 +29,27 @@ const arr =
     hashedPassword: bcrypt.hashSync('third'),
     firstName: "Scott",
     lastName: "Summers"
+  },
+  {
+    email: "superman@gmail.com",
+    username: "superman",
+    hashedPassword: bcrypt.hashSync('blahgahfah'),
+    firstName: "Clark",
+    lastName: "Kent"
+  },
+  {
+    email: "batman@yahoo.com",
+    username: "batman",
+    hashedPassword: bcrypt.hashSync('gahblahfah'),
+    firstName: "Bruce",
+    lastName: "Wayne"
+  },
+  {
+    email: "professor@bing.com",
+    username: "professor",
+    hashedPassword: bcrypt.hashSync('thirdsecond'),
+    firstName: "Charles",
+    lastName: "Xavier"
   }
 ];
 module.exports = {
