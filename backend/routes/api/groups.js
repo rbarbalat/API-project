@@ -143,14 +143,11 @@ router.get("/:groupdId", async(req, res) => {
     // res.json(allMemberships);
 })
 
-//put sign up validations here, similar to user creation validations
 //Create a group, authent = true, this does create a group but does not add organier to Memberships
 router.post("/", requireAuth, async (req,res) => {
     const { user } = req;
     const { name, about, type, private, city, state } = req.body;
     //user exists since already Authenticated
-
-    //ADD ERROR RESPONSE: BODY VALIDATION ERROR, 400
 
     const newGroup = await user.createGroup({
         name,
@@ -191,7 +188,7 @@ router.post("/:groupId/images", requireAuth, async (req,res) => {
 
 })
 
-//need validators
+//check error response for validation failure
 //Edit a group, authent true, authorized true, organizer
 router.put("/:groupdId", requireAuth, async (req,res) => {
     const { user } = req;
@@ -207,11 +204,6 @@ router.put("/:groupdId", requireAuth, async (req,res) => {
         return res.json({message: "Forbidden"})
     }
     const { name, about, type, private, city, state } = req.body;
-    //if(validations fail)
-    // {
-    //     res.status(400);
-    //     return res.json();
-    // }
     await group.set({
         name,
         about,
@@ -244,21 +236,5 @@ router.delete("/:groupdId", requireAuth, async (req,res) => {
     return res.json({ message: "Successfully deleted" });
 })
 
-// const validateSignup =
-// [
-//     check('email').exists({ checkFalsy: true }).isEmail()
-//     .withMessage('Please provide a valid email.'),
-
-//     check('username').exists({ checkFalsy: true }).isLength({ min: 4 })
-//     .withMessage('Please provide a username with at least 4 characters.'),
-
-//     check('username').not().isEmail()
-//     .withMessage('Username cannot be an email.'),
-
-//     check('password').exists({ checkFalsy: true })
-//     .isLength({ min: 6 }).withMessage('Password must be 6 characters or more.'),
-
-//     handleValidationErrors
-// ];
 
 module.exports = router;
