@@ -42,7 +42,7 @@ router.get("/", async (req, res) => {
     {
         countRegs.push(await allGroups[i].countRegulars());
     }
-    console.log(countRegs);
+    //console.log(countRegs);
 
     //eager load version
     allGroups = allGroups.map(ele => ele.toJSON());
@@ -55,6 +55,9 @@ router.get("/", async (req, res) => {
         delete ele.GroupImages;
     });
 
+    //testing
+    // const memberships = await Membership.findAll();
+    // console.log(memberships);
     res.json({
         Groups: allGroups
     })
@@ -150,7 +153,7 @@ router.get("/:groupdId", async(req, res) => {
     // res.json(allMemberships);
 })
 
-//Create a group, authent = true, this does create a group but does not add organier to Memberships
+//Create a group, authent = true
 router.post("/", requireAuth, async (req,res) => {
     const { user } = req;
     const { name, about, type, private, city, state } = req.body;
@@ -164,11 +167,20 @@ router.post("/", requireAuth, async (req,res) => {
         city,
         state
     });
+    //add the organizer/newGroup combo to the memberships table
+    //need to check that this works
+    const newMember = await Membership.create({
+        userId: user.id,
+        groupId: newGroup.id,
+        status: "Organizer",
+        memberId: 1
+    });
+    console.log(newMember);
         res.status(201);//201!!!!
         res.json(newGroup);
 });
 
-//Add an image to a group based on Group's id, authent true, authoriz must be organizer
+//Add an image to a group based on Group's id, authent true, ORGANIZER ONLY
 //ADD VALIDATIONS ON URL/PREVIEW FROM REQ BODY?
 router.post("/:groupId/images", requireAuth, async (req,res) => {
     const group = await Group.findByPk(req.params.groupId);
@@ -195,8 +207,7 @@ router.post("/:groupId/images", requireAuth, async (req,res) => {
 
 })
 
-//check error response for validation failure
-//Edit a group, authent true, authorized true, organizer
+//Edit a group, authent true, authorized true, ORGANIZER ONLY
 router.put("/:groupdId", requireAuth, async (req,res) => {
     const { user } = req;
     let group = await Group.findByPk(req.params.groupdId);
@@ -223,8 +234,7 @@ router.put("/:groupdId", requireAuth, async (req,res) => {
     res.json(group);
 });
 
-//PASSED DEVELOPMENT, TEST PRODUCTION
-//Delete a group, authent = true, authorization true, organizer
+//Delete a group, authent = true, authorization true, ORGANIZER ONLY
 router.delete("/:groupdId", requireAuth, async (req,res) => {
     //seems to work
     const { user } = req;
@@ -239,6 +249,7 @@ router.delete("/:groupdId", requireAuth, async (req,res) => {
         res.status(403);
         return res.json({ message: "Forbidden"});
     }
+    //should cascade to the memberships and other tables..
     await group.destroy();
     return res.json({ message: "Successfully deleted" });
 })
@@ -248,7 +259,7 @@ router.delete("/:groupdId", requireAuth, async (req,res) => {
 //GET all venues for a group based on ID, requireAuth, organizer or co-host
 router.get("/:groupId/venues", requireAuth, async (req,res) => {
     const { user } = req;
-    let group = await Group.findByPk(req.params.groupId);
+    const group = await Group.findByPk(req.params.groupId);
     if(group == null)
     {
         res.status(404);
@@ -278,7 +289,43 @@ router.get("/:groupId/venues", requireAuth, async (req,res) => {
         }
     })
     res.json(allVenues);
-} );
+});
+
+//add venue validators and good
+//Create a new venue for a group specified by its id, authent, org/cohost
+router.post("/:groupId/venues", requireAuth, async (req,res) => {
+    const { user } = req;
+    const group = await Group.findByPk(req.params.groupId);
+    if(group == null)
+    {
+        res.status(404);
+        return res.json({ message: "Group couldn't be found"});
+    }
+    //try to find the logged in user in the member table w/ the right group and status
+    const authorized = await Membership.findOne({
+        where: {
+            groupId: group.id,
+            userId: user.id,
+            status: {
+                [Op.in]: ["co-host", "Organizer"]
+            }
+        }
+    });
+    if(authorized == null)
+    {
+        res.status(403);
+        return res.json({ message: "Forbidden"});
+    }
+    const { address, city, state, lat, lng } = req.body;
+    const newVenue = await group.createVenue({
+        address,
+        city,
+        state,
+        lat,
+        lng
+    });
+    res.json(newVenue);
+})
 
 
 module.exports = router;
