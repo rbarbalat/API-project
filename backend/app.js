@@ -63,13 +63,13 @@ app.use((err, _req, _res, next) => {
   if (err instanceof ValidationError) {
     let errors = {};
     for (let error of err.errors) {
-      //if one of my validation errors is in the array,
-      //tag the err object passed to the final handler
-      if(error.roman = true) err.roman = true;
       errors[error.path] = error.message;
     }
     err.title = 'Validation error';
     err.errors = errors;
+    //tag sequelize errors and adjust their format
+    //inside the final formatter
+    err.roman = true;
   }
   next(err);
 });
