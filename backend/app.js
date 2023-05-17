@@ -65,11 +65,15 @@ app.use((err, _req, _res, next) => {
     for (let error of err.errors) {
       errors[error.path] = error.message;
     }
-    //a few adjustments to the section below
-    err.title = 'Validation error';
+    //my adjustments below to return sequelize validation
+    //errors with the format from the specs
     err.message = "Validation error";
     err.errors = errors;
     err.status = 400;
+    return _res.json({
+      message: err.message,
+      errors: err.errors
+    });
   }
   next(err);
 });
@@ -79,8 +83,8 @@ app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
   res.json({
-    //adjustments here
-    message: err.message || "Server Error",
+    title: err.title || 'Server Error',
+    message: err.message,
     errors: err.errors,
     stack: isProduction ? null : err.stack
   });
