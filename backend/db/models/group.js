@@ -48,28 +48,36 @@ module.exports = (sequelize, DataTypes) => {
     organizerId: DataTypes.INTEGER,
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      //allowNull: false,
       validate: {
         checkNameLength(value)
         {
-          if(value.length > 60 || value.length < 1);
-          throw new Error("Name must be 60 characters or less");
+          if(value.length > 60 || value.length < 1 || !value || value == "");
+          {
+            let err =  new Error("Name must be 60 characters or less");
+            err.roman = true;
+            throw err;
+          }
         }
       }
     },
     about: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      //allowNull: false,
       validate: {
         isLongEnough(value)
         {
-          if(value.length < 50)
-          throw new Error("About must be 50 characters or more")
+          if(value.length < 50 || !value || value == "")
+          {
+            let err =  new Error("About must be 50 characters or more");
+            err.roman = true;
+            throw err;
+          }
         }
       }
     },
     type: {
-      allowNull: false,
+      //allowNull: false,
       type: DataTypes.ENUM,
       values: ["Online", "In person"],
       validate: {
@@ -77,18 +85,26 @@ module.exports = (sequelize, DataTypes) => {
       {
         //value == null might not be checked, Alec had error in class
         if(["Online", "In person"].includes(value) == false)
-        throw new Error("Type must be 'Online' or 'In person'");
+        {
+          let err = new Error("Type must be 'Online' or 'In person'");
+          err.roman = true;
+          throw err;
+        }
       }
     }
     },
     private: {
-      allowNull: false,
+      //allowNull: false,
       type: DataTypes.BOOLEAN,
       validate: {
         checkIfBoolean(value)
         {
           if([0, 1, true, false].includes(value) == false)
-          throw new Error("Private must be a boolean");
+          {
+            let err =  new Error("Private must be a boolean");
+            err.roman = true;
+            throw err;
+          }
         }
       }
     },
@@ -99,7 +115,11 @@ module.exports = (sequelize, DataTypes) => {
         checkCity(value)
         {
           if(value == null || value == undefined || value == "")
-          throw new Error("City is required")
+          {
+            let err =  new Error("City is required");
+            err.roman = true;
+            throw err;
+          }
         }
       },
     },
@@ -109,8 +129,13 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         checkState(value)
         {
-          if(value == null || value == undefined || value == "" || value.length != 2)
-          throw new Error("State is required")
+          //does state have to be an abbreviation? maybe change the last one
+          if(!value || value == "" || value.length != 2)
+          {
+            let err = new Error("State is required");
+            err.roman = true;
+            throw err;
+          }
         }
       }
     }
