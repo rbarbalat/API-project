@@ -63,23 +63,27 @@ app.use((err, _req, _res, next) => {
   if (err instanceof ValidationError) {
     let errors = {};
     for (let error of err.errors) {
+      //if one of my validation errors is in the array,
+      //tag the err object passed to the final handler
+      if(error.roman = true) err.roman = true;
       errors[error.path] = error.message;
     }
-    //my adjustments below to return sequelize validation
-    //errors with the format from the specs
-    err.message = "Validation error";
+    err.title = 'Validation error';
     err.errors = errors;
-    err.status = 400;
-    return _res.json({
-      message: err.message,
-      errors: err.errors
-    });
   }
   next(err);
 });
 
 // Error formatter
 app.use((err, _req, res, _next) => {
+  if(err.roman == true)
+  {
+    res.status(400);
+    return res.json({
+      message: "Validation error",
+      errors: err.errors
+    })
+  }
   res.status(err.status || 500);
   console.error(err);
   res.json({
