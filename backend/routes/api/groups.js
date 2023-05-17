@@ -8,6 +8,8 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const { Op } = require("sequelize");
+
 //put some error handling and authentication here?
 
 //DONEZO, CHECK PRODUCTION?
@@ -33,9 +35,14 @@ router.get("/", async (req, res) => {
         ]
     });
     //console.log(Object.getOwnPropertyNames(User.prototype));
-    console.log(Object.getOwnPropertyNames(Group.prototype));
-    //lazyLoad alternative version to get numMembers/prevImages
-    //N+1 query loop and use .allGroups[i].countRegulars() and .getGroupImages()
+    //console.log(Object.getOwnPropertyNames(Group.prototype));
+    //lazyLoad alternative version, also have .getGroupImages()
+    const countRegs = [];
+    for(let i = 0; i<allGroups.length; i++)
+    {
+        countRegs.push(await allGroups[i].countRegulars());
+    }
+    console.log(countRegs);
 
     //eager load version
     allGroups = allGroups.map(ele => ele.toJSON());
@@ -235,6 +242,43 @@ router.delete("/:groupdId", requireAuth, async (req,res) => {
     await group.destroy();
     return res.json({ message: "Successfully deleted" });
 })
+
+//may have to reorder the route handlers based on specificty later
+
+//GET all venues for a group based on ID, requireAuth, organizer or co-host
+router.get("/:groupId/venues", requireAuth, async (req,res) => {
+    const { user } = req;
+    let group = await Group.findByPk(req.params.groupId);
+    if(group == null)
+    {
+        res.status(404);
+        return res.json({ message: "Group couldn't be found"});
+    }
+    //try to find the logged in user in the member table w/ the right group and status
+    const authorized = await Membership.findOne({
+        where: {
+            groupId: group.id,
+            userId: user.id,
+            status: {
+                [Op.in]: ["co-host", "Organizer"]
+            }
+        }
+    });
+    if(authorized == null)
+    {
+        res.status(403);
+        return res.json({ message: "Forbidden"});
+    }
+    const allVenues = await Venue.findAll({
+        where: {
+            groupId: group.id
+        },
+        attributes: {
+            exclude: ["createdAt", "updatedAt"]
+        }
+    })
+    res.json(allVenues);
+} );
 
 
 module.exports = router;
