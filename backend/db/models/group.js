@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: "userId",
         as: "Regulars"
       });
+      Group.hasMany(models.Membership, {
+        foreignKey: "groupId"
+      })
       //A group hasMany images
       Group.hasMany(models.GroupImage, {
         foreignKey: "groupId",

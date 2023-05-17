@@ -7,7 +7,7 @@ const router = express.Router();
 
 const { Op } = require("sequelize");
 
-//requireAuth and organizer/co-host
+//Edit a venue based on its id requireAuth and organizer/co-host
 router.put("/:venueId", requireAuth, async (req, res) => {
     const { user } = req;
     const venue = await Venue.findByPk(req.params.venueId);

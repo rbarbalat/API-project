@@ -19,10 +19,6 @@ router.get("/", async (req, res) => {
         include:
         [
             {
-                model: User,
-                as: "Regulars"
-            },
-            {
                 model: GroupImage,
                 attributes: {
                     include: ["url"]
@@ -34,30 +30,32 @@ router.get("/", async (req, res) => {
             },
         ]
     });
-    //console.log(Object.getOwnPropertyNames(User.prototype));
     //console.log(Object.getOwnPropertyNames(Group.prototype));
-    //lazyLoad alternative version, also have .getGroupImages()
-    const countRegs = [];
+
+    const numMembers = [];
+    //I used an eager load alternative in groups by ID, refactor later
     for(let i = 0; i<allGroups.length; i++)
     {
-        countRegs.push(await allGroups[i].countRegulars());
+        numMembers.push(await allGroups[i].countMemberships(
+            {
+                where: {
+                    status:{
+                        [Op.ne]: "pending"
+                    }
+                }
+            }
+        ));
+        allGroups[i] = allGroups[i].toJSON();
+        allGroups[i].numMembers = numMembers[i];
     }
-    //console.log(countRegs);
 
-    //eager load version
-    allGroups = allGroups.map(ele => ele.toJSON());
+    //there is .getGroupImages() lazy load alternative
     allGroups.forEach(async ele => {
-        //if things aren't seeded properly might have to add 1 if organizer not counted...
-        ele.numMembers = ele.Regulars.length;
         if(ele.GroupImages.length != 0) ele.previewImage = ele.GroupImages[0].url;
         else ele.previewImage = "no preview image available";
-        delete ele.Regulars;
         delete ele.GroupImages;
     });
 
-    //testing
-    // const memberships = await Membership.findAll();
-    // console.log(memberships);
     res.json({
         Groups: allGroups
     })
@@ -65,10 +63,9 @@ router.get("/", async (req, res) => {
 
 //Get all groups joined or organized by the Current User, authen = true
 router.get("/current", requireAuth, async (req,res) => {
-    const { user } = req; //user is defined b/c passed through reqAuth
+    const { user } = req;
     //this is terrible but works for now, except for getting numMembers and image
-    let orgGroups = await user.getGroups();
-    let memGroups = await Group.findAll({
+    let allGroups = await Group.findAll({
         include: [
                     {
                         model: User,
@@ -76,28 +73,44 @@ router.get("/current", requireAuth, async (req,res) => {
                         where: {
                            id: user.id
                         }
-                    }
+                    },
+                    {
+                        model: GroupImage,
+                        attributes: {
+                            include: ["url"]
+                        },
+                        where: {
+                            preview: true
+                        },
+                        required: false
+                    },
                  ]
     })
-    orgGroups = orgGroups.map(ele => ele.toJSON());
-    memGroups = memGroups.map(ele => ele.toJSON());
-    memGroups.forEach(ele => delete ele.Regulars);
-    let allGroups = [...orgGroups, ...memGroups];
-    let uniqueGroups = new Set();
-    allGroups.forEach(ele => uniqueGroups.add(ele));
+    const numMembers = [];
+    //I used an eager load alternative in groups by ID, refactor later
+    for(let i = 0; i<allGroups.length; i++)
+    {
+        numMembers.push(await allGroups[i].countMemberships(
+            {
+                where: {
+                    status:{
+                        [Op.ne]: "pending"
+                    }
+                }
+            }
+        ));
+        allGroups[i] = allGroups[i].toJSON();
+        allGroups[i].numMembers = numMembers[i];
+        delete allGroups[i].Regulars;
+    }
+    allGroups.forEach(async ele => {
+        if(ele.GroupImages.length != 0) ele.previewImage = ele.GroupImages[0].url;
+        else ele.previewImage = "no preview image available";
+        delete ele.GroupImages;
+    });
 
-    // possible alternative way
-    // let diffMembers = await Membership.findAll({
-    //     where: {
-    //         userId: user.id
-    //     },
-    //     //include: Group, need an assoc or through User?
-    // })
-    //res.json(diffMembers)
-    //console.log(Object.getOwnPropertyNames(User.prototype));
-    //console.log(await user.countGroups());
     res.json({
-        Groups: [...uniqueGroups]//still need to add numMembers and prevImage properties
+        Groups: allGroups
     });
 })
 
@@ -115,16 +128,11 @@ router.get("/:groupdId", async(req, res) => {
         where: {
             id: req.params.groupdId
         },
-        //need to include Venues and GroupImages as well (instead of prevImage)
         include: [
                     {
                         model: User,
                         as: "Organizer",
                         attributes: ["id", "firstName", "lastName"]
-                    },
-                    {
-                        model: User,
-                        as: "Regulars"
                     },
                     {
                        model: GroupImage,
@@ -135,6 +143,15 @@ router.get("/:groupdId", async(req, res) => {
                         attributes: {
                             exclude: ["createdAt", "updatedAt"]
                         }
+                    },
+                    {
+                        model: Membership,
+                        where: {
+                            status: {
+                                [Op.ne]: "pending"
+                            }
+                        },
+                        required: false
                     }
                  ]
     });
@@ -145,13 +162,10 @@ router.get("/:groupdId", async(req, res) => {
         })
     }
     group = group.toJSON();
-    group.numMembers = group.Regulars.length;
-    delete group.Regulars;
+    group.numMembers = group.Memberships.length;
+    delete group.Memberships;
     res.json(group);
-
-    // let allMemberships = await Membership.findAll();
-    // res.json(allMemberships);
-})
+});
 
 //Create a group, authent = true
 router.post("/", requireAuth, async (req,res) => {
