@@ -62,7 +62,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: [1, 30],
-        isAlpha: true
+        //isAlpha: true
+        // isAlpha: {
+        //   msg: "Roman wrote this message"
+        // }
       }
     },
     lastName: {
@@ -70,7 +73,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: [1, 30],
-        isAlpha: true
+        isAlpha: true,
+        isWeird(value){
+          if(value == "weirdweird") throw new Error("just checking")
+        }
       }
     }
   }, {
