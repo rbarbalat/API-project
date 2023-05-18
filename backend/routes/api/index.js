@@ -5,6 +5,8 @@ const usersRouter = require('./users.js');
 const groupsRouter = require("./groups.js");
 const venuesRouter = require("./venues.js");
 const eventsRouter = require("./events.js");
+const groupImagesRouter = require("./group-images.js");
+const eventImagesRouter = require("./event-images.js");
 
 //for testing those 2 functions
 //const { setTokenCookie, requireAuth } = require('../../utils/auth.js');
@@ -19,6 +21,8 @@ router.use("/users", usersRouter);
 router.use("/groups", groupsRouter);
 router.use("/venues", venuesRouter);
 router.use("/events", eventsRouter);
+router.use("/group-images", groupImagesRouter);
+router.use("/event-images", eventImagesRouter);
 
 //for testing only
 // router.get('/set-token-cookie', async (_req, res) => {
