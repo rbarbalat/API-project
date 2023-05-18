@@ -44,6 +44,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "groupId",
         otherKey: "venueId",
         as: "EventVenues"
+      });
+      Group.hasMany(models.Event, {
+        foreignKey: "groupId"
       })
     }
   }
