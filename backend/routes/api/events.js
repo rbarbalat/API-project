@@ -52,6 +52,94 @@ router.get("/", async (req,res) => {
     res.json(allEvents);
 });
 
+//Add an Image to a Event based on the Event's id, authenticated user
+//must be host,co-host or attendde of event, checked w/ TA host/co-host = of the group holding event
+router.post("/:eventId/images", requireAuth, async (req,res) => {
+    const { user } = req;
+    const event = await Event.findByPk(req.params.eventId);
+    if(event == null)
+    {
+        res.status(404);
+        return res.json({ message: "Event couldn't be found"});
+    }
+    //try to find the logged in user in the member table w/ the right group and status
+    const authorized = await Membership.findOne({
+        where: {
+            groupId: event.groupId,
+            userId: user.id,
+            status: {
+                [Op.in]: ["co-host", "Organizer"]
+            }
+        }
+    });
+    //console.log(Object.getOwnPropertyNames(Event.prototype));
+    //getAtten always returns an array, if nothing found then empty array
+    const attendees = await event.getAttendances({
+        where: {
+            status: "attending",
+            userId: user.id
+        }
+    });
+    if(authorized == null && attendees.length == 0)
+    {
+        res.status(403);
+        return res.json({ message: "Forbidden"});
+    }
+    const { url, preview } = req.body;
+    //could also EventImage.create() and put eventId: event.id in there
+    const newImage = await event.createEventImage({
+        url,
+        preview
+    });
+    res.json({
+        id: newImage.id,
+        url: newImage.url,
+        preview: newImage.preview
+    });
+})
+
+//Edit an Event specified by its id, authenticate organizer or co-host
+router.put("/:eventId", requireAuth, async (req, res) => {
+    const { user } = req;
+    const event = await Event.findByPk(req.params.eventId);
+    if(event == null)
+    {
+        res.status(404);
+        return res.json({ message: "Event couldn't be found"});
+    }
+    //try to find the logged in user in the member table w/ the right group and status
+    const authorized = await Membership.findOne({
+        where: {
+            groupId: event.groupId,
+            userId: user.id,
+            status: {
+                [Op.in]: ["co-host", "Organizer"]
+            }
+        }
+    });
+    if(authorized == null)
+    {
+        res.status(403);
+        return res.json({ message: "Forbidden"});
+    }
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+    await event.set({
+        venueId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate
+    })
+    await event.save();
+    const eventOBJ = event.toJSON();
+    delete eventOBJ.createdAt;
+    delete eventOBJ.updatedAt;
+    res.json(eventOBJ);
+})
+
 //get Details of an Event specified by its id, authen false
 router.get("/:eventId", async (req, res) => {
     let event = await Event.findByPk(req.params.eventId, {
@@ -85,10 +173,33 @@ router.get("/:eventId", async (req, res) => {
     res.json(eventOBJ);
 });
 
+router.delete("/:eventId", requireAuth, async (req,res) => {
+    const { user } = req;
+    const event = await Event.findByPk(req.params.eventId);
+    if(event == null)
+    {
+        res.status(404);
+        return res.json({ message: "Event couldn't be found"});
+    }
+    //try to find the logged in user in the member table w/ the right group and status
+    const authorized = await Membership.findOne({
+        where: {
+            groupId: event.groupId,
+            userId: user.id,
+            status: {
+                [Op.in]: ["co-host", "Organizer"]
+            }
+        }
+    });
+    if(authorized == null)
+    {
+        res.status(403);
+        return res.json({ message: "Forbidden"});
+    }
+    await event.destroy();
+    res.json({ message: "Successfully deleted"});
+})
+
 //getAllEventsofAgroupSpecifiedbyId, /groups/:groupId/events
-
-//Create an Event for a Group specified by its id, reqAuth, org/cohost
-
-//Add an Image to a Event based on the Event's id, attending,host,cohost of the event
 
 module.exports = router;
