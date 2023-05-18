@@ -41,6 +41,7 @@ module.exports = {
       },
       memberId: {
         //prob can be null while pending, check later
+        //auto increment?
         type: Sequelize.INTEGER
       },
       createdAt: {
