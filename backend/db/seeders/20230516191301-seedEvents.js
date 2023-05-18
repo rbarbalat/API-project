@@ -17,8 +17,8 @@ const arr =
     type: "Online",
     capacity: 100,
     price: 13.37,
-    startDate:"2023-04-16",
-    endDate: "2023-04-17"
+    startDate:"2090-04-16",//pass in through new Date()
+    endDate: "2090-04-17"
   },
   {
     groupId: 1,
@@ -28,8 +28,8 @@ const arr =
     type: "In person",
     capacity: 120,
     price: 16.17,
-    startDate: "2023-04-18",
-    endDate: "2023-04-18"
+    startDate: "2090-04-18",
+    endDate: "2090-04-18"
   },
   {
     groupId: 1,
@@ -39,8 +39,8 @@ const arr =
     type: "Online",
     capacity: 100,
     price: 13.37,
-    startDate:"2023-03-16",
-    endDate: "2023-04-01"
+    startDate:"2090-03-16",
+    endDate: "2090-04-01"
   },
   {
     groupId: 2,
@@ -50,8 +50,8 @@ const arr =
     type: "In person",
     capacity: 35,
     price: 5.84,
-    startDate: "2023-05-19",
-    endDate: "2023-05-19"
+    startDate: "2090-05-19",
+    endDate: "2090-05-19"
   },
   {
     groupId: 3,//matched to venueid 5 in venue seeder
@@ -61,8 +61,8 @@ const arr =
     type: "Online",
     capacity: 20,
     price: 3.37,
-    startDate: "2023-04-06",
-    endDate:"2023-04-11"
+    startDate: "2090-04-06",
+    endDate:"2090-04-11"
   }
 ];
 

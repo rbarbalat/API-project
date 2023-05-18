@@ -31,6 +31,8 @@ module.exports = {
         allowNull: false
       },
       state: {
+        //might have to go back and make String(2) to align
+        //with others or change the earlier ones
         type: Sequelize.STRING,
         allowNull: false
       },
