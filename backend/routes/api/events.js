@@ -6,12 +6,11 @@ const { Group, User, Membership, GroupImage, Venue, Event, EventImage, Attendanc
 const router = express.Router();
 
 const { Op } = require("sequelize");
+const { check } = require('express-validator');
 
 //get all events authentication false
 router.get("/", async (req,res) => {
     let { page, size, name, type, startDate } = req.query;
-    //page: integer, minimum: 1, maximum: 10, default: 1
-    //size: integer, minimum: 1, maximum: 20, default: 20
 
     let errors = {};
 
@@ -47,14 +46,25 @@ router.get("/", async (req,res) => {
         if(["Online", "In person"].includes(type) == false)
         {
             errors.type = "Type must be 'Online' or 'In person'";
-            console.log("yoohoo");
         }
     }
     if(startDate != undefined)
     {
-        console.log(startDate);
-        console.log(typeof startDate);
-        //errors.startDate = "Start date must be a valid datetime";
+        let invalid = false;
+        //startDate is a string, valid yyyy-mm-dd
+        const arr = startDate.split("-");
+        if(arr.length != 3) invalid = true;
+        else if(arr[0].length != 4 || arr[1].length != 2 || arr[2].length != 2) invalid = true;
+        //"05" == Number("05") is true, if string has letters or symbols, not true
+        else if(arr[0] != Number(arr[0])) invalid = true;
+        else if(arr[1] != Number(arr[1])) invalid = true;
+        else if(arr[2] != Number(arr[2])) invalid = true;
+        else if(Number(arr[0]) < 0) invalid = true;
+        else if(Number(arr[1]) < 1 || Number(arr[1]) > 12) invalid = true;
+        else if(Number(arr[2]) < 1 || Number(arr[2]) > 31) invalid = true;
+        else if(Number(arr[1]) == 2 && Number(arr[2]) > 29) invalid = true;
+
+        if(invalid) errors.startDate = "Start date must be a valid datetime (yyyy-mm-dd)";
     }
     if(Object.keys(errors).length != 0)
     {
