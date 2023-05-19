@@ -9,7 +9,75 @@ const { Op } = require("sequelize");
 
 //get all events authentication false
 router.get("/", async (req,res) => {
+    let { page, size, name, type, startDate } = req.query;
+    //page: integer, minimum: 1, maximum: 10, default: 1
+    //size: integer, minimum: 1, maximum: 20, default: 20
+
+    let errors = {};
+
+    if(page != undefined)
+    {
+        if(page == "")
+        errors.page = "Page must be number between 1 and 10 inclusive"
+        else if(page < 1)
+        errors.page = "Page must be greater than or equal to 1";
+        else if(page > 10)
+        errors.page = "Page must be less than or equal to 10";
+    }
+    if(size != undefined)
+    {
+        if(size == "")
+        errors.size = "Size must be a number between 1 and 20 inclusive";
+        else if(size < 1)
+        errors.size = "Size must be greater than or equal to 1";
+        else if(size > 20)
+        errors.size = "Size must be less than or equal to 10";
+    }
+    if(name != undefined)
+    {
+        if(name.length == 0)
+        errors.name = "Name must must be a non-empty string"
+        // "5" == Number("5") is true but false for other strings, except the empty string
+        else if(name == Number(name))
+        errors.name = "Name must be a string";
+    }
+    if(type != undefined)
+    {
+        console.log(type)
+        if(["Online", "In person"].includes(type) == false)
+        {
+            errors.type = "Type must be 'Online' or 'In person'";
+            console.log("yoohoo");
+        }
+    }
+    if(startDate != undefined)
+    {
+        //errors.startDate = "Start date must be a valid datetime";
+    }
+    if(Object.keys(errors).length != 0)
+    {
+        res.status(400);
+        return res.json({
+            message: "Bad Request",
+            errors: errors
+        })
+    }
+    //defaults 1 and 20 provided in the specs
+    if(page == undefined) page = 1;
+    if(size == undefined) size = 20;
+    let pagination = {};
+    pagination.limit = size;
+    pagination.offset = size*(page - 1);
+
+    let where = {};
+    if(name != undefined) where.name = name;
+    if(type != undefined) where.type = type;
+    if(startDate != undefined) where.startDate = startDate;
+
     let allEvents = await Event.findAll({
+        attributes: ["id", "groupId", "venueId", "name", "type", "startDate", "endDate"],
+        ...pagination,
+        where,
         include: [
                     {
                         model: Group,
@@ -31,7 +99,6 @@ router.get("/", async (req,res) => {
     });
     //console.log(Object.getOwnPropertyNames(Event.prototype));
     const numAttending = [];
-    //PROB NEED TO CHANGE TO COUNT ATTENDANCES AND FILTER
     for(let i = 0; i<allEvents.length; i++)
     {
         numAttending.push(await allEvents[i].countAttendances({

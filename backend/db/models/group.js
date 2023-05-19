@@ -56,19 +56,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(61),
       allowNull: false,
       validate: {
+        notEmpty: {
+          msg: "name can't be an empty string"
+        },
         checkNameLength(value)
         {
           //can add Validator.isAlpha(value) if necessary later
-          if(value.length > 60 || value.length < 1 || value == "")
+          if(value.length > 60)
           {
             let err =  new Error("Name must be 60 characters or less");
-            err.roman = true;
+            //err.roman = true;
             throw err;
           }
         },
         //this works but i'm not sure yet w/o tagging it but others need the tag...
         notNull: {
-          msg: "Name must be 60 characters or less"
+          msg: "Name can't be null"
         }
       }
     },
@@ -81,12 +84,12 @@ module.exports = (sequelize, DataTypes) => {
           if(value.length < 50 || value == "")
           {
             let err =  new Error("About must be 50 characters or more");
-            err.roman = true;
+            //err.roman = true;
             throw err;
           }
         },
         notNull: {
-          msg: "About must be 50 characters or more"
+          msg: "About can't be null"
         }
       }
     },
@@ -95,20 +98,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ["Online", "In person"],
       validate: {
-      isOnlineOrInPerson(value)
-      {
-        //value == null might not be checked, Alec had error in class
-        if(["Online", "In person"].includes(value) == false)
-        {
-          let err = new Error("Type must be 'Online' or 'In person'");
-          err.roman = true;
-          throw err;
+        isIn: {
+          args: [["Online", "In person"]],
+          msg: "Type must be Online or In person"
+          //online/inperson in "" in other response
+        },
+        notNull: {
+          msg: "Type must be 'Online' or 'In person'"
         }
-      },
-      notNull: {
-        msg: "Type must be 'Online' or 'In person'"
       }
-    }
     },
     private: {
       allowNull: false,
@@ -119,12 +117,12 @@ module.exports = (sequelize, DataTypes) => {
           if([0, 1, true, false].includes(value) == false)
           {
             let err =  new Error("Private must be a boolean");
-            err.roman = true;
+            //err.roman = true;
             throw err;
           }
         },
         notNull: {
-          msg: "Private must be a boolean"
+          msg: "Private can't be null"
         }
       }
     },
@@ -132,36 +130,30 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING,
       validate: {
-        checkCity(value)
-        {
-          //add Validator.isAlpha(value) later?
-          if(value == "")
-          {
-            let err =  new Error("City is required");
-            err.roman = true;
-            throw err;
-          }
-        },
-        notNull: {
+        notEmpty: {
           msg: "City is required"
+       },
+        notNull: {
+          msg: "City can't be null"
         }
       },
     },
     state: {
       allowNull: false,
-      type: DataTypes.STRING(2),//change (2) if it doesn't have to be abbrev
+      //change in migration file as well if you change here
+      type: DataTypes.STRING(2),
       validate: {
         checkState(value)
         {
           //does state have to be an abbreviation? make it isAlpha?
           if(value.length != 2)
           {
-            let err = new Error("State is required");
+            let err = new Error("State must be a 2 digit letter code");
             throw err;
           }
         },
         notNull: {
-          msg: "State is required"
+          msg: "State can't be null"
         }
       }
     }

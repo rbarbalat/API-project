@@ -62,6 +62,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: [1, 30],
+        notNull: {
+          msg: "firstName can't be null"
+        }
         //isAlpha: true
         // isAlpha: {
         //   msg: "Roman wrote this message"
@@ -74,6 +77,9 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: [1, 30],
         isAlpha: true,
+        notNull: {
+          msg: "lastName can't be null"
+        }
       }
     }
   }, {
