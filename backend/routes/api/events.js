@@ -52,6 +52,8 @@ router.get("/", async (req,res) => {
     }
     if(startDate != undefined)
     {
+        console.log(startDate);
+        console.log(typeof startDate);
         //errors.startDate = "Start date must be a valid datetime";
     }
     if(Object.keys(errors).length != 0)
@@ -72,7 +74,12 @@ router.get("/", async (req,res) => {
     let where = {};
     if(name != undefined) where.name = name;
     if(type != undefined) where.type = type;
-    if(startDate != undefined) where.startDate = startDate;
+    if(startDate != undefined)
+    {
+        where.startDate = {
+            [Op.gte]: new Date(startDate)
+        }
+    }
 
     let allEvents = await Event.findAll({
         attributes: ["id", "groupId", "venueId", "name", "type", "startDate", "endDate"],
