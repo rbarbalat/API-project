@@ -63,8 +63,9 @@ router.get("/", async (req,res) => {
         else if(Number(arr[1]) < 1 || Number(arr[1]) > 12) invalid = true;
         else if(Number(arr[2]) < 1 || Number(arr[2]) > 31) invalid = true;
         else if(Number(arr[1]) == 2 && Number(arr[2]) > 29) invalid = true;
+        else if([4,6,9,11].includes(Number(arr[1])) && Number(arr[2]) > 30) invalid = true;
 
-        if(invalid) errors.startDate = "Start date must be a valid datetime (yyyy-mm-dd)";
+        if(invalid) errors.startDate = "Start date must be a valid datetime";
     }
     if(Object.keys(errors).length != 0)
     {
