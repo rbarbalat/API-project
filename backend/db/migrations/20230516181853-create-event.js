@@ -43,6 +43,7 @@ module.exports = {
         allowNull: false
       },
       type: {
+        //might need to change In person to In Person
         type: Sequelize.ENUM("Online", "In person"),
         allowNull: false
       },
