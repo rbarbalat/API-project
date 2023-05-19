@@ -331,13 +331,16 @@ router.post("/:groupId/venues", requireAuth, async (req,res) => {
         return res.json({ message: "Forbidden"});
     }
     const { address, city, state, lat, lng } = req.body;
-    const newVenue = await group.createVenue({
+    let newVenue = await group.createVenue({
         address,
         city,
         state,
         lat,
         lng
     });
+    newVenue = newVenue.toJSON();
+    delete newVenue.createdAt;
+    delete newVenue.updatedAt;
     res.json(newVenue);
 });
 
