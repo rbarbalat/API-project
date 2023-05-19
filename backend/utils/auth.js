@@ -72,6 +72,9 @@ const requireAuth = function (req, _res, next) {
     err.title = 'Authentication required';
     err.errors = { message: 'Authentication required' };
     err.status = 401;
+    //err.authentication is my adjustment
+    //tagged to reformat in the final error handler
+    err.authentication = true;
     return next(err);
 }
 

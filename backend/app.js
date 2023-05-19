@@ -76,6 +76,8 @@ app.use((err, _req, _res, next) => {
 
 // Error formatter
 app.use((err, _req, res, _next) => {
+  //err.roman and err.authentication are my adjustments
+  //adjust later with isProduction
   if(err.roman == true)
   {
     res.status(400);
@@ -83,6 +85,11 @@ app.use((err, _req, res, _next) => {
       message: "Validation error",
       errors: err.errors
     });
+  }
+  if(err.authentication == true)
+  {
+    res.status(401);
+    return res.json({ message: "Authentication required" });
   }
   res.status(err.status || 500);
   console.error(err);

@@ -680,7 +680,7 @@ router.delete("/:groupId/membership", requireAuth, async (req, res) => {
     }
     const findUserinDB = await User.findOne({
         where: {
-            userId: memberId
+            id: memberId
         }
     });
     if(findUserinDB == null)
