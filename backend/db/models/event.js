@@ -146,8 +146,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
+        //added this after!!!!!
+        isDate:{
+          msg: "End date must be a date"
+        },
         afterStart(value)
         {
+          //check if this works
           if(!Validator.isDate(value))
           throw new Error("End date must be a date");
           else if(value <= this.startDate)

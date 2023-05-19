@@ -10,9 +10,6 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { Op } = require("sequelize");
 
-//put some error handling and authentication here?
-
-//DONEZO, CHECK PRODUCTION?
 //GET all groups, authentication = false
 router.get("/", async (req, res) => {
     let allGroups = await Group.findAll({
@@ -114,7 +111,6 @@ router.get("/current", requireAuth, async (req,res) => {
     });
 })
 
-//DONEZO? CHECK PRODUCTION
 //Get details of a group from an Id, authentication = false
 router.get("/:groupdId", async(req, res) => {
     if(Number(req.params.groupdId) != req.params.groupdId)
@@ -195,7 +191,6 @@ router.post("/", requireAuth, async (req,res) => {
 });
 
 //Add an image to a group based on Group's id, authent true, ORGANIZER ONLY
-//ADD VALIDATIONS ON URL/PREVIEW FROM REQ BODY?
 router.post("/:groupId/images", requireAuth, async (req,res) => {
     const group = await Group.findByPk(req.params.groupId);
     if(group == null){
@@ -345,7 +340,6 @@ router.post("/:groupId/venues", requireAuth, async (req,res) => {
 });
 
 //Create an Event for a Group specified by its id, authent, organizer/cohost
-//need body validation errors
 router.post("/:groupId/events", requireAuth, async (req,res) => {
     const { user } = req;
     const group = await Group.findByPk(req.params.groupId);
