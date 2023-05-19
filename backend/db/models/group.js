@@ -145,8 +145,8 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           msg: "State is required"
-        }
-        ,notNull: {
+        },
+        notNull: {
           msg: "State can't be null"
         }
       }
