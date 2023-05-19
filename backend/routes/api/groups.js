@@ -590,7 +590,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
         where: {
             //the memberId in the req body refers to the users userId
             //not to my memberId column that isn't necessary
-            userId: memberId
+            id: memberId
         }
     });
     if(findUserToBeChanged == null)
