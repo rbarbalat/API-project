@@ -141,18 +141,12 @@ module.exports = (sequelize, DataTypes) => {
     state: {
       allowNull: false,
       //change in migration file as well if you change here
-      type: DataTypes.STRING(2),
+      type: DataTypes.STRING,
       validate: {
-        checkState(value)
-        {
-          //does state have to be an abbreviation? make it isAlpha?
-          if(value.length != 2)
-          {
-            let err = new Error("State must be a 2 digit letter code");
-            throw err;
-          }
-        },
-        notNull: {
+        notEmpty: {
+          msg: "State is required"
+        }
+        ,notNull: {
           msg: "State can't be null"
         }
       }
