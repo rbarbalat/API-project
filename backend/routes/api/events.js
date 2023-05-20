@@ -87,6 +87,9 @@ router.get("/", async (req,res) => {
     if(type != undefined) where.type = type;
     if(startDate != undefined)
     {
+        //date queries have no time portion so the time is set to 12 am by new Date()
+        //if the date in the database is the same day, it might have a time portion
+        //which will make it greater than the query so it will be included
         where.startDate = {
             [Op.gte]: new Date(startDate)
         }
