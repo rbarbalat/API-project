@@ -297,7 +297,9 @@ router.get("/:groupId/venues", requireAuth, async (req,res) => {
             exclude: ["createdAt", "updatedAt"]
         }
     })
-    res.json(allVenues);
+    res.json({
+        Venues: allVenues
+    });
 });
 
 //add venue validators and good
@@ -393,7 +395,7 @@ router.get("/:groupId/events", async (req, res) => {
             groupId: group.id,
         },
         attributes: {
-            exclude: ["createdAt", "updatedAt"]
+            exclude: ["createdAt", "updatedAt", "description", "capacity", "price"]
         },
         include: [
                     {
