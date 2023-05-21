@@ -649,6 +649,8 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
             findMembership.status = "member";
             await findMembership.save();
             return res.json({
+                id: findMembership.id,
+                groupId: group.id,//just added this
                 memberId: memberId,//memberId is from req.body (user's id from users table)
                 status: "member"
             });
@@ -661,6 +663,8 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
             findMembership.status = "co-host";
             await findMembership.save();
             return res.json({
+                id: findMembership.id,
+                groupId: group.id,//just added this
                 memberId: memberId,//memberId is from req.body (user's id from users table)
                 status: "co-host"
             });
