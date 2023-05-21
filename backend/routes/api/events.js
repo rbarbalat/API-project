@@ -164,6 +164,7 @@ router.post("/:eventId/images", requireAuth, async (req,res) => {
     });
     //console.log(Object.getOwnPropertyNames(Event.prototype));
     //getAtten always returns an array, if nothing found then empty array
+    //an attendee is also authorized
     const attendees = await event.getAttendances({
         where: {
             status: "attending",
@@ -282,6 +283,7 @@ router.get("/:eventId", async (req, res) => {
     res.json(eventOBJ);
 });
 
+//delete an event specified by its id
 router.delete("/:eventId", requireAuth, async (req,res) => {
     const { user } = req;
     const event = await Event.findByPk(req.params.eventId);
