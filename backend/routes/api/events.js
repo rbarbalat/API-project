@@ -137,7 +137,9 @@ router.get("/", async (req,res) => {
         else ele.previewImage = "no preview image available";
         delete ele.EventImages;
     });
-    res.json(allEvents);
+    res.json({
+        Events: allEvents
+    });
 });
 
 //Add an Image to a Event based on the Event's id, authenticated user
@@ -231,6 +233,9 @@ router.put("/:eventId", requireAuth, async (req, res) => {
 //get Details of an Event specified by its id, authen false
 router.get("/:eventId", async (req, res) => {
     let event = await Event.findByPk(req.params.eventId, {
+        attributes: {
+            exclude: ["createdAt", "updatedAt"]
+        },
         include: [
                     {
                         model: Group,
