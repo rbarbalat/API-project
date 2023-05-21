@@ -213,6 +213,22 @@ router.put("/:eventId", requireAuth, async (req, res) => {
         return res.json({ message: "Forbidden"});
     }
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+
+    //check if the venueId input is undefined has a letter or is the empty string
+    if(venueId != Number(venueId) && venueId != null)
+    {
+        console.log("hello");
+        res.status(404);
+        return res.json({message: "Venue couldn't be found"});
+    }
+    const findVenue = await Venue.findByPk(venueId);
+    if(findVenue == null && venueId != null)
+    {
+        console.log("goodbye");
+        res.status(404);
+        return res.json({message: "Venue couldn't be found"});
+    }
+    //it is ok if the input was venueId:null b/c the column does not have a non-null restriction
     await event.set({
         venueId,
         name,
@@ -256,7 +272,7 @@ router.get("/:eventId", async (req, res) => {
         res.status(404);
         return res.json({ message: "Event couldn't be found"});
     }
-    console.log(Object.getOwnPropertyNames(Event.prototype));
+    //console.log(Object.getOwnPropertyNames(Event.prototype));
     const eventOBJ = event.toJSON();
     eventOBJ.numAttending = await event.countAttendances({
         where: {

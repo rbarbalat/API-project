@@ -368,8 +368,21 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
     //console.log(Object.getOwnPropertyNames(Group.prototype));
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 
-    //becareful there is also .createEvenue which is a belongsToMany assoc with an alias
-    const newEvent = await group.createEvent({
+    //check if the venueId input is undefined has a letter or is the empty string
+    if(venueId != Number(venueId) && venueId != null )
+    {
+        res.status(404);
+        return res.json({message: "Venue couldn't be found"});
+    }
+    const findVenue = await Venue.findByPk(venueId);
+    if(findVenue == null && venueId != null)
+    {
+        res.status(404);
+        return res.json({message: "Venue couldn't be found"});
+    }
+    //it is ok if the input was venueId:null b/c the column does not have a non-null restriction
+    //however that must be the user's input, won't set the col value to null if venueId undefined
+    let newEvent = await group.createEvent({
         venueId,
         name,
         type,
@@ -379,6 +392,9 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
         startDate,
         endDate
     });
+    newEvent = newEvent.toJSON();
+    delete newEvent.createdAt;
+    delete newEvent.updatedAt;
     res.json(newEvent);
 });
 

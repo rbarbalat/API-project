@@ -40,10 +40,9 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    //venueId CAN BE NULL
-    //have to do some checks if the venueId exists, look in specs
-    //maybe this check in the route handler?
-    venueId: DataTypes.INTEGER,
+    venueId: {
+      type: DataTypes.INTEGER
+    },
     groupId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -62,12 +61,8 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         checkLength(value)
         {
-          //separate to avoid type error accessing .length of a num
-          //but maybe they are all strings anyway since they are input that way?
-          if(typeof value != "string")
-          throw new Error("Name must be a string containing at least 5 characters")
-          else if(value.length < 5)
-          throw new Error("Name must be a string containing at least 5 characters")
+          if(value.length < 5)
+          throw new Error("Name must be at least 5 characters")
         },
         notNull: {
           msg: "Name can't be null"
@@ -110,6 +105,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           msg: "Capacity can't be null"
+        },
+        isNotPositive(value)
+        {
+          if(value < 1) throw new Error("Capacity is invalid");
         }
       }
     },
@@ -122,6 +121,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           msg: "Price can't be null"
+        },
+        isNegative(value)
+        {
+          if(value < 0) throw new Error("Price is invalid");
         }
       }
     },
