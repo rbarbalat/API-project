@@ -79,8 +79,19 @@ router.get("/current", requireAuth, async (req,res) => {
                         where: {
                             preview: true
                         },
+                        //default req: true means no results if this isn't satisfied
+                        //allows us to get groups that have no prev image
                         required: false
                     },
+                    {
+                        model: Membership,
+                        where: {
+                            userId: user.id,
+                            status:{
+                                [Op.ne]: "pending"
+                            }
+                        }
+                    }
                  ]
     })
     const numMembers = [];
@@ -99,6 +110,9 @@ router.get("/current", requireAuth, async (req,res) => {
         allGroups[i] = allGroups[i].toJSON();
         allGroups[i].numMembers = numMembers[i];
         delete allGroups[i].Regulars;
+        //Memberships was only included to filter out groups where
+        //the current user is pending
+        delete allGroups[i].Memberships;
     }
     allGroups.forEach(async ele => {
         if(ele.GroupImages.length != 0) ele.previewImage = ele.GroupImages[0].url;
@@ -562,6 +576,8 @@ router.post("/:groupId/membership", requireAuth, async (req,res) => {
     });
     if(acceptedMember != null)
     {
+        //this is based on the logged in user and his user.id
+        //does not depend on the claimed memberId in the req.body
         res.status(400);
         return res.json({ message: "User is already a member of the group"});
     }
