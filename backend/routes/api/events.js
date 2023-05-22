@@ -16,7 +16,7 @@ router.get("/", async (req,res) => {
 
     if(page != undefined)
     {
-        if(page == "")
+        if(page == "" || page != Number(page))
         errors.page = "Page must be number between 1 and 10 inclusive"
         else if(page < 1)
         errors.page = "Page must be greater than or equal to 1";
@@ -25,12 +25,12 @@ router.get("/", async (req,res) => {
     }
     if(size != undefined)
     {
-        if(size == "")
+        if(size == "" || size != Number(size))
         errors.size = "Size must be a number between 1 and 20 inclusive";
         else if(size < 1)
         errors.size = "Size must be greater than or equal to 1";
         else if(size > 20)
-        errors.size = "Size must be less than or equal to 10";
+        errors.size = "Size must be less than or equal to 20";
     }
     if(name != undefined)
     {
