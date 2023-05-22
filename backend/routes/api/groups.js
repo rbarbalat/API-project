@@ -25,6 +25,15 @@ router.get("/", async (req, res) => {
                 },
                 required: false
             },
+            {
+                model: Membership,
+                where: {
+                    status: {
+                        [Op.ne]: "pending"
+                    }
+                },
+                required: false
+            }
         ]
     });
     //console.log(Object.getOwnPropertyNames(Group.prototype));
@@ -51,6 +60,9 @@ router.get("/", async (req, res) => {
         if(ele.GroupImages.length != 0) ele.previewImage = ele.GroupImages[0].url;
         else ele.previewImage = "no preview image available";
         delete ele.GroupImages;
+
+        ele.numMembersDiff = ele.Memberships.length;
+        delete ele.Memberships;
     });
 
     res.json({
@@ -385,12 +397,14 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
     //check if the venueId input is undefined has a letter or is the empty string
     if(venueId != Number(venueId) && venueId != null )
     {
+        //console.log("hi hi hi")
         res.status(404);
         return res.json({message: "Venue couldn't be found"});
     }
     const findVenue = await Venue.findByPk(venueId);
     if(findVenue == null && venueId != null)
     {
+        //console.log("hi");
         res.status(404);
         return res.json({message: "Venue couldn't be found"});
     }
