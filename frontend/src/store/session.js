@@ -41,6 +41,17 @@ export const login = (user) => async (dispatch) => {
     }
 */
 
+//to retain user info across a page refresh
+export const restoreUser = () => async (dispatch) => {
+  const response = await csrfFetch("/api/session");
+  const data = await response.json();
+  dispatch(setUser(data.user));
+  return response;
+};
+//in authMe, the object value of the user key
+//has keys createdAt and updatedAt, might need to add later?
+
+
 const initialState = { user: null };
 
 const sessionReducer = (state = initialState, action) => {
