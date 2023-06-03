@@ -31,13 +31,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        len: [4,30],
+        len: {
+          args: [4, 30],
+          msg: "Username must have between 4 and 30 characters"
+        },
         isNotEmail(value)
         {
-          //unfortunately had v instead of V
-          //when merged auth-setup branch, fixed on signup branch
           if(Validator.isEmail(value))
-          throw new Error("Cannot be an email")
+          throw new Error("Username can't be an email")
         }
       }
     },
@@ -47,7 +48,10 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: {
         len: [3, 256],
-        isEmail: true
+        //isEmail: true
+        isEmail: {
+          msg: "Invalid Email"
+        }
       }
     },
     hashedPassword: {
@@ -61,22 +65,30 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 30],
+        //len: [1, 30],
+        len: {
+          args: [1, 30],
+          msg: "First name must have between 1 and 30 characters"
+        },
         notNull: {
           msg: "firstName can't be null"
+        },
+        isAlpha: {
+          msg: "First Name is invalid"
         }
-        //isAlpha: true
-        // isAlpha: {
-        //   msg: "Roman wrote this message"
-        // }
       }
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 30],
-        isAlpha: true,
+        len: {
+          args: [1, 30],
+          msg: "Last name must have been 1 and 30 characters"
+        },
+        isAlpha: {
+          msg: "Last Name is invalid"
+        },
         notNull: {
           msg: "lastName can't be null"
         }

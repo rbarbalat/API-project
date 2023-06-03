@@ -12,42 +12,42 @@ const arr =
   {
     email: "abc@gmail.com",
     username: "wolverine",
-    hashedPassword: bcrypt.hashSync('first'),
+    hashedPassword: bcrypt.hashSync('firstfirst'),
     firstName: "James",
     lastName: "Howlett"
   },
   {
     email: "mno@yahoo.com",
     username: "gambit",
-    hashedPassword: bcrypt.hashSync('second'),
+    hashedPassword: bcrypt.hashSync('secondsecond'),
     firstName: "Remy",
     lastName: "Lebeau"
   },
   {
     email: "xyz@bing.com",
     username: "cyclops",
-    hashedPassword: bcrypt.hashSync('third'),
+    hashedPassword: bcrypt.hashSync('thirdthird'),
     firstName: "Scott",
     lastName: "Summers"
   },
   {
     email: "superman@gmail.com",
     username: "superman",
-    hashedPassword: bcrypt.hashSync('blahgahfah'),
+    hashedPassword: bcrypt.hashSync('fourthfourth'),
     firstName: "Clark",
     lastName: "Kent"
   },
   {
     email: "batman@yahoo.com",
     username: "batman",
-    hashedPassword: bcrypt.hashSync('gahblahfah'),
+    hashedPassword: bcrypt.hashSync('fifthfifth'),
     firstName: "Bruce",
     lastName: "Wayne"
   },
   {
     email: "professor@bing.com",
     username: "professor",
-    hashedPassword: bcrypt.hashSync('thirdsecond'),
+    hashedPassword: bcrypt.hashSync('sixthsixth'),
     firstName: "Charles",
     lastName: "Xavier"
   }
