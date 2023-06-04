@@ -59,7 +59,7 @@ function SignupFormModal() {
           <input
             type="text"
             value={email}
-            Placeholder={email.length > 0 ? "" : "Email"}
+            placeholder={email.length > 0 ? "" : "Email"}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -67,7 +67,7 @@ function SignupFormModal() {
           <input
             type="text"
             value={username}
-            Placeholder={username.length > 0 ? "" : "Username"}
+            placeholder={username.length > 0 ? "" : "Username"}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
@@ -75,7 +75,7 @@ function SignupFormModal() {
           <input
             type="text"
             value={firstName}
-            Placeholder={firstName.length > 0 ? "" : "First Name"}
+            placeholder={firstName.length > 0 ? "" : "First Name"}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
@@ -83,7 +83,7 @@ function SignupFormModal() {
           <input
             type="text"
             value={lastName}
-            Placeholder={lastName.length > 0 ? "" : "Last Name"}
+            placeholder={lastName.length > 0 ? "" : "Last Name"}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
@@ -91,7 +91,7 @@ function SignupFormModal() {
           <input
             type="password"
             value={password}
-            Placeholder={password.length > 0 ? "" : "Password"}
+            placeholder={password.length > 0 ? "" : "Password"}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -99,7 +99,7 @@ function SignupFormModal() {
           <input
             type="password"
             value={confirmPassword}
-            Placeholder={confirmPassword.length > 0 ? "" : "Confirm Password"}
+            placeholder={confirmPassword.length > 0 ? "" : "Confirm Password"}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
