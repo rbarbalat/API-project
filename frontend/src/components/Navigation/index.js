@@ -14,34 +14,45 @@ function Navigation({ isLoaded }) {
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li>
+      <div className=".headerRightProfile">
         <ProfileButton user={sessionUser} />
-      </li>
+      </div>
     );
   } else {
     sessionLinks = (
-      <li>
+      <div className="headerRight">
         <OpenModalButton
+          id="login"
           buttonText="Log In"
           modalComponent={<LoginFormModal />}
         />
         <OpenModalButton
+          id="signup"
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
         />
-      </li>
+      </div>
     );
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">
-          Home
+    <div className="header">
+      <div>
+        <NavLink id="MeetUp" exact to="/">
+          MeetUp
         </NavLink>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
+      </div>
+        {isLoaded && sessionLinks}
+    </div>
+
+    // <ul>
+    //   <li>
+    //     <NavLink exact to="/">
+    //       Home
+    //     </NavLink>
+    //   </li>
+    //   {isLoaded && sessionLinks}
+    // </ul>
   );
 }
 
