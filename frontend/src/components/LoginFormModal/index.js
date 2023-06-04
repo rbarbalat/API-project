@@ -33,7 +33,8 @@ function LoginFormModal() {
   function onClick(event)
   {
     event.preventDefault();
-    console.log(process.env.DEMO_CREDENTIAL);
+    setErrors({});
+    //console.log(process.env.DEMO_CREDENTIAL);
     return dispatch(sessionActions.login({
       // credential: process.env.DEMO_CREDENTIAL,
       // password: process.env.DEMO_PASSWORD
