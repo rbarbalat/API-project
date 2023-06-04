@@ -5,30 +5,44 @@
 }
 
 #signupSpan {
-    padding-top: 5px;
+    margin-top: 15px;
     margin-bottom: 12px;
 }
 
 #signupInputs > input {
     width: 90%;
-    height: 15px;
+    height: 20px;
     margin-bottom:5px;
-    border:1px solid black;
+    border:2px solid black;
     color: gray;
+    background-color:#E8F0FE;
 }
 
-#signupButton {
+.disabled {
+    background-color: white;
+    color: gray;
+    font-size: 11px;
+    border: 1px solid #CCCCCC;
+    width: 90%;
+    height: 30px;
+    box-shadow:5px 5px 5px gray;
+    margin-bottom:20px;
+}
+
+.enabled {
     background-color: red;
     color: white;
-    font-size: 8px;
+    font-size: 11px;
     border: 1px solid black;
     width: 90%;
-    margin-bottom:15px;
+    height: 30px;
+    box-shadow:5px 5px 5px black;
+    margin-bottom:20px;
 }
 
 .signupErrors {
     width: 90%;
-    font-size:7px;
+    font-size:14px;
     color: red;
     margin-bottom:5px;
 }

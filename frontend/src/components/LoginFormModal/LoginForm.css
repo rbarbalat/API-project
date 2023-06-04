@@ -1,3 +1,8 @@
+form {
+    /*percentage of the width of div#modal-content
+    in Modal.css*/
+    width: 100%;
+}
 #loginInputs {
     display: flex;
     flex-direction: column;
@@ -10,19 +15,33 @@
 }
 
 #loginInputs > input {
+    /*inside a div which takes up fill width of the form*/
     width: 90%;
     height: 15px;
-    margin-bottom:5px;
-    border:1px solid black;
+    margin-bottom:10px;
+    border:2px solid black;
     color: gray;
+    background-color:#E8F0FE;
 }
+/*login button either has class disabled or enabled*/
 
-#loginButton {
+.disabled {
+    background-color: white;
+    color: gray;
+    font-size: 11px;
+    border: 1px solid #CCCCCC;
+    width: 90%;
+    height: 30px;
+    box-shadow:5px 5px 5px gray;
+}
+.enabled {
     background-color: red;
     color: white;
-    font-size: 8px;
+    font-size: 11px;
     border: 1px solid black;
     width: 90%;
+    height: 30px;
+    box-shadow:5px 5px 5px black;
 }
 
 #demoUser {
@@ -31,12 +50,12 @@
     margin-top: 10px;
     padding-bottom: 15px;
     color: teal;
-    font-size: 7px;
+    font-size: 14px;
 }
 
 #credError {
     width: 90%;
-    font-size:7px;
+    font-size:14px;
     color: red;
     margin-bottom:10px;
 }
