@@ -1,26 +1,45 @@
-button {
+/*get rid of the border of the button
+containing the favicon*/
+#containsFavicon {
     border: none;
+    height: 100%;
+    width: 100%;
 }
+/*needs to be adjusted along with
+changes to dimensions of headerRightProfile*/
 .profile-dropdown {
     position: absolute;
-    top:40px;
+    top:50px;
     right:20px;
 }
 
 ul {
+    width: 150px;
     border:2px solid black;
-    font-size:15px;
     list-style-type: none;
     text-align: center;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 9px;
+    padding-right: 9px;
     font-size: 20px;
     text-align: left;
 }
-#containsButton {
+li {
+    width: 100%;
+    font-size:12px;
+}
+/* #containsButton {
     border-top:2px solid black;
+} */
+li > button {
+    font-size: 12px;
+    border: none;
+    border-top:1px solid black;
+    width: 100%;
+    text-align: left;
 }
 
 i {
     color: red;
+    width: 16px;
+    height: 16px;
 }

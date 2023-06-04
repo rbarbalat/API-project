@@ -42,8 +42,9 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={openMenu}>
-        <i className="fa-solid fa-user" />
+      <button id="containsFavicon" onClick={openMenu}>
+        <i className="fa-solid fa-user"></i>
+        {/* <FontAwesomeIcon icon="fa-brands fa-meetup" /> */}
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {/* hard to see ternary here, displays either dropdown menu or login/signup */}

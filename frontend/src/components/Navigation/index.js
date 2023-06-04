@@ -14,7 +14,7 @@ function Navigation({ isLoaded }) {
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <div className=".headerRightProfile">
+      <div className="headerRightProfile">
         <ProfileButton user={sessionUser} />
       </div>
     );

@@ -18,7 +18,7 @@ const validateSignup =
     // .withMessage('Please provide a valid email.'),
 
     check('email').isEmail()
-    .withMessage('Please provide a valid email.'),
+    .withMessage('The provided email is invalid.'),
 
     check('username').isLength({ min: 4 })
     .withMessage('Please provide a username with at least 4 characters.'),
@@ -33,13 +33,13 @@ const validateSignup =
     .withMessage('Please provide a first name with at least 1 character.'),
 
     check("firstName").isLength({ max: 30 })
-    .withMessage('Please provide a first name with at most characters.'),
+    .withMessage('First name can be at most 30 characters.'),
 
     check('lastName').isLength({ min: 1 })
     .withMessage('Please provide a last name with at least 1 character.'),
 
     check("lastName").isLength({ max: 30 })
-    .withMessage('Please provide a last name with at most 30 characters.'),
+    .withMessage('Last name can be at most 30 characters.'),
 
     check('password').exists({ checkFalsy: true })
     .isLength({ min: 6 }).withMessage('Please provide a password with at least 6 characters.'),

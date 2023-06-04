@@ -15,23 +15,25 @@
 }
 /*contains login and sign up buttons*/
 .headerRight {
-    width: 15%;
+    width: 16%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 /*contains profile button */
-/* .headerRightProfile {
+.headerRightProfile {
     display: flex;
     flex-direction:row;
     justify-content:flex-end;
     align-items: center;
-} */
+    height: 35px;
+    width: 35px;
+}
 #login, #signup {
     border: none;
     color: black;
     background-color: white;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 /* i {

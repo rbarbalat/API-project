@@ -61,19 +61,19 @@ function LoginFormModal() {
             }
           <input
             type="text"
-            placeholder={credential.length > 0 ? "" : "username"}
+            placeholder={credential.length > 0 ? "" : "Username"}
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
           <input
             type="password"
-            placeholder={password.length > 0 ? "" : "password"}
+            placeholder={password.length > 0 ? "" : "Password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        <button id="loginButton" type="submit" disabled={disabled}>Log In</button>
+        <button id="loginButton" className={disabled ? "disabled" : "enabled"} type="submit" disabled={disabled}>Log In</button>
 
         </div>
       </form>
