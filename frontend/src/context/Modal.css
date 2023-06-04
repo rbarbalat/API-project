@@ -1,3 +1,4 @@
+/* wrapper div for the modal with id modal*/
 #modal {
     position: fixed;
     top: 0;
@@ -9,6 +10,7 @@
     align-items: center;
   }
 
+  /* inside div#modal*/
   #modal-background {
     position: fixed;
     top: 0;
@@ -18,7 +20,14 @@
     background-color: rgba(0, 0, 0, 0.7);
   }
 
+  /* inside div#modal*/
+  /* comes from consuming ModalContext*/
   #modal-content {
     position: absolute;
     background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-radius: 5%;
   }

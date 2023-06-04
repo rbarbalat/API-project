@@ -25,7 +25,7 @@ button {
     Primary Action: Red background with white text and black border */
 }
 
-/*remove later*/
-:disabled {
-    color: red;
-}
+/*for testing whether or not buttons are disabled*/
+/* :disabled {
+    color: blue;
+} */

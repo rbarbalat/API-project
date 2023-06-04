@@ -1,0 +1,34 @@
+#signupInputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#signupSpan {
+    padding-top: 5px;
+    margin-bottom: 12px;
+}
+
+#signupInputs > input {
+    width: 90%;
+    height: 15px;
+    margin-bottom:5px;
+    border:1px solid black;
+    color: gray;
+}
+
+#signupButton {
+    background-color: red;
+    color: white;
+    font-size: 8px;
+    border: 1px solid black;
+    width: 90%;
+    margin-bottom:15px;
+}
+
+.signupErrors {
+    width: 90%;
+    font-size:7px;
+    color: red;
+    margin-bottom:5px;
+}

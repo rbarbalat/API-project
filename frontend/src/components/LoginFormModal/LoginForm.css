@@ -1,0 +1,42 @@
+#loginInputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#loginSpan {
+    padding-top: 5px;
+    margin-bottom: 12px;
+}
+
+#loginInputs > input {
+    width: 90%;
+    height: 15px;
+    margin-bottom:5px;
+    border:1px solid black;
+    color: gray;
+}
+
+#loginButton {
+    background-color: red;
+    color: white;
+    font-size: 8px;
+    border: 1px solid black;
+    width: 90%;
+}
+
+#demoUser {
+    border: none;
+    text-decoration: underline;
+    margin-top: 10px;
+    padding-bottom: 15px;
+    color: teal;
+    font-size: 7px;
+}
+
+#credError {
+    width: 90%;
+    font-size:7px;
+    color: red;
+    margin-bottom:10px;
+}

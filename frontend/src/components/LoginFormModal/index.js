@@ -34,30 +34,32 @@ function LoginFormModal() {
 
   return (
     <>
-      <h1>Log In</h1>
+    {/* this thing is inside the div#modal-content in Modal.js, style in modal.css */}
+      <span id="loginSpan">Log In</span>
       <form onSubmit={handleSubmit}>
-        <label>
-          Username
+        <div id="loginInputs">
+            {
+              errors.credential &&
+              (<div id="credError">{errors.credential}</div>)
+            }
           <input
             type="text"
+            Placeholder={credential.length > 0 ? "" : "username"}
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
-        </label>
-        <label>
-          Password
           <input
             type="password"
+            Placeholder={password.length > 0 ? "" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
-        <button type="submit" disabled={disabled}>Log In</button>
+        <button id="loginButton" type="submit" disabled={disabled}>Log In</button>
+        <button id="demoUser">Demo User</button>
+
+        </div>
       </form>
     </>
   );
