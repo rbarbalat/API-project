@@ -1,9 +1,6 @@
 button {
     border: none;
 }
-i {
-    color: red;
-}
 .profile-dropdown {
     position: absolute;
     top:40px;
@@ -22,4 +19,8 @@ ul {
 }
 #containsButton {
     border-top:2px solid black;
+}
+
+i {
+    color: red;
 }
