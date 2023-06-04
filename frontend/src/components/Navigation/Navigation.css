@@ -21,12 +21,14 @@
     justify-content: space-between;
 }
 /*contains profile button */
-/* .headerRightProfile {
+.headerRightProfile {
     display: flex;
     flex-direction:row;
     justify-content:flex-end;
     align-items: center;
-} */
+    height: 35px;
+    width: 35px;
+}
 #login, #signup {
     border: none;
     color: black;
