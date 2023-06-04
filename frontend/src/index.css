@@ -1,5 +1,31 @@
 /* TODO Add site wide styles */
 
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Neue Plak", sans-serif;
+    background-color: white;
+}
+
 .hidden {
     display: none;
 }
+
+button {
+    font-size: normal;
+    text-align: center;
+    background-color: white;
+    color: black;
+    border-color: #CCCCCC;
+    /*Pointer cursor shows on rollover
+    Normal: White background with black text and light gray border
+    Accent: Dark gray background with white text and black border
+    Primary Action: Red background with white text and black border */
+}
+
+/*for testing whether or not buttons are disabled*/
+/* :disabled {
+    color: blue;
+} */

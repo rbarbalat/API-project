@@ -11,6 +11,7 @@ import * as sessionActions from "./store/session";
 
 import { ModalProvider, Modal } from './context/Modal';
 
+//current
 const store = configureStore();
 
 // if (process.env.NODE_ENV !== "production") {
