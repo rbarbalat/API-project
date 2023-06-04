@@ -24,3 +24,8 @@ button {
     Accent: Dark gray background with white text and black border
     Primary Action: Red background with white text and black border */
 }
+
+/*remove later*/
+:disabled {
+    color: red;
+}
