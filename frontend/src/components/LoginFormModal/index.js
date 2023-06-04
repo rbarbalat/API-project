@@ -4,6 +4,7 @@ import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
+//require('dotenv').config();
 
 //current
 function LoginFormModal() {
@@ -14,6 +15,8 @@ function LoginFormModal() {
   const [disabled, setDisabled] = useState(true);
   const { closeModal } = useModal();
 
+  //sessionActions is all exports from /store/session in an object
+  //.login is the login thunk
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
@@ -26,6 +29,20 @@ function LoginFormModal() {
         }
       });
   };
+
+  function onClick(event)
+  {
+    event.preventDefault();
+    setErrors({});
+    //console.log(process.env.DEMO_CREDENTIAL);
+    return dispatch(sessionActions.login({
+      // credential: process.env.DEMO_CREDENTIAL,
+      // password: process.env.DEMO_PASSWORD
+      credential: "professor",
+      password: "sixthsixth"
+    }))
+    .then(closeModal)
+  }
 
   useEffect(() => {
     if(credential.length < 4 || password.length < 6) setDisabled(true);
@@ -44,23 +61,24 @@ function LoginFormModal() {
             }
           <input
             type="text"
-            Placeholder={credential.length > 0 ? "" : "username"}
+            placeholder={credential.length > 0 ? "" : "username"}
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
           <input
             type="password"
-            Placeholder={password.length > 0 ? "" : "password"}
+            placeholder={password.length > 0 ? "" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         <button id="loginButton" type="submit" disabled={disabled}>Log In</button>
-        <button id="demoUser">Demo User</button>
 
         </div>
       </form>
+
+      <button id="demoUser" onClick={onClick}>Demo User</button>
     </>
   );
 }
