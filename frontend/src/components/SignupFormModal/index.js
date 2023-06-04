@@ -4,6 +4,7 @@ import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
 
+//current
 function SignupFormModal() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
