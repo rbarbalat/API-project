@@ -43,8 +43,11 @@ li > button {
 
 button > i {
     color: red;
+    /* doesn't do anything?
     width: 16px;
     height: 16px;
+    font-size controls the size of the favicon */
+    font-size: large
 }
 
 #arrow {
