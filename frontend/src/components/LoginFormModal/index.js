@@ -36,10 +36,8 @@ function LoginFormModal() {
     setErrors({});
     //console.log(process.env.DEMO_CREDENTIAL);
     return dispatch(sessionActions.login({
-      // credential: process.env.DEMO_CREDENTIAL,
-      // password: process.env.DEMO_PASSWORD
-      credential: "professor",
-      password: "sixthsixth"
+      credential: process.env.REACT_APP_CREDENTIAL,
+      password: process.env.REACT_APP_PASSWORD
     }))
     .then(closeModal)
   }
