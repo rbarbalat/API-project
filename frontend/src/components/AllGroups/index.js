@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadGroups } from "../../store/groups.js"
+import {NavLink} from "react-router-dom";
+import "./AllGroups.css";
 
 export default function AllGroups()
 {
@@ -17,8 +19,44 @@ export default function AllGroups()
     if(groups === undefined) return <div> All Groups Page Loading</div>
     return (
         <>
-            <div>All Groups Page</div>
-            <ul>
+            <div className="allGroupsHeader">
+                <div className="EventsGroupsContainer">
+                    <NavLink id="EventsNavLink" to ="/">
+                        Events
+                    </NavLink>
+                    <NavLink to="/">
+                        Groups
+                    </NavLink>
+                </div>
+                <div>
+                    Groups in Meetup
+                </div>
+            </div>
+            <div className="allGroupsContainer">
+                {
+                    groups.map(ele => (
+                        <div className="groupBlock" key={`group${ele.id}`}>
+                            <div>
+                                <img src={ele.previewImage}></img>
+                            </div>
+                            <div>
+                                <div>{ele.name}</div>
+                                <div>{`${ele.city}, ${ele.state}`}</div>
+                                <div>{ele.about}</div>
+                                <div className="numType">
+                                    {/* <div>### events</div>
+                                    <div>Public or Private</div> */}
+                                    <div className="numTypeLeft">{`${ele.numMembers} Members`}</div>
+                                    <div className="numTypeCenter">*</div>
+                                    <div>{ele.type}</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+            {/* <ul>
                 {
                     groups.map(ele => (
                         <li key={ele.id}>
@@ -26,7 +64,7 @@ export default function AllGroups()
                         </li>
                     ))
                 }
-            </ul>
+            </ul> */}
         </>
     )
 }
