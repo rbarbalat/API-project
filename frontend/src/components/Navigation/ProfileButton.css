@@ -4,6 +4,7 @@ containing the favicon*/
     border: none;
     height: 100%;
     width: 100%;
+    cursor: pointer
 }
 /*needs to be adjusted along with
 changes to dimensions of headerRightProfile*/
@@ -37,12 +38,16 @@ li > button {
     border-top:1px solid black;
     width: 100%;
     text-align: left;
+    cursor: pointer
 }
 
 button > i {
     color: red;
+    /* doesn't do anything?
     width: 16px;
     height: 16px;
+    font-size controls the size of the favicon */
+    font-size: large
 }
 
 #arrow {
