@@ -44,15 +44,6 @@ function Navigation({ isLoaded }) {
       </div>
         {isLoaded && sessionLinks}
     </div>
-
-    // <ul>
-    //   <li>
-    //     <NavLink exact to="/">
-    //       Home
-    //     </NavLink>
-    //   </li>
-    //   {isLoaded && sessionLinks}
-    // </ul>
   );
 }
 
