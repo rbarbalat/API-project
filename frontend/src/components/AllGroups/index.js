@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadGroups } from "../../store/groups.js"
-import {NavLink, Link} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import "./AllGroups.css";
 
 export default function AllGroups()
@@ -10,11 +10,21 @@ export default function AllGroups()
     let groups = useSelector(state => state.groups.allGroups);
     if( groups !== undefined) groups = Object.values(groups);
     //console.log("groups-----  ", groups);
+    const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
         //console.log("hello");
         dispatch(thunkLoadGroups());
     }, [dispatch])
+
+    function onClick(event)
+    {
+        //clicking anywhere on the div that has details for groupId links to the group details page
+        //the id is `groupBlock${ele.id}` and groupBlock is 10 chars long
+        //slice(10) starts at INDEX 10
+        const groupId = event.currentTarget.id.slice(10);
+        history.push(`/groups/${groupId}`);
+    }
 
     if(groups === undefined) return <div> All Groups Page Loading</div>
     return (
@@ -35,13 +45,12 @@ export default function AllGroups()
             <div className="allGroupsContainer">
                 {
                     groups.map(ele => (
-                        <div className="groupBlock" key={`group${ele.id}`}>
+                        <div id={`groupBlock${ele.id}`} className="groupBlock" onClick={onClick} key={`group${ele.id}`}>
                             <div>
                                 <img alt="temporary alt" src={ele.previewImage}></img>
                             </div>
+
                             <div>
-                                {/* make an onClick for each div and history.push() to the details page */}
-                                <div><Link to={`/groups/${ele.id}`}>Temp Link</Link></div>
                                 <div>{ele.name}</div>
                                 <div>{`${ele.city}, ${ele.state}`}</div>
                                 <div>{ele.about}</div>
