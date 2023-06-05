@@ -39,8 +39,12 @@ li > button {
     text-align: left;
 }
 
-i {
+button > i {
     color: red;
     width: 16px;
     height: 16px;
+}
+
+#arrow {
+    color: lightgray;
 }
