@@ -1,6 +1,8 @@
 import { csrfFetch } from "./csrf";
+import { useSelector } from "react-redux";
 
-export const LOAD_GROUPS = 'groups/LOAD_REPORTS';
+export const LOAD_GROUPS = 'groups/LOAD_GROUPS';
+export const LOAD_SINGLE_GROUP = "groups/LOAD_SINGLE_GROUP";
 export const RECEIVE_GROUP = 'groups/RECEIVE_GROUP';
 export const UPDATE_GROUP = 'groups/UPDATE_GROUP';
 export const REMOVE_GROUP = 'groups/REMOVE_GROUP';
@@ -29,6 +31,43 @@ export const thunkLoadGroups = () => async (dispatch) => {
     const errorData = await res.json();
     return errorData;
 }
+const actionLoadSingleGroup = (singleGroup) => {
+    return {
+        type: LOAD_SINGLE_GROUP,
+        singleGroup
+    }
+}
+export const thunkLoadSingleGroup = (groupId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/groups/${groupId}`);
+    if(res.ok)
+    {
+        const singleGroup = {};
+
+        const singleData = await res.json();
+        singleGroup.GroupImages = singleData.GroupImages;
+        singleGroup.Organizer = singleData.Organizer;
+        singleGroup.Venues = singleData.Venues;
+
+        //if user can only reach group details page from the groups page
+        //then the groups must already be loaded in the state?
+        const existingData = useSelector(state => state.groups.allGroups[groupId]);
+        if(existingData !== undefined)
+        {
+            singleGroup.groupData = existingData;
+        }
+        dispatch(actionLoadSingleGroup);
+        return singleGroup;
+
+        //if they aren't loaded have to do another fetch?
+        // const secondRes = await csrfFetch("/api/groups");
+        // if(secondRes.ok)
+        // {
+        //     const groupData = await secondRes.json();
+        // }
+    }
+    const errorData = await res.json();
+    return errorData;
+}
 
 const initialState = {};
 
@@ -39,13 +78,15 @@ const groupsReducer = (state = initialState, action) => {
           action.groups.Groups.forEach((ele) => {
             normGroups[ele.id] = ele;
           });
-          return { allGroups: normGroups }
+          return { allGroups: normGroups };
+
+        case LOAD_SINGLE_GROUP:
+            //double check if needs to be a new ref at every level of nesting
+            return {...state, ...action.singleGroup}
         case RECEIVE_GROUP:
             return state;
-        //   return { ...state, [action.report.id]: action.report };
         case UPDATE_GROUP:
             return state;
-        //   return { ...state, [action.report.id]: action.report };
         case REMOVE_GROUP:
           return state;
         default:
@@ -54,3 +95,89 @@ const groupsReducer = (state = initialState, action) => {
 };
 
 export default groupsReducer;
+
+/*
+SINGLE GROUP DETAILS FROM GET ALL GROUPS (missing all group images and venues)
+        {
+            "id": 1,
+            "organizerId": 1,
+            "name": "Hockey on the Water",
+            "about": "Enjoy rounds of hockey with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+            "type": "In person",
+            "private": true,
+            "city": "Pittsburgh",
+            "state": "PA",
+            "createdAt": "2023-06-03T18:01:07.000Z",
+            "updatedAt": "2023-06-03T18:01:07.000Z",
+            "numMembers": 3,
+            "previewImage": "www.google.com"
+        }
+*/
+
+/*
+SINGLE GROUP DETAILS FROM GET GROUPS BY ID
+{
+    "id": 1,
+    "organizerId": 1,
+    "name": "Hockey on the Water",
+    "about": "Enjoy rounds of hockey with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    "type": "In person",
+    "private": true,
+    "city": "Pittsburgh",
+    "state": "PA",
+    "createdAt": "2023-06-03T18:01:07.000Z",
+    "updatedAt": "2023-06-03T18:01:07.000Z",
+    "Organizer": {
+        "id": 1,
+        "firstName": "James",
+        "lastName": "Howlett"
+    },
+    "GroupImages": [
+        {
+            "id": 1,
+            "url": "www.google.com",
+            "preview": true
+        },
+        {
+            "id": 2,
+            "url": "www.yahoo.com",
+            "preview": false
+        },
+        {
+            "id": 3,
+            "url": "www.bing.com",
+            "preview": false
+        }
+    ],
+    "Venues": [
+        {
+            "id": 1,
+            "groupId": 1,
+            "address": "123 Murray Ave",
+            "city": "Pittsburgh",
+            "state": "PA",
+            "lat": 30.331,
+            "lng": 12.2967
+        },
+        {
+            "id": 2,
+            "groupId": 1,
+            "address": "345 Forbes Ave",
+            "city": "Pheonix",
+            "state": "AZ",
+            "lat": 21.22,
+            "lng": 13.79
+        },
+        {
+            "id": 3,
+            "groupId": 1,
+            "address": "567 Shady Ave",
+            "city": "Los Angeles",
+            "state": "CA",
+            "lat": 17.51,
+            "lng": 10
+        }
+    ],
+    "numMembers": 3
+
+*/

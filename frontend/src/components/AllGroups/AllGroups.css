@@ -1,0 +1,31 @@
+.allGroupsHeader, .allGroupsContainer {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.allGroupsHeader {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid black;
+}
+
+.groupBlock {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    border-bottom: 2px solid black;
+}
+
+.numType {
+    display: flex;
+    flex-direction: row;
+}
+
+#EventsNavLink {
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+.numTypeLeft, .numTypeCenter {
+    margin-right: 15px;
+}
