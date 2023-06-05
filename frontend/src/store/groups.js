@@ -1,5 +1,4 @@
 import { csrfFetch } from "./csrf";
-import { useSelector } from "react-redux";
 
 export const LOAD_GROUPS = 'groups/LOAD_GROUPS';
 export const LOAD_SINGLE_GROUP = "groups/LOAD_SINGLE_GROUP";
@@ -41,29 +40,15 @@ export const thunkLoadSingleGroup = (groupId) => async (dispatch) => {
     const res = await csrfFetch(`/api/groups/${groupId}`);
     if(res.ok)
     {
-        const singleGroup = {};
+        // const singleGroup = {};
+        // const singleData = await res.json();
+        // singleGroup.GroupImages = singleData.GroupImages;
+        // singleGroup.Organizer = singleData.Organizer;
+        // singleGroup.Venues = singleData.Venues;
 
-        const singleData = await res.json();
-        singleGroup.GroupImages = singleData.GroupImages;
-        singleGroup.Organizer = singleData.Organizer;
-        singleGroup.Venues = singleData.Venues;
-
-        //if user can only reach group details page from the groups page
-        //then the groups must already be loaded in the state?
-        const existingData = useSelector(state => state.groups.allGroups[groupId]);
-        if(existingData !== undefined)
-        {
-            singleGroup.groupData = existingData;
-        }
-        dispatch(actionLoadSingleGroup);
-        return singleGroup;
-
-        //if they aren't loaded have to do another fetch?
-        // const secondRes = await csrfFetch("/api/groups");
-        // if(secondRes.ok)
-        // {
-        //     const groupData = await secondRes.json();
-        // }
+        const serverData = await res.json();
+        dispatch(actionLoadSingleGroup(serverData));
+        return serverData;
     }
     const errorData = await res.json();
     return errorData;
@@ -79,10 +64,9 @@ const groupsReducer = (state = initialState, action) => {
             normGroups[ele.id] = ele;
           });
           return { allGroups: normGroups };
-
         case LOAD_SINGLE_GROUP:
             //double check if needs to be a new ref at every level of nesting
-            return {...state, ...action.singleGroup}
+            return {...state, singleGroup: {...action.singleGroup} }
         case RECEIVE_GROUP:
             return state;
         case UPDATE_GROUP:
