@@ -34,14 +34,15 @@ function LoginFormModal() {
   {
     event.preventDefault();
     setErrors({});
-    //console.log(process.env.DEMO_CREDENTIAL);
+    console.log(process.env.REACT_APP_CREDENTIAL);
+    console.log(process.env.REACT_APP_PASSWORD);
+    if(process.env.REACT_APP_CREDENTIAL)
     return dispatch(sessionActions.login({
-      // credential: process.env.DEMO_CREDENTIAL,
-      // password: process.env.DEMO_PASSWORD
-      credential: "professor",
-      password: "sixthsixth"
-    }))
-    .then(closeModal)
+      credential: process.env.REACT_APP_CREDENTIAL,
+      password: process.env.REACT_APP_PASSWORD
+      // credential: "professor",
+      // password: "sixthsixth"
+    })).then(closeModal)
   }
 
   useEffect(() => {
