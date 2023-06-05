@@ -14,7 +14,8 @@ changes to dimensions of headerRightProfile*/
 }
 
 ul {
-    width: 150px;
+    /* width: 150px; */
+    width: fit-content;
     border:2px solid black;
     list-style-type: none;
     text-align: center;
@@ -38,8 +39,12 @@ li > button {
     text-align: left;
 }
 
-i {
+button > i {
     color: red;
     width: 16px;
     height: 16px;
+}
+
+#arrow {
+    color: lightgray;
 }

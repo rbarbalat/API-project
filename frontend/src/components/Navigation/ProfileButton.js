@@ -39,13 +39,17 @@ function ProfileButton({ user }) {
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+  const arrowDown = "fa-solid fa-arrow-down";
+  const arrowUp = "fa-solid fa-arrow-up";
 
   return (
     <>
       <button id="containsFavicon" onClick={openMenu}>
         <i className="fa-solid fa-user"></i>
-        {/* <FontAwesomeIcon icon="fa-brands fa-meetup" /> */}
       </button>
+
+      <i id="arrow" className={showMenu ? arrowUp : arrowDown}></i>
+
       <ul className={ulClassName} ref={ulRef}>
         {/* hard to see ternary here, displays either dropdown menu or login/signup */}
         {user ? (
