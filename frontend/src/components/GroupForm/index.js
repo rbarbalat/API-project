@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import "./GroupForm.css";
+import { thunkReceiveGroup } from "../../store/groups";
 
 
 export default function GroupForm({formType})
@@ -11,14 +13,16 @@ export default function GroupForm({formType})
     const [privatepublic, setPrivatePublic]  = useState("(select one");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
-    //const [location, setLocation] = useState("");
     const [url, setUrl] = useState("");
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
+    const [serverErrors, setServerErrors] = useState({});
     const history = useHistory();
-    const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
-    //let displayErrors = false;
+    const dispatch = useDispatch();
 
+    const sessionUser = useSelector((state) => state.session.user);
+
+    //const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
     useEffect(() => {
         const errors = {};
         //undefined when location is the empty string
@@ -47,14 +51,43 @@ export default function GroupForm({formType})
         setValidationErrors(errors);
     }, [name, about, type, privatepublic, city, state, url])
 
-    function onSubmit(event)
+    async function onSubmit(event)
     {
         event.preventDefault();
         console.log("hello world");
-        setDisplayErrors(true);
-        console.log(validationErrors);
-        //push to the new group details page
-        //history.push("/");
+        if(Object.keys(validationErrors).length !== 0)
+        {
+            setDisplayErrors(true);
+        }else{
+            //create cases for create vs edit later
+            //this page should only be reachable if a user is logged in
+            //check if session user auto added as the Organizer
+            const Organizer = {
+                id: sessionUser.id,
+                firstName: sessionUser.firstName,
+                lastName: sessionUser.lastName
+            };
+            const serverObject = await dispatch(thunkReceiveGroup(Organizer, {
+                name,
+                about,
+                type,
+                private: privatepublic === "Private" ? true : false,
+                city,
+                state,
+                url
+            }));
+            console.log("serverObject inside onSubmit ---  ", serverObject);
+            if(serverObject.errors === undefined)
+            {
+                //const newId = serverObject.id;
+                //console.log("inside the first if statement--  ", serverObject);
+                //history.push(`/groups/${newId}`);
+                console.log("inside the if statement")
+                return;
+            }
+            setServerErrors(serverObject.errors);
+            //console.log(serverErrors);
+        }
     }
     if(formType === "edit") return null;
     return (
@@ -161,8 +194,7 @@ export default function GroupForm({formType})
                     }
                 </div>
             </div>
-            <button type="submit" disabled={true}
-                onClick={(() => console.log("tried to click me"))}>
+            <button type="submit">
                 Create Group
             </button>
         </form>

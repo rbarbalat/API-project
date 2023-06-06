@@ -48,7 +48,36 @@ export const thunkLoadSingleGroup = (groupId) => async (dispatch) => {
     return errorData;
 }
 
-//const initialState = {};
+const actionReceiveGroup = (group) => {
+    return {
+        type: RECEIVE_GROUP,
+        group
+    }
+}
+export const thunkReceiveGroup = (Organizer, group) => async (dispatch) => {
+    delete group.url;
+    const options = {
+        //remove the image from the group object for now
+        method: "Post",
+        headers: { "Content-Type":  "application/json" },
+        body: JSON.stringify(group)
+    };
+    const res = await csrfFetch("/api/groups", options);
+    if(res.ok)
+    {
+        const serverData = await res.json();
+        //if creating the group add numMembers, adjust for update later
+        serverData.numMembers = 1;
+        serverData.Organizer = Organizer;
+        //also add serverData.previewImage;
+        dispatch(actionReceiveGroup(serverData));
+        console.log("serverData inside the thunk ---   ", serverData);
+        return serverData;
+    }
+    const errorData = await res.json();
+    return errorData;
+}
+
 const initialState = {
     allGroups: {},
     singleGroup: {}
@@ -65,7 +94,8 @@ const groupsReducer = (state = initialState, action) => {
             //double check if needs to be a new ref at every level of nesting
             return {...state, singleGroup: {...action.singleGroup} }
         case RECEIVE_GROUP:
-            return state;
+            //action.group is the new group object, its id is action.group.id which will be used as its key in allGroups
+            return {...state, allGroups: {...state.allGroups, [action.group.id]: action.group  }, singleGroup: {...action.group}}
         case UPDATE_GROUP:
             return state;
         case REMOVE_GROUP:

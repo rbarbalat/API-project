@@ -21,7 +21,8 @@ export default function SingleGroup()
 
     if(groupIsNotEmpty && sessionUser)
     {
-        group.Organizer.id === sessionUser.id ?
+        //changed this from .Organizer.id to .organizerId
+        group.organizerId === sessionUser.id ?
         userIsOrganizer = true : userIsOrganizer = false;
     }
     let showButton = true;
