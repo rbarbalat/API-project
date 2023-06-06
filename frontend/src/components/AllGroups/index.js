@@ -59,7 +59,7 @@ export default function AllGroups()
                                     <div>Public or Private</div> */}
                                     <div className="numTypeLeft">{`${ele.numMembers} Members`}</div>
                                     {/* change this asterisk to a dot later */}
-                                    <div className="numTypeCenter">*</div>
+                                    <div className="numTypeCenter">&bull;</div>
                                     <div>{ele.private ? "Private" : "Public"}</div>
                                 </div>
 
