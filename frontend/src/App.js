@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import AllGroups from "./components/AllGroups";
 import SingleGroup from "./components/SingleGroup";
 import LandingPage from "./components/LandingPage";
+import GroupForm from "./components/GroupForm";
 
 //current
 function App() {
@@ -25,6 +26,9 @@ function App() {
             </Route>
             <Route exact path="/groups">
               <AllGroups />
+            </Route>
+            <Route exact path ="/form">
+              <GroupForm />
             </Route>
             <Route path="/groups/:groupId">
               <SingleGroup />
