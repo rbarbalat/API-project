@@ -10,7 +10,7 @@ export default function GroupForm({formType})
     const [name, setName] = useState("");
     const [about, setAbout] = useState("");
     const [type, setType] = useState("(select one)");
-    const [privatepublic, setPrivatePublic]  = useState("(select one");
+    const [privatepublic, setPrivatePublic]  = useState("(select one)");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
     const [url, setUrl] = useState("");
@@ -51,6 +51,20 @@ export default function GroupForm({formType})
         setValidationErrors(errors);
     }, [name, about, type, privatepublic, city, state, url])
 
+    function reset()
+    {
+        setName("");
+        setAbout("");
+        setCity("");
+        setState("");
+        setUrl("");
+        setType("(select one)");
+        setPrivatePublic("(select one");
+        setDisplayErrors(false);
+        setValidationErrors({});
+        setServerErrors({});
+    }
+
     async function onSubmit(event)
     {
         event.preventDefault();
@@ -76,13 +90,13 @@ export default function GroupForm({formType})
                 state,
                 url
             }));
-            console.log("serverObject inside onSubmit ---  ", serverObject);
+            //console.log("serverObject inside onSubmit ---  ", serverObject);
             if(serverObject.errors === undefined)
             {
-                //const newId = serverObject.id;
-                //console.log("inside the first if statement--  ", serverObject);
-                //history.push(`/groups/${newId}`);
-                console.log("inside the if statement")
+                const newId = serverObject.id;
+                //maybe not necessary to reset since going to new page
+                reset();
+                history.push(`/groups/${newId}`);
                 return;
             }
             setServerErrors(serverObject.errors);
