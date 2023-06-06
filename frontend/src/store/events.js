@@ -14,8 +14,21 @@ const actionLoadEvents = (events) => {
         events
     }
 }
+//get all events
 export const thunkLoadEvents = () => async (dispatch) => {
     const res = await csrfFetch("/api/events");
+    if(res.ok)
+    {
+        const serverData = await res.json();
+        dispatch(actionLoadEvents(serverData));
+        return serverData;
+    }
+    const errorData = await res.json();
+    return errorData;
+}
+//get all events by group ID
+export const thunkLoadEventsByGroupId = (groupId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/groups/${groupId}/events`);
     if(res.ok)
     {
         const serverData = await res.json();
@@ -45,7 +58,10 @@ export const thunkLoadSingleEvent = (eventId) => async (dispatch) => {
     return errorData;
 }
 
-const initialState = {};
+const initialState = {
+    allEvents: {},
+    singleEvent: {}
+}
 
 const eventsReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -54,7 +70,7 @@ const eventsReducer = (state = initialState, action) => {
           action.events.Events.forEach((ele) => {
             normEvents[ele.id] = ele;
           });
-          return { allEvents: normEvents };
+          return {...state,  allEvents: normEvents };
         case LOAD_SINGLE_EVENT:
             return {...state, singleEvent: {...action.singleEvent} }
         case RECEIVE_EVENT:

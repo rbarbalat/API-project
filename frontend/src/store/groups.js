@@ -48,8 +48,11 @@ export const thunkLoadSingleGroup = (groupId) => async (dispatch) => {
     return errorData;
 }
 
-const initialState = {};
-
+//const initialState = {};
+const initialState = {
+    allGroups: {},
+    singleGroup: {}
+}
 const groupsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_GROUPS:
@@ -57,7 +60,7 @@ const groupsReducer = (state = initialState, action) => {
           action.groups.Groups.forEach((ele) => {
             normGroups[ele.id] = ele;
           });
-          return { allGroups: normGroups };
+          return {...state, allGroups: normGroups };
         case LOAD_SINGLE_GROUP:
             //double check if needs to be a new ref at every level of nesting
             return {...state, singleGroup: {...action.singleGroup} }
