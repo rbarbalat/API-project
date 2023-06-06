@@ -2,12 +2,16 @@ import { useEffect } from "react";
 import { useParams, NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadSingleGroup } from "../../store/groups.js";
+import { thunkLoadEvents } from "../../store/events.js";
 import "./SingleGroup.css";
 
 export default function SingleGroup()
 {
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
+    let events = useSelector(state => state.events.allEvents);
+    if(events !== undefined) events = Object.values(events).filter(ele => ele.groupId === Number(groupId));
+    console.log("events -----  ", events);
     const sessionUser = useSelector((state) => state.session.user);
     let userIsOrganizer;
     if(group && sessionUser)
@@ -22,6 +26,8 @@ export default function SingleGroup()
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(thunkLoadSingleGroup(groupId));
+        //any reason for separate useEffects?
+        dispatch(thunkLoadEvents());
     }, [dispatch, groupId])
 
     function onClick()

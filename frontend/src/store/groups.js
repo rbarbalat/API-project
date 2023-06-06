@@ -40,12 +40,6 @@ export const thunkLoadSingleGroup = (groupId) => async (dispatch) => {
     const res = await csrfFetch(`/api/groups/${groupId}`);
     if(res.ok)
     {
-        // const singleGroup = {};
-        // const singleData = await res.json();
-        // singleGroup.GroupImages = singleData.GroupImages;
-        // singleGroup.Organizer = singleData.Organizer;
-        // singleGroup.Venues = singleData.Venues;
-
         const serverData = await res.json();
         dispatch(actionLoadSingleGroup(serverData));
         return serverData;
