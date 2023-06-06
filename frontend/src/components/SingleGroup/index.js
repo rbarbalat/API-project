@@ -40,7 +40,8 @@ export default function SingleGroup()
                 <div>
                     <h1>{group.name}</h1>
                     <div>{`${group.city}, ${group.state}`}</div>
-                    <div>{group.numMembers} * {group.private ? "Private" : "Public"}</div>
+                        {/* put the dot in its own div in all groups */}
+                    <div>{group.numMembers} &bull; {group.private ? "Private" : "Public"}</div>
                     <div>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
                     { showButton && joinButton }
                     {/* { showButton && <button onClick={onClick}>Join this group</button> } */}
@@ -55,13 +56,18 @@ export default function SingleGroup()
             <h2>What we're about</h2>
             <div>{group.about}</div>
 
-            <div>
-                Upcoming Events
-            </div>
+            <div>Upcoming Events</div>
 
-            <div>
-                Past Events
-            </div>
+            {
+                userIsOrganizer &&
+                    (<div>
+                        <button>Create Event</button>
+                        <button>Update</button>
+                        <button>Delete</button>
+                    </div>)
+            }
+
+            <div>Past Events</div>
         </>
     )
 }
