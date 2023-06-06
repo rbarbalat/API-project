@@ -8,10 +8,19 @@ export default function SingleGroup()
 {
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
-    //console.log("group from single groups -----  ", group);
+    const sessionUser = useSelector((state) => state.session.user);
+    let userIsOrganizer;
+    if(group && sessionUser)
+    {
+        group.Organizer.id === sessionUser.id ?
+        userIsOrganizer = true : userIsOrganizer = false;
+    }
+    let showButton = true;
+    if(userIsOrganizer || sessionUser === null) showButton = false;
+    const joinButton = <button onClick={onClick}>Join this group</button>;
+
     const dispatch = useDispatch();
     useEffect(() => {
-        //console.log("hello from single group useeffect");
         dispatch(thunkLoadSingleGroup(groupId));
     }, [dispatch, groupId])
 
@@ -26,24 +35,25 @@ export default function SingleGroup()
             <NavLink to="/groups">Groups</NavLink>
             <div className="ImageAndSide">
                 <div>
-                    <img alt="temporary alt"></img>
+                    <img alt="alt"></img>
                 </div>
                 <div>
                     <h1>{group.name}</h1>
                     <div>{`${group.city}, ${group.state}`}</div>
                     <div>{group.numMembers} * {group.private ? "Private" : "Public"}</div>
                     <div>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
-                    <button onClick={onClick}>Join this group</button>
+                    { showButton && joinButton }
+                    {/* { showButton && <button onClick={onClick}>Join this group</button> } */}
                 </div>
             </div>
 
             <div>
                 <h2>Organizer</h2>
-                <div>First Last</div>
+                <div>{group.Organizer.firstName} {group.Organizer.lastName}</div>
             </div>
 
             <h2>What we're about</h2>
-            <div>Description</div>
+            <div>{group.about}</div>
 
             <div>
                 Upcoming Events

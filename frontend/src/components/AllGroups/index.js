@@ -47,7 +47,7 @@ export default function AllGroups()
                     groups.map(ele => (
                         <div id={`groupBlock${ele.id}`} className="groupBlock" onClick={onClick} key={`group${ele.id}`}>
                             <div>
-                                <img alt="temporary alt" src={ele.previewImage}></img>
+                                <img alt="alt" src={ele.previewImage}></img>
                             </div>
 
                             <div>
