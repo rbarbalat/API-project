@@ -55,13 +55,18 @@ export default function SingleGroup()
             <h2>What we're about</h2>
             <div>{group.about}</div>
 
-            <div>
-                Upcoming Events
-            </div>
+            <div>Upcoming Events</div>
 
-            <div>
-                Past Events
-            </div>
+            {
+                userIsOrganizer &&
+                    (<div>
+                        <button>Create Event</button>
+                        <button>Update</button>
+                        <button>Delete</button>
+                    </div>)
+            }
+
+            <div>Past Events</div>
         </>
     )
 }
