@@ -1,43 +1,60 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import "./GroupForm.css";
 
 
 export default function GroupForm({formType})
 {
     const [name, setName] = useState("");
     const [about, setAbout] = useState("");
-    const [type, setType] = useState();
-    const [privatepublic, setPrivatePublic]  = useState();
+    const [type, setType] = useState("(select one)");
+    const [privatepublic, setPrivatePublic]  = useState("(select one");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
     //const [location, setLocation] = useState("");
     const [url, setUrl] = useState("");
     const [validationErrors, setValidationErrors] = useState({});
+    const [displayErrors, setDisplayErrors] = useState(false);
     const history = useHistory();
     const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
+    //let displayErrors = false;
 
     useEffect(() => {
         const errors = {};
         //undefined when location is the empty string
-        if(city[0] !== undefined)
-        {
-            if(!alphabet.includes(city[city.length - 1]))
-            setCity(city.slice(0, city.length - 1));
+        if(city.length === 0)
+        errors.city = "City is required";
 
-            errors.city = "Location is required";
-        }else
-        {
+        if(state.length === 0)
+        errors.state = "State is required"
 
-        }
-        if(name === "") errors.name = "Name is required";
+        if(about.length < 30)
+        errors.about = "Description must be at least 30 characters long";
+
+        if(!["Online", "In person"].includes(type))
+        errors.type = "Group Type is required";
+
+        //change this to a boolean when submitting the form
+        if(!["Private", "Public"].includes(privatepublic))
+        errors.privatepublic = "Visbility Type is required";
+
+        let validEnding = false;
+        url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
+        validEnding = true : validEnding = false;
+
+        if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
+
         setValidationErrors(errors);
     }, [name, about, type, privatepublic, city, state, url])
 
     function onSubmit(event)
     {
         event.preventDefault();
+        console.log("hello world");
+        setDisplayErrors(true);
+        console.log(validationErrors);
         //push to the new group details page
-        history.push("/");
+        //history.push("/");
     }
     if(formType === "edit") return null;
     return (
@@ -50,7 +67,7 @@ export default function GroupForm({formType})
                 />
                 <div className="errors">
                     {
-                    validationErrors.city !== undefined
+                    validationErrors.city !== undefined && displayErrors
                     && validationErrors.city
                     }
                 </div>
@@ -59,7 +76,7 @@ export default function GroupForm({formType})
                 />
                 <div className="errors">
                     {
-                    validationErrors.state !== undefined
+                    validationErrors.state !== undefined && displayErrors
                     && validationErrors.state
                     }
                 </div>
@@ -73,8 +90,8 @@ export default function GroupForm({formType})
                 />
                 <div className="errors">
                     {
-                    validationErrors.about !== undefined
-                    && validationErrors.about
+                    validationErrors.name !== undefined && displayErrors
+                    && validationErrors.name
                     }
                 </div>
             </div>
@@ -90,13 +107,13 @@ export default function GroupForm({formType})
                     <li>Who sould join?</li>
                     <li>What will you do at your events??</li>
                 </ul>
-                <textarea type="text" name="name" placeholder="Please write at least 30 characters?"
+                <textarea type="text" name="about" placeholder="Please write at least 30 characters?"
                     value={about} onChange={e => setAbout(e.target.value)}
                 />
                 <div className="errors">
                     {
-                    validationErrors.name !== undefined
-                    && validationErrors.name
+                    validationErrors.about !== undefined && displayErrors
+                    && validationErrors.about
                     }
                 </div>
             </div>
@@ -105,54 +122,49 @@ export default function GroupForm({formType})
                 <div>Final Steps...</div>
                 <div>Is this an in person or online group?</div>
                 <select value={type} onChange={e => setType(e.target.value)}>
-                    <option>Private</option>
-                    <option>Public</option>
+                    {/* //change to a default value that is not an option */}
+                    <option>(select one)</option>
+                    <option>Online</option>
+                    <option>In person</option>
                 </select>
+
+                <div className="errors">
+                    {
+                    validationErrors.type !== undefined && displayErrors
+                    && validationErrors.type
+                    }
+                </div>
+
                 <div>Is this group private or public?</div>
                 <select value={privatepublic} onChange={e => setPrivatePublic(e.target.value)}>
+                    <option>(select one)</option>
                     <option>Private</option>
                     <option>Public</option>
                 </select>
+
+                <div className="errors">
+                    {
+                    validationErrors.privatepublic !== undefined && displayErrors
+                    && validationErrors.privatepublic
+                    }
+                </div>
+
+
                 <div>Please add in image url for your group below:</div>
                 <input type="text" name="url" placeholder="https://somewhere.com/image.gif"
                     value={url} onChange={e => setUrl(e.target.value)}
                 />
+                <div className="errors">
+                    {
+                    validationErrors.url !== undefined && displayErrors
+                    && validationErrors.url
+                    }
+                </div>
             </div>
-
-            <button type="submit" disabled={Object.keys(validationErrors).length !== 0}>
+            <button type="submit" disabled={true}
+                onClick={(() => console.log("tried to click me"))}>
                 Create Group
             </button>
-
-
-
-
-            {/* <div>blahblahblah</div>
-            <select value={privatepublic} onChange={e => setPrivatePublic(e.target.value)}>
-              <option>Private</option>
-              <option>Public</option>
-            </select>
-
-          <label>
-            Average Height (in meters)
-            <input
-              type="number"
-              name="avgHeight"
-              value={avgHeight}
-              onChange={e => setAvgHeight(e.target.value)}
-            />
-          </label>
-          <p className="errors">
-            {
-              validationErrors.avgHeight !== undefined
-              && validationErrors.avgHeight
-            }
-          </p>
-          <button
-            type="submit"
-            disabled={Object.keys(validationErrors).length !== 0}
-          >
-            Add Tree
-          </button> */}
         </form>
       );
 }
