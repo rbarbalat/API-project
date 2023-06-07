@@ -76,31 +76,60 @@ export default function GroupForm({formType})
         {
             setDisplayErrors(true);
         }else{
-            //create cases for create vs edit later
-            const Organizer = {
-                id: sessionUser.id,
-                firstName: sessionUser.firstName,
-                lastName: sessionUser.lastName
-            };
-            const serverObject = await dispatch(thunkReceiveGroup(Organizer, {
-                name,
-                about,
-                type,
-                private: privatepublic === "Private" ? true : false,
-                city,
-                state,
-                url
-            }));
-            if(serverObject.errors === undefined)
+            if(formType === "Create")
             {
-                const newId = serverObject.id;
-                //maybe not necessary to reset since going to new page
-                reset();
-                history.push(`/groups/${newId}`);
-                return;
+                const Organizer = {
+                    id: sessionUser.id,
+                    firstName: sessionUser.firstName,
+                    lastName: sessionUser.lastName
+                };
+                const serverObject = await dispatch(thunkReceiveGroup(Organizer, {
+                    name,
+                    about,
+                    type,
+                    private: privatepublic === "Private" ? true : false,
+                    city,
+                    state,
+                    url
+                }));
+                if(serverObject.errors === undefined)
+                {
+                    const newId = serverObject.id;
+                    //maybe not necessary to reset since going to new page
+                    reset();
+                    history.push(`/groups/${newId}`);
+                    return;
+                }
+                setDisplayErrors(true);
+                setValidationErrors(serverObject.errors);
             }
-            setDisplayErrors(true);
-            setValidationErrors(serverObject.errors);
+            if(formType === "Update")
+            {
+                const Organizer = {
+                    id: sessionUser.id,
+                    firstName: sessionUser.firstName,
+                    lastName: sessionUser.lastName
+                };
+                const serverObject = await dispatch(thunkReceiveGroup(Organizer, {
+                    name,
+                    about,
+                    type,
+                    private: privatepublic === "Private" ? true : false,
+                    city,
+                    state,
+                    //url
+                }));
+                if(serverObject.errors === undefined)
+                {
+                    const newId = serverObject.id;
+                    //maybe not necessary to reset since going to new page
+                    reset();
+                    history.push(`/groups/${newId}`);
+                    return;
+                }
+                setDisplayErrors(true);
+                setValidationErrors(serverObject.errors);
+            }
         }
     }
     if(formType === "edit") return null;

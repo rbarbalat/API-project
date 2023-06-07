@@ -30,6 +30,9 @@ function App() {
             <Route exact path ="/groups/new">
               <GroupForm formType="Create" />
             </Route>
+            <Route path="/groups/:groupId/edit">
+              <GroupForm formType="Update" />
+            </Route>
             <Route path="/groups/:groupId">
               <SingleGroup />
             </Route>

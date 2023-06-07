@@ -55,6 +55,7 @@ export default function SingleGroup()
         <>
             <div>SINGLE GROUP PAGE -- GROUP {groupId} REMOVE LATER</div>
             <NavLink to="/groups">Groups</NavLink>
+            <NavLink to={`/groups/${groupId}/edit`}>Update</NavLink>
             <div className="ImageAndSide">
                 <div>
                     <img alt="alt" src={group.GroupImages[0].url}></img>
