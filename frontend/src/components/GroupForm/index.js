@@ -16,7 +16,7 @@ export default function GroupForm({formType})
     const [url, setUrl] = useState("");
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
-    const [serverErrors, setServerErrors] = useState({});
+
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -25,20 +25,22 @@ export default function GroupForm({formType})
     //const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
     useEffect(() => {
         const errors = {};
-        //undefined when location is the empty string
+        // if str === "", then str[0] is undefined, remember for strings that
+        //spaces
+
         if(city.length === 0)
         errors.city = "City is required";
 
         if(state.length === 0)
         errors.state = "State is required"
 
+        //the backend validation is < 50, need to change backend?
         if(about.length < 30)
         errors.about = "Description must be at least 30 characters long";
 
         if(!["Online", "In person"].includes(type))
         errors.type = "Group Type is required";
 
-        //change this to a boolean when submitting the form
         if(!["Private", "Public"].includes(privatepublic))
         errors.privatepublic = "Visbility Type is required";
 
@@ -53,6 +55,7 @@ export default function GroupForm({formType})
 
     function reset()
     {
+        //might not need this function
         setName("");
         setAbout("");
         setCity("");
@@ -62,7 +65,6 @@ export default function GroupForm({formType})
         setPrivatePublic("(select one");
         setDisplayErrors(false);
         setValidationErrors({});
-        setServerErrors({});
     }
 
     async function onSubmit(event)
@@ -74,8 +76,6 @@ export default function GroupForm({formType})
             setDisplayErrors(true);
         }else{
             //create cases for create vs edit later
-            //this page should only be reachable if a user is logged in
-            //check if session user auto added as the Organizer
             const Organizer = {
                 id: sessionUser.id,
                 firstName: sessionUser.firstName,
@@ -90,7 +90,7 @@ export default function GroupForm({formType})
                 state,
                 url
             }));
-            //console.log("serverObject inside onSubmit ---  ", serverObject);
+            console.log("serverObject inside onSubmit ---  ", serverObject);
             if(serverObject.errors === undefined)
             {
                 const newId = serverObject.id;
@@ -99,11 +99,13 @@ export default function GroupForm({formType})
                 history.push(`/groups/${newId}`);
                 return;
             }
-            setServerErrors(serverObject.errors);
-            //console.log(serverErrors);
+            setDisplayErrors(true);
+            setValidationErrors(serverObject.errors);
         }
     }
     if(formType === "edit") return null;
+    //for now, adjust when adding links to this page (only available to logged in users)
+    if(sessionUser === null) return null;
     return (
         <form onSubmit={onSubmit} className={formType === "create" ? "createGroupForm" : "editGroupForm"}>
             <div>

@@ -65,35 +65,38 @@ export const thunkReceiveGroup = (Organizer, group) => async (dispatch) => {
         headers: { "Content-Type":  "application/json" },
         body: JSON.stringify(group)
     };
-    const res = await csrfFetch("/api/groups", options);
-    if(res.ok)
-    {
-        const serverData = await res.json();
-        //if creating the group add numMembers, adjust for update later
-        serverData.numMembers = 1;
-        serverData.Organizer = Organizer;
-
-        const imgOptions = {
-            method: "Post",
-            headers: { "Content-Type":  "application/json" },
-            body: JSON.stringify(imgBody)
-        }
-        const imageRes = await csrfFetch(`/api/groups/${serverData.id}/images`, imgOptions);
-        if(imageRes.ok)
+    try {
+        const res = await csrfFetch("/api/groups", options);
+        if(res.ok)
         {
-            //this await might be unnecessary b/c response is ok and we have the url..
-            const imageServerData = await imageRes.json();
-            serverData.previewImage = imageServerData.url;
-            //GroupImages has an array as value, check this?
-            serverData.GroupImages = [imageServerData];
-            dispatch(actionReceiveGroup(serverData));
-            return serverData;
+            const serverData = await res.json();
+            serverData.numMembers = 1;
+            serverData.Organizer = Organizer;
+
+            const imgOptions = {
+                method: "Post",
+                headers: { "Content-Type":  "application/json" },
+                body: JSON.stringify(imgBody)
+            }
+            const imageRes = await csrfFetch(`/api/groups/${serverData.id}/images`, imgOptions);
+            if(imageRes.ok)
+            {
+                const imageServerData = await imageRes.json();
+                serverData.previewImage = imageServerData.url;
+                //GroupImages is also added as a key to the group object inside allGroups
+                //never accessed and removed the next time /groups reloads
+                serverData.GroupImages = [imageServerData];
+                dispatch(actionReceiveGroup(serverData));
+                return serverData;
+            }
+            //only possible error response for posting to groupimages is if the group doesn't exist
+            //so probably didn't even need imageRes.ok if statement
         }
-        // dispatch(actionReceiveGroup(serverData));
-        // return serverData;
+    } catch (error)
+    {
+        const errorData = await error.json();
+        return errorData;
     }
-    const errorData = await res.json();
-    return errorData;
 }
 
 const initialState = {
@@ -124,89 +127,3 @@ const groupsReducer = (state = initialState, action) => {
 };
 
 export default groupsReducer;
-
-/*
-SINGLE GROUP DETAILS FROM GET ALL GROUPS (missing all group images and venues)
-        {
-            "id": 1,
-            "organizerId": 1,
-            "name": "Hockey on the Water",
-            "about": "Enjoy rounds of hockey with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-            "type": "In person",
-            "private": true,
-            "city": "Pittsburgh",
-            "state": "PA",
-            "createdAt": "2023-06-03T18:01:07.000Z",
-            "updatedAt": "2023-06-03T18:01:07.000Z",
-            "numMembers": 3,
-            "previewImage": "www.google.com"
-        }
-*/
-
-/*
-SINGLE GROUP DETAILS FROM GET GROUPS BY ID
-{
-    "id": 1,
-    "organizerId": 1,
-    "name": "Hockey on the Water",
-    "about": "Enjoy rounds of hockey with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-    "type": "In person",
-    "private": true,
-    "city": "Pittsburgh",
-    "state": "PA",
-    "createdAt": "2023-06-03T18:01:07.000Z",
-    "updatedAt": "2023-06-03T18:01:07.000Z",
-    "Organizer": {
-        "id": 1,
-        "firstName": "James",
-        "lastName": "Howlett"
-    },
-    "GroupImages": [
-        {
-            "id": 1,
-            "url": "www.google.com",
-            "preview": true
-        },
-        {
-            "id": 2,
-            "url": "www.yahoo.com",
-            "preview": false
-        },
-        {
-            "id": 3,
-            "url": "www.bing.com",
-            "preview": false
-        }
-    ],
-    "Venues": [
-        {
-            "id": 1,
-            "groupId": 1,
-            "address": "123 Murray Ave",
-            "city": "Pittsburgh",
-            "state": "PA",
-            "lat": 30.331,
-            "lng": 12.2967
-        },
-        {
-            "id": 2,
-            "groupId": 1,
-            "address": "345 Forbes Ave",
-            "city": "Pheonix",
-            "state": "AZ",
-            "lat": 21.22,
-            "lng": 13.79
-        },
-        {
-            "id": 3,
-            "groupId": 1,
-            "address": "567 Shady Ave",
-            "city": "Los Angeles",
-            "state": "CA",
-            "lat": 17.51,
-            "lng": 10
-        }
-    ],
-    "numMembers": 3
-
-*/
