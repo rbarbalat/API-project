@@ -18,14 +18,13 @@ export default function GroupForm({formType})
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
 
-    const {groupId} = useParams();
+    let {groupId} = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
 
     const sessionUser = useSelector((state) => state.session.user);
 
     const create = (formType === "Create");
-    //console.log(create);
 
     //const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
     useEffect(() => {
@@ -79,6 +78,7 @@ export default function GroupForm({formType})
         {
             setDisplayErrors(true);
         }else{
+            //get rid of if statements and set all values with ternaries, create ?
             if(create === true)
             {
                 const Organizer = {
@@ -86,7 +86,8 @@ export default function GroupForm({formType})
                     firstName: sessionUser.firstName,
                     lastName: sessionUser.lastName
                 };
-                const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, null, {
+                groupId = null;
+                const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, groupId, {
                     name,
                     about,
                     type,
@@ -108,27 +109,19 @@ export default function GroupForm({formType})
             }
             if(create === false)
             {
-                console.log("create is false")
-                //do we need to send Organizer? send empty object
-                const Organizer = {
-                    id: sessionUser.id,
-                    firstName: sessionUser.firstName,
-                    lastName: sessionUser.lastName
-                };
+                const Organizer = null;
                 const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, groupId, {
                     name,
                     about,
                     type,
                     private: privatepublic === "Private" ? true : false,
                     city,
-                    state,
+                    state
                     //url
                 }));
                 if(serverObject.errors === undefined)
                 {
-                    console.log("inside serverObject");
                     const newId = serverObject.id;
-                    //maybe not necessary to reset since going to new page
                     reset();
                     history.push(`/groups/${newId}`);
                     return;
@@ -165,8 +158,6 @@ export default function GroupForm({formType})
     :
     (<div></div>)
 
-
-    if(formType === "edit") return null;
     //for now, adjust when adding links to this page (only available to logged in users)
     if(sessionUser === null) return null;
     return (
@@ -266,7 +257,7 @@ export default function GroupForm({formType})
 
             </div>
             <button type="submit">
-                Create Group
+                {create ? "Create Group" : "Update Group"}
             </button>
         </form>
       );
