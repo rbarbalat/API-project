@@ -14,14 +14,14 @@ const arr =
     preview: true
   },
   {
-    groupId: 1,
+    groupId: 4,
     url: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Alaskan_Malamute.jpg",
-    preview: false
+    preview: true
   },
   {
-    groupId: 1,
+    groupId: 5,
     url: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Huskiesatrest.jpg",
-    preview: false
+    preview: true
   },
   {
     groupId: 2,
