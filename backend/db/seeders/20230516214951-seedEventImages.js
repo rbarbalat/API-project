@@ -15,14 +15,14 @@ const arr =
     preview: true
   },
   {
-    eventId: 1,
+    eventId: 2,
     url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/MyReads/sample-book-photo-1.png",
-    preview: false
+    preview: true
   },
   {
-    eventId: 1,
+    eventId: 3,
     url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/MyReads/sample-book-photo-2.png",
-    preview: false
+    preview: true
   },
   {
     eventId: 4,
