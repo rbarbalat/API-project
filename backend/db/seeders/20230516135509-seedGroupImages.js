@@ -10,22 +10,22 @@ const arr =
 [
   {
     groupId: 1,
-    url: "https://en.wikipedia.org/wiki/Alaskan_Malamute#/media/File:Alaskan_malamut_465.jpg",
+    url: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Australian_Shepherd_Black_Tri%2C_Red_Tri%2C_Blue_Merle.jpg",
     preview: true
   },
   {
     groupId: 1,
-    url: "https://en.wikipedia.org/wiki/Alaskan_Malamute#/media/File:Alaskan_Malamute.jpg",
+    url: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Alaskan_Malamute.jpg",
     preview: false
   },
   {
     groupId: 1,
-    url: "https://en.wikipedia.org/wiki/Husky#/media/File:Huskiesatrest.jpg",
+    url: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Huskiesatrest.jpg",
     preview: false
   },
   {
     groupId: 2,
-    url: "https://en.wikipedia.org/wiki/Bear#/media/File:Ours_brun_parcanimalierpyrenees_1.jpg",
+    url: "https://upload.wikimedia.org/wikipedia/commons/9/9e/Ours_brun_parcanimalierpyrenees_1.jpg",
     preview: true
   },
   {

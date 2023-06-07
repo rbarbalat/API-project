@@ -30,3 +30,13 @@
 .numTypeLeft, .numTypeCenter {
     margin-right: 15px;
 }
+
+.groupImageContainer {
+    width: 500px;
+    height: 300px;
+}
+
+.groupImageContainer > img {
+    width: 100%;
+    height: 100%;
+}

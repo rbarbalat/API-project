@@ -25,12 +25,12 @@ const arr =
     preview: false
   },
   {
-    eventId: 2,
+    eventId: 4,
     url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/EventSight/new-york-city-brooklyn-bridge-river.jpg",
     preview: true
   },
   {
-    eventId: 3,
+    eventId: 5,
     url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/EventSight/new-york-manhattan-city-street-yellow-cabs.jpg",
     preview: true
   }
