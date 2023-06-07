@@ -55,9 +55,12 @@ const actionReceiveGroup = (group) => {
     }
 }
 export const thunkReceiveGroup = (Organizer, group) => async (dispatch) => {
+    const imgBody = {
+        url: group.url,
+        preview: true
+    }
     delete group.url;
     const options = {
-        //remove the image from the group object for now
         method: "Post",
         headers: { "Content-Type":  "application/json" },
         body: JSON.stringify(group)
@@ -69,10 +72,25 @@ export const thunkReceiveGroup = (Organizer, group) => async (dispatch) => {
         //if creating the group add numMembers, adjust for update later
         serverData.numMembers = 1;
         serverData.Organizer = Organizer;
-        //also add serverData.previewImage;
-        dispatch(actionReceiveGroup(serverData));
-        console.log("serverData inside the thunk ---   ", serverData);
-        return serverData;
+
+        const imgOptions = {
+            method: "Post",
+            headers: { "Content-Type":  "application/json" },
+            body: JSON.stringify(imgBody)
+        }
+        const imageRes = await csrfFetch(`/api/groups/${serverData.id}/images`, imgOptions);
+        if(imageRes.ok)
+        {
+            //this await might be unnecessary b/c response is ok and we have the url..
+            const imageServerData = await imageRes.json();
+            serverData.previewImage = imageServerData.url;
+            //GroupImages has an array as value, check this?
+            serverData.GroupImages = [imageServerData];
+            dispatch(actionReceiveGroup(serverData));
+            return serverData;
+        }
+        // dispatch(actionReceiveGroup(serverData));
+        // return serverData;
     }
     const errorData = await res.json();
     return errorData;
