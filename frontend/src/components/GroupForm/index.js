@@ -42,7 +42,7 @@ export default function GroupForm({formType})
         errors.type = "Group Type is required";
 
         if(!["Private", "Public"].includes(privatepublic))
-        errors.privatepublic = "Visbility Type is required";
+        errors.privatepublic = "Visibility Type is required";
 
         let validEnding = false;
         url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
@@ -62,7 +62,7 @@ export default function GroupForm({formType})
         setState("");
         setUrl("");
         setType("(select one)");
-        setPrivatePublic("(select one");
+        setPrivatePublic("(select one)");
         setDisplayErrors(false);
         setValidationErrors({});
     }
@@ -70,7 +70,7 @@ export default function GroupForm({formType})
     async function onSubmit(event)
     {
         event.preventDefault();
-        console.log("hello world");
+        //console.log("hello world");
         if(Object.keys(validationErrors).length !== 0)
         {
             setDisplayErrors(true);
