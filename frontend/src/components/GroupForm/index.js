@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./GroupForm.css";
 import { thunkReceiveGroup } from "../../store/groups";
@@ -7,7 +7,7 @@ import { thunkReceiveGroup } from "../../store/groups";
 
 export default function GroupForm({formType})
 {
-    console.log(formType);
+    //console.log(formType);
     const [name, setName] = useState("");
     const [about, setAbout] = useState("");
     const [type, setType] = useState("(select one)");
@@ -18,10 +18,14 @@ export default function GroupForm({formType})
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
 
+    const {groupId} = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
 
     const sessionUser = useSelector((state) => state.session.user);
+
+    const create = (formType === "Create");
+    //console.log(create);
 
     //const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
     useEffect(() => {
@@ -49,7 +53,7 @@ export default function GroupForm({formType})
         url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
         validEnding = true : validEnding = false;
 
-        if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
+        if(!validEnding && create) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
         setValidationErrors(errors);
     }, [name, about, type, privatepublic, city, state, url])
@@ -71,19 +75,18 @@ export default function GroupForm({formType})
     async function onSubmit(event)
     {
         event.preventDefault();
-        //console.log("hello world");
         if(Object.keys(validationErrors).length !== 0)
         {
             setDisplayErrors(true);
         }else{
-            if(formType === "Create")
+            if(create === true)
             {
                 const Organizer = {
                     id: sessionUser.id,
                     firstName: sessionUser.firstName,
                     lastName: sessionUser.lastName
                 };
-                const serverObject = await dispatch(thunkReceiveGroup(Organizer, {
+                const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, null, {
                     name,
                     about,
                     type,
@@ -103,14 +106,16 @@ export default function GroupForm({formType})
                 setDisplayErrors(true);
                 setValidationErrors(serverObject.errors);
             }
-            if(formType === "Update")
+            if(create === false)
             {
+                console.log("create is false")
+                //do we need to send Organizer? send empty object
                 const Organizer = {
                     id: sessionUser.id,
                     firstName: sessionUser.firstName,
                     lastName: sessionUser.lastName
                 };
-                const serverObject = await dispatch(thunkReceiveGroup(Organizer, {
+                const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, groupId, {
                     name,
                     about,
                     type,
@@ -121,6 +126,7 @@ export default function GroupForm({formType})
                 }));
                 if(serverObject.errors === undefined)
                 {
+                    console.log("inside serverObject");
                     const newId = serverObject.id;
                     //maybe not necessary to reset since going to new page
                     reset();
@@ -132,12 +138,41 @@ export default function GroupForm({formType})
             }
         }
     }
+    const topSection = create ?
+    (<div>
+        <div>BECOME AN ORGANIZER</div>
+        <div>We'll walk you through a few steps to build your local community</div>
+    </div>)
+    :
+    (<div>
+        <div>UPDATE YOUR GROUP'S INFORMATION</div>
+        <div>We'll walk you through a few steps to update your group's information</div>
+    </div>)
+
+    const urlSection = create ?
+    ( <div>
+        <div>Please add in image url for your group below:</div>
+        <input type="text" name="url" placeholder="https://somewhere.com/image.gif"
+            value={url} onChange={e => setUrl(e.target.value)}
+        />
+        <div className="errors">
+            {
+            validationErrors.url !== undefined && displayErrors
+            && validationErrors.url
+            }
+        </div>
+    </div>)
+    :
+    (<div></div>)
+
+
     if(formType === "edit") return null;
     //for now, adjust when adding links to this page (only available to logged in users)
     if(sessionUser === null) return null;
     return (
         <form onSubmit={onSubmit} className={formType === "create" ? "createGroupForm" : "editGroupForm"}>
             <div>
+                <div>{topSection}</div>
                 <div>First, set your group's location</div>
                 <div>Groups meet locally and online</div>
                 <input type="text" name="city" placeholder="City"
@@ -227,17 +262,8 @@ export default function GroupForm({formType})
                     }
                 </div>
 
+                {urlSection}
 
-                <div>Please add in image url for your group below:</div>
-                <input type="text" name="url" placeholder="https://somewhere.com/image.gif"
-                    value={url} onChange={e => setUrl(e.target.value)}
-                />
-                <div className="errors">
-                    {
-                    validationErrors.url !== undefined && displayErrors
-                    && validationErrors.url
-                    }
-                </div>
             </div>
             <button type="submit">
                 Create Group

@@ -9,6 +9,7 @@ export default function SingleGroup()
 {
     const { groupId } = useParams();
     //group is an empty object before the useEffect runs
+    //it shouldn't be empty if linked from create group/update group? if the store was just updated
     const group = useSelector(state => state.groups.singleGroup);
     const groupIsNotEmpty = Object.keys(group).length !== 0;
 
