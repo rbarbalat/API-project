@@ -11,28 +11,28 @@ const arr =
 [
   {
     eventId: 1,
-    url: "www.abc.com",
+    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/EventSight/new-york-city-sunset-skyline-river.jpg",
     preview: true
   },
   {
     eventId: 1,
-    url: "www.def.com",
+    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/MyReads/sample-book-photo-1.png",
     preview: false
   },
   {
     eventId: 1,
-    url: "www.ghi.com",
-    preview: true
+    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/MyReads/sample-book-photo-2.png",
+    preview: false
   },
   {
     eventId: 2,
-    url: "www.jkl.com",
+    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/EventSight/new-york-city-brooklyn-bridge-river.jpg",
     preview: true
   },
   {
     eventId: 3,
-    url: "www.mnop.com",
-    preview: false
+    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/EventSight/new-york-manhattan-city-street-yellow-cabs.jpg",
+    preview: true
   }
 ];
 
