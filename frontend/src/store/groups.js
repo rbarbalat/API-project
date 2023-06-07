@@ -59,11 +59,39 @@ const actionReceiveGroup = (group) => {
         group
     }
 }
-export const thunkReceiveGroup = (Organizer, group) => async (dispatch) => {
-    const imgBody = {
-        url: group.url,
-        preview: true
+const actionUpdateGroup = (group) => {
+    return {
+        type: UPDATE_GROUP,
+        group
     }
+}
+export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (dispatch) => {
+    //let method = create ? "Post" : "Put";
+    if(create === false)
+    {
+        const options = {
+            method: "Put",
+            headers: { "Content-Type":  "application/json" },
+            body: JSON.stringify(group)
+        };
+        try{
+            const res = await csrfFetch(`/api/groups/${groupId}`, options);
+            if(res.ok)
+            {
+                const serverData = await res.json();
+                dispatch(actionUpdateGroup(serverData));
+                return serverData;
+            }
+        }catch (error)
+        {
+            const errorData = await error.json();
+            return errorData;
+        }
+    }
+    const imgBody = {
+            url: group.url,
+            preview: true
+        }
     delete group.url;
     const options = {
         method: "Post",
@@ -123,7 +151,9 @@ const groupsReducer = (state = initialState, action) => {
             //action.group is the new group object, its id is action.group.id which will be used as its key in allGroups
             return {...state, allGroups: {...state.allGroups, [action.group.id]: action.group  }, singleGroup: {...action.group}}
         case UPDATE_GROUP:
-            return state;
+            //when you update a group the singleGroup is already in there w/ keys like GroupImages, Venues, Organizer
+            //that don't come back in the response so need to spread it to preserve those keys, diff than Receive where you manually update those
+            return {...state, allGroups: {...state.allGroups, [action.group.id]: action.group  }, singleGroup: {...state.singleGroup, ...action.group}}
         case REMOVE_GROUP:
           return state;
         default:

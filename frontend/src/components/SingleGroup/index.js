@@ -9,6 +9,7 @@ export default function SingleGroup()
 {
     const { groupId } = useParams();
     //group is an empty object before the useEffect runs
+    //it shouldn't be empty if linked from create group/update group? if the store was just updated
     const group = useSelector(state => state.groups.singleGroup);
     const groupIsNotEmpty = Object.keys(group).length !== 0;
 
@@ -32,6 +33,8 @@ export default function SingleGroup()
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
+        //delay between when group data loads and the event images load
+        //can display <div>loading</div> in between or until both done
         dispatch(thunkLoadSingleGroup(groupId));
         dispatch(thunkLoadEventsByGroupId(groupId));
     }, [dispatch, groupId])
@@ -53,9 +56,10 @@ export default function SingleGroup()
         <>
             <div>SINGLE GROUP PAGE -- GROUP {groupId} REMOVE LATER</div>
             <NavLink to="/groups">Groups</NavLink>
+            <NavLink to={`/groups/${groupId}/edit`}>Update</NavLink>
             <div className="ImageAndSide">
                 <div>
-                    <img alt="alt"></img>
+                    <img alt="alt" src={group.GroupImages[0].url}></img>
                 </div>
                 <div>
                     <h1>{group.name}</h1>
