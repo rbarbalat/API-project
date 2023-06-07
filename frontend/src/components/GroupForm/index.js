@@ -7,6 +7,7 @@ import { thunkReceiveGroup } from "../../store/groups";
 
 export default function GroupForm({formType})
 {
+    console.log(formType);
     const [name, setName] = useState("");
     const [about, setAbout] = useState("");
     const [type, setType] = useState("(select one)");
