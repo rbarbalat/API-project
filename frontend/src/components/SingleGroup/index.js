@@ -32,6 +32,8 @@ export default function SingleGroup()
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
+        //delay between when group data loads and the event images load
+        //can display <div>loading</div> in between or until both done
         dispatch(thunkLoadSingleGroup(groupId));
         dispatch(thunkLoadEventsByGroupId(groupId));
     }, [dispatch, groupId])
@@ -55,7 +57,7 @@ export default function SingleGroup()
             <NavLink to="/groups">Groups</NavLink>
             <div className="ImageAndSide">
                 <div>
-                    <img alt="alt"></img>
+                    <img alt="alt" src={group.GroupImages[0].url}></img>
                 </div>
                 <div>
                     <h1>{group.name}</h1>
