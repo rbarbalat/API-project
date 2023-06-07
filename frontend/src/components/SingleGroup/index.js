@@ -33,15 +33,26 @@ export default function SingleGroup()
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
-        //delay between when group data loads and the event images load
-        //can display <div>loading</div> in between or until both done
-        dispatch(thunkLoadSingleGroup(groupId));
-        dispatch(thunkLoadEventsByGroupId(groupId));
-    }, [dispatch, groupId])
+        //only reload the singleGroup in the store if the current singleGroup
+        //does not match the page (groupId) you are on, if empty does not match
+        if(Number(groupId) !== group.id)
+        {
+            dispatch(thunkLoadSingleGroup(groupId));
+            dispatch(thunkLoadEventsByGroupId(groupId));
+            //loading delay for images pulled from events by group id
+        }
+    }, [dispatch, groupId, group.id])
+    //added group.id to array to get rid of warning double check this
 
     function onClick()
     {
         return window.alert("Feature Coming Soon");
+    }
+    function onUpdateClick()
+    {
+        if(userIsOrganizer) history.push(`/groups/${groupId}/edit`);
+        else history.push("/")
+        //maybe history.replace() to prevent going back or <Redirect> instead?
     }
     function linkToEvent(e)
     {
@@ -56,7 +67,10 @@ export default function SingleGroup()
         <>
             <div>SINGLE GROUP PAGE -- GROUP {groupId} REMOVE LATER</div>
             <NavLink to="/groups">Groups</NavLink>
-            <NavLink to={`/groups/${groupId}/edit`}>Update</NavLink>
+            {/* <NavLink to={`/groups/${groupId}/edit`}>Update</NavLink> */}
+            <button>Create event</button>
+            <button onClick={onUpdateClick}>Update</button>
+            <button>Delete</button>
             <div className="ImageAndSide">
                 <div>
                     <img alt="alt" src={group.GroupImages[0].url}></img>
