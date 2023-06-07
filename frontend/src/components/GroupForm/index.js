@@ -90,7 +90,6 @@ export default function GroupForm({formType})
                 state,
                 url
             }));
-            console.log("serverObject inside onSubmit ---  ", serverObject);
             if(serverObject.errors === undefined)
             {
                 const newId = serverObject.id;

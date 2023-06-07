@@ -12,23 +12,25 @@ export const REMOVE_GROUP = 'groups/REMOVE_GROUP';
 //each row contains/ Name, Location, description, public/private, events
 
 const actionLoadGroups = (groups) => {
-    //groups is an object with a key of "Groups"
-    //whose value is an array
+    //groups is an obj with a key of "Groups" whose val is an array
     return {
         type: LOAD_GROUPS,
         groups
     }
 }
 export const thunkLoadGroups = () => async (dispatch) => {
-    const res = await csrfFetch("/api/groups");
-    if(res.ok)
-    {
-        const serverData = await res.json();
-        dispatch(actionLoadGroups(serverData));
-        return serverData;
-    }
-    const errorData = await res.json();
+    try {
+        const res = await csrfFetch("/api/groups");
+        if(res.ok)
+        {
+            const serverData = await res.json();
+            dispatch(actionLoadGroups(serverData));
+            return serverData;
+        }
+    } catch (error){
+    const errorData = await error.json();
     return errorData;
+    }
 }
 const actionLoadSingleGroup = (singleGroup) => {
     return {
@@ -37,15 +39,18 @@ const actionLoadSingleGroup = (singleGroup) => {
     }
 }
 export const thunkLoadSingleGroup = (groupId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/groups/${groupId}`);
-    if(res.ok)
-    {
-        const serverData = await res.json();
-        dispatch(actionLoadSingleGroup(serverData));
-        return serverData;
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}`);
+        if(res.ok)
+        {
+            const serverData = await res.json();
+            dispatch(actionLoadSingleGroup(serverData));
+            return serverData;
+        }
+    } catch (error){
+        const errorData = await error.json();
+        return errorData;
     }
-    const errorData = await res.json();
-    return errorData;
 }
 
 const actionReceiveGroup = (group) => {
