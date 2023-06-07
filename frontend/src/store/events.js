@@ -7,8 +7,7 @@ export const UPDATE_EVENT = 'events/UPDATE_EVENT';
 export const REMOVE_EVENT = 'events/REMOVE_event';
 
 const actionLoadEvents = (events) => {
-    //events is an object with a key of "Events"
-    //whose value is an array
+    //events is an object with a key of "Events" whose val is an array
     return {
         type: LOAD_EVENTS,
         events
@@ -16,27 +15,33 @@ const actionLoadEvents = (events) => {
 }
 //get all events
 export const thunkLoadEvents = () => async (dispatch) => {
-    const res = await csrfFetch("/api/events");
-    if(res.ok)
-    {
-        const serverData = await res.json();
-        dispatch(actionLoadEvents(serverData));
-        return serverData;
+    try {
+        const res = await csrfFetch("/api/events");
+        if(res.ok)
+        {
+            const serverData = await res.json();
+            dispatch(actionLoadEvents(serverData));
+            return serverData;
+        }
+    } catch(error){
+        const errorData = await error.json();
+        return errorData;
     }
-    const errorData = await res.json();
-    return errorData;
 }
 //get all events by group ID
 export const thunkLoadEventsByGroupId = (groupId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/groups/${groupId}/events`);
-    if(res.ok)
-    {
-        const serverData = await res.json();
-        dispatch(actionLoadEvents(serverData));
-        return serverData;
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}/events`);
+        if(res.ok)
+        {
+            const serverData = await res.json();
+            dispatch(actionLoadEvents(serverData));
+            return serverData;
+        }
+    } catch(error){
+        const errorData = await error.json();
+        return errorData;
     }
-    const errorData = await res.json();
-    return errorData;
 }
 
 const actionLoadSingleEvent = (singleEvent) => {
@@ -47,15 +52,18 @@ const actionLoadSingleEvent = (singleEvent) => {
 }
 
 export const thunkLoadSingleEvent = (eventId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/events/${eventId}`);
-    if(res.ok)
-    {
-        const serverData = await res.json();
-        dispatch(actionLoadSingleEvent(serverData));
-        return serverData;
+    try{
+        const res = await csrfFetch(`/api/events/${eventId}`);
+        if(res.ok)
+        {
+            const serverData = await res.json();
+            dispatch(actionLoadSingleEvent(serverData));
+            return serverData;
+        }
+    } catch(error){
+        const errorData = await error.json();
+        return errorData;
     }
-    const errorData = await res.json();
-    return errorData;
 }
 
 const initialState = {
