@@ -7,13 +7,15 @@ import { thunkReceiveGroup } from "../../store/groups";
 
 export default function GroupForm({formType})
 {
-    //console.log(formType);
-    const [name, setName] = useState("");
-    const [about, setAbout] = useState("");
-    const [type, setType] = useState("(select one)");
-    const [privatepublic, setPrivatePublic]  = useState("(select one)");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
+    const create = (formType === "Create");
+    //on updates, the singleGroup in the store holds current group data
+    const group = useSelector(state => state.groups.singleGroup);
+    const [name, setName] = useState(create ? "" : group.name);
+    const [about, setAbout] = useState(create ? "" : group.about);
+    const [type, setType] = useState(create ? "(select one)" : group.type);
+    const [privatepublic, setPrivatePublic]  = useState(create ? "(select one)" : (group.private === true ? "Private" : "Public"));
+    const [city, setCity] = useState(create ? "" : group.city);
+    const [state, setState] = useState(create ? "" : group.state);
     const [url, setUrl] = useState("");
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
@@ -23,8 +25,6 @@ export default function GroupForm({formType})
     const dispatch = useDispatch();
 
     const sessionUser = useSelector((state) => state.session.user);
-
-    const create = (formType === "Create");
 
     //const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
     useEffect(() => {
@@ -55,7 +55,7 @@ export default function GroupForm({formType})
         if(!validEnding && create) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
         setValidationErrors(errors);
-    }, [name, about, type, privatepublic, city, state, url])
+    }, [name, about, type, privatepublic, city, state, url, create])
 
     function reset()
     {

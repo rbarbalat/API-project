@@ -39,11 +39,10 @@ export default function SingleGroup()
         {
             dispatch(thunkLoadSingleGroup(groupId));
             dispatch(thunkLoadEventsByGroupId(groupId));
+            //loading delay for images pulled from events by group id
         }
-        //delay between when group data loads and the event images load
-        //can display <div>loading</div> in between or until both done
-        //set an image as the background div or use a placeholder img
-    }, [dispatch, groupId])
+    }, [dispatch, groupId, group.id])
+    //added group.id to array to get rid of warning double check this
 
     function onClick()
     {
