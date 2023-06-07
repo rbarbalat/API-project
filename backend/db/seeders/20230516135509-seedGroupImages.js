@@ -10,28 +10,28 @@ const arr =
 [
   {
     groupId: 1,
-    url: "www.google.com",
+    url: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Australian_Shepherd_Black_Tri%2C_Red_Tri%2C_Blue_Merle.jpg",
     preview: true
   },
   {
-    groupId: 1,
-    url: "www.yahoo.com",
-    preview: false
+    groupId: 4,
+    url: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Alaskan_Malamute.jpg",
+    preview: true
   },
   {
-    groupId: 1,
-    url: "www.bing.com",
-    preview: false
+    groupId: 5,
+    url: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Huskiesatrest.jpg",
+    preview: true
   },
   {
     groupId: 2,
-    url: "www.reddit.com",
+    url: "https://upload.wikimedia.org/wikipedia/commons/9/9e/Ours_brun_parcanimalierpyrenees_1.jpg",
     preview: true
   },
   {
     groupId: 3,
-    url: "www.penguins.com",
-    preview: false
+    url: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Penguins_collage.png",
+    preview: true
   }
 ]
 module.exports = {
