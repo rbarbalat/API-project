@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./EventForm.css";
 import { thunkReceiveEvent } from "../../store/events";
@@ -23,7 +23,7 @@ export default function EventForm()
     const [displayErrors, setDisplayErrors] = useState(false);
 
     // at /groups/:groupId/events/new or get groupId from the group state
-    let {groupId} = useParams();
+    //let {groupId} = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
 

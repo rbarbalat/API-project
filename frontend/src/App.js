@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import AllGroups from "./components/AllGroups";
 import AllEvents from "./components/AllEvents";
 import SingleGroup from "./components/SingleGroup";
+import SingleEvent from "./components/SingleEvent";
 import LandingPage from "./components/LandingPage";
 import GroupForm from "./components/GroupForm";
 import EventForm from "./components/EventForm";
@@ -43,6 +44,9 @@ function App() {
             </Route>
             <Route path="/groups/:groupId">
               <SingleGroup />
+            </Route>
+            <Route path="/events/:eventId">
+              <SingleEvent />
             </Route>
         </Switch>}
     </>
