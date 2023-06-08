@@ -3,6 +3,7 @@ import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadSingleGroup } from "../../store/groups.js";
 import { thunkLoadEventsByGroupId } from "../../store/events.js";
+import { thunkDeleteGroup } from "../../store/groups.js";
 import "./SingleGroup.css";
 
 export default function SingleGroup()
@@ -37,12 +38,13 @@ export default function SingleGroup()
         //does not match the page (groupId) you are on, if empty does not match
         if(Number(groupId) !== group.id)
         {
+            //double that check if right singleGroup guarantees
+            //the right allEvents group
             dispatch(thunkLoadSingleGroup(groupId));
             dispatch(thunkLoadEventsByGroupId(groupId));
             //loading delay for images pulled from events by group id
         }
-    }, [dispatch, groupId, group.id])
-    //added group.id to array to get rid of warning double check this
+    }, [dispatch, groupId])
 
     function onClick()
     {
@@ -53,6 +55,21 @@ export default function SingleGroup()
         if(userIsOrganizer) history.push(`/groups/${groupId}/edit`);
         else history.push("/")
         //maybe history.replace() to prevent going back or <Redirect> instead?
+    }
+    async function onDeleteClick()
+    {
+        if(userIsOrganizer)
+        {
+            const serverObject = await dispatch(thunkDeleteGroup(groupId));
+            if(serverObject.message === "Successfully deleted")
+            {
+                console.log("the group was deleted");
+                history.replace("/groups");
+            }else{
+                //adjust later
+                return window.alert("Something went wrong");
+            }
+        }
     }
     function linkToEvent(e)
     {
@@ -70,7 +87,7 @@ export default function SingleGroup()
             {/* <NavLink to={`/groups/${groupId}/edit`}>Update</NavLink> */}
             <button>Create event</button>
             <button onClick={onUpdateClick}>Update</button>
-            <button>Delete</button>
+            <button onClick = {onDeleteClick}>Delete</button>
             <div className="ImageAndSide">
                 <div>
                     <img alt="alt" src={group.GroupImages[0].url}></img>

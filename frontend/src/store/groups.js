@@ -132,6 +132,32 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (d
     }
 }
 
+const actionDeleteGroup = (groupId) => {
+    return {
+        type: REMOVE_GROUP,
+        groupId
+    }
+}
+
+export const thunkDeleteGroup = (groupId) => async (dispatch) => {
+    const options = {
+        method: "Delete"
+    }
+    try{
+        const res = await csrfFetch(`/api/groups/${groupId}`, options);
+        if(res.ok)
+        {
+            const serverData = await res.json();
+            dispatch(actionDeleteGroup(groupId))
+            return serverData;
+        }
+    } catch(error)
+    {
+        const errorData = await error.json();
+        return errorData;
+    }
+}
+
 const initialState = {
     allGroups: {},
     singleGroup: {}
@@ -139,11 +165,11 @@ const initialState = {
 const groupsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_GROUPS:
-          const normGroups = {};
-          action.groups.Groups.forEach((ele) => {
-            normGroups[ele.id] = ele;
-          });
-          return {...state, allGroups: normGroups };
+            const normGroups = {};
+            action.groups.Groups.forEach((ele) => {
+                normGroups[ele.id] = ele;
+            });
+            return {...state, allGroups: normGroups };
         case LOAD_SINGLE_GROUP:
             //double check if needs to be a new ref at every level of nesting
             return {...state, singleGroup: {...action.singleGroup} }
@@ -155,9 +181,11 @@ const groupsReducer = (state = initialState, action) => {
             //that don't come back in the response so need to spread it to preserve those keys, diff than Receive where you manually update those
             return {...state, allGroups: {...state.allGroups, [action.group.id]: action.group  }, singleGroup: {...state.singleGroup, ...action.group}}
         case REMOVE_GROUP:
-          return state;
+            const newAllGroups = {...state.allGroups};
+            delete newAllGroups[action.groupId];
+            return { allGroups: newAllGroups, singleGroup: {} };
         default:
-          return state;
+            return state;
       }
 };
 
