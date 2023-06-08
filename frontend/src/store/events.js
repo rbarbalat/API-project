@@ -123,6 +123,32 @@ export const thunkReceiveEvent = (group, priv, event) => async (dispatch) => {
     }
 }
 
+const actionDeleteEvent = (eventId) => {
+    return {
+        type: REMOVE_EVENT,
+        eventId
+    }
+}
+
+export const thunkDeleteEvent = (eventId) => async (dispatch) => {
+    const options = {
+        method: "Delete"
+    }
+    try{
+        const res = await csrfFetch(`/api/events/${eventId}`, options);
+        if(res.ok)
+        {
+            const serverData = await res.json();
+            dispatch(actionDeleteEvent(eventId))
+            return serverData;
+        }
+    } catch(error)
+    {
+        const errorData = await error.json();
+        return errorData;
+    }
+}
+
 const initialState = {
     allEvents: {},
     singleEvent: {}
@@ -143,7 +169,9 @@ const eventsReducer = (state = initialState, action) => {
         case UPDATE_EVENT:
             return state;
         case REMOVE_EVENT:
-          return state;
+            const newAllEvents = {...state.allEvents};
+            delete newAllEvents[action.eventId];
+            return { allEvents: newAllEvents, singleEvent: {} };
         default:
           return state;
       }

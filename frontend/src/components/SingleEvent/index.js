@@ -32,17 +32,15 @@ export default function SingleEvent()
         <div>
             <button>Update</button>
             <OpenModalButton id="deleteEvent" buttonText="Delete"
-                modalComponent={<DeleteModal typeId={eventId} type="event"/>}/>
+                modalComponent={<DeleteModal typeId={eventId} type="event" eventGroupId={groupId}/>}/>
         </div>
     )
 
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
-        console.log("hello outside");
         if(Number(eventId) !== event.id)
         {
-            console.log("hello inside")
             dispatch(thunkLoadSingleEvent(eventId));
         }
         if(groupId !== undefined) dispatch(thunkLoadSingleGroup(groupId));
