@@ -3,8 +3,9 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./DeleteModal.css";
 import { thunkDeleteGroup } from "../../store/groups";
+import { thunkDeleteEvent } from "../../store/events";
 
-export default function DeleteModal({typeId, type})
+export default function DeleteModal({typeId, type, eventGroupId})
 {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -19,6 +20,20 @@ export default function DeleteModal({typeId, type})
             {
                 console.log("the group was deleted");
                 history.replace("/groups");
+                closeModal();
+            }else{
+                //adjust later
+                return window.alert("Something went wrong");
+            }
+        }
+        if(type === "event")
+        {
+            //change thunk to Event
+            const serverObject = await dispatch(thunkDeleteEvent(typeId));
+            if(serverObject.message === "Successfully deleted")
+            {
+                console.log("the group was deleted");
+                history.replace(`/groups/${eventGroupId}`);
                 closeModal();
             }else{
                 //adjust later

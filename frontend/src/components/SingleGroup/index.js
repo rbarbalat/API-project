@@ -25,7 +25,6 @@ export default function SingleGroup()
 
     if(groupIsNotEmpty && sessionUser)
     {
-        //changed this from .Organizer.id to .organizerId
         group.organizerId === sessionUser.id ?
         userIsOrganizer = true : userIsOrganizer = false;
     }
