@@ -38,6 +38,9 @@ export default function GroupForm({formType})
         if(state.length === 0)
         errors.state = "State is required"
 
+        if(name.length === 0)
+        errors.name = "Name is required";
+
         //the backend validation is < 50, need to change backend?
         if(about.length < 30)
         errors.about = "Description must be at least 30 characters long";
