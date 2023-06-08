@@ -47,7 +47,7 @@ export default function EventForm()
         if(!["Private", "Public"].includes(privatepublic))
         errors.privatepublic = "Visibility Type is required";
 
-        if(capacity.length === 0)
+        if(capacity === 0)
         errors.capacity = "Capacity is required";
 
         if(startDate.length === 0)
@@ -83,8 +83,14 @@ export default function EventForm()
     async function onSubmit(e)
     {
         e.preventDefault();
-        reset();
-        return history.push("/");
+        if(Object.keys(validationErrors).length !== 0)
+        {
+            setDisplayErrors(true);
+        }else{
+        }
+        //reset();
+        //history.push("/");
+        return;
     }
 
         //for now, adjust when adding links to this page (only available to logged in users)
@@ -107,7 +113,7 @@ export default function EventForm()
                 </div>
 
                 <div>
-                    <div>Is this an in person or online group?</div>
+                    <div>Is this an in person or online event?</div>
                         <select value={type} onChange={e => setType(e.target.value)}>
                             {/* //change to a default value that is not an option */}
                             <option>(select one)</option>
