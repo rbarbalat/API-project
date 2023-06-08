@@ -6,14 +6,15 @@ import "./AllGroups.css";
 
 export default function AllGroups()
 {
-    //can't do Object.values() right away b/c if undefined get TypeError
-    let groups = useSelector(state => state.groups.allGroups);
-    if( groups !== undefined) groups = Object.values(groups);
-    //console.log("groups-----  ", groups);
+    //can do obj.values right away b/c allGroups initial state {}, can't be undefined
+    const groups = useSelector(state => Object.values(state.groups.allGroups));
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
-        //console.log("hello");
+        //don't need to load groups unless its empty, b/c anything created/deleted
+        //caused a change in the store that was captured in line 10
+        //can test if groups is empty, but problem is if you create a group
+        //from landing page w/o ever loading groups
         dispatch(thunkLoadGroups());
     }, [dispatch])
 
