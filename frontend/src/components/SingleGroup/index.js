@@ -99,6 +99,7 @@ export default function SingleGroup()
                 </div>
                 <div>
                     <h1>{group.name}</h1>
+                    <NavLink to={`/groups/${groupId}/events/new`}>Temp Create Event</NavLink>
                     <div>{`${group.city}, ${group.state}`}</div>
                         {/* put the dot in its own div in all groups */}
                     <div>{group.numMembers} &bull; {group.private ? "Private" : "Public"}</div>
