@@ -13,8 +13,8 @@ export default function AllGroups()
     useEffect(() => {
         //don't need to load groups unless its empty, b/c anything created/deleted
         //caused a change in the store that was captured in line 10
-        //can test if groups is empty, but problem is if you create a group
-        //from landing page w/o ever loading groups
+        //can reload only if groups is empty, but problem is if you create a group
+        //from landing page w/o ever loading groups, then navigate to /groups
         dispatch(thunkLoadGroups());
     }, [dispatch])
 
