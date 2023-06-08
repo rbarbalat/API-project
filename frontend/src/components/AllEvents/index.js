@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { thunkLoadGroups } from "../../store/groups.js"
+import { thunkLoadEvents } from "../../store/events";
 import {NavLink, useHistory} from "react-router-dom";
 import "./AllEvents.css";
 
 export default function AllEvents()
 {
     //can do obj.values right away b/c allGroups initial state {}, can't be undefined
-    const events = useSelector(state => Object.values(state.groups.allEvents));
+    const events = useSelector(state => Object.values(state.events.allEvents));
     const history = useHistory();
     const dispatch = useDispatch();
-    const [neverLoaded, setNeverLoaded] = useState(true);
-    //console.log("neverLoaded -----  ", neverLoaded);
     useEffect(() => {
-        //dispatch(thunkLoadEvents());
+        dispatch(thunkLoadEvents());
     }, [dispatch])
 
     function onClick(e)
@@ -22,7 +20,7 @@ export default function AllEvents()
         //the id is `eventBlock${ele.id}` and groupBlock is 10 chars long
         //slice(10) starts at INDEX 10
         const eventId = e.currentTarget.id.slice(10);
-        history.push(`/groups/${groupId}`);
+        history.push(`/events/${eventId}`);
     }
 
     if(events === undefined) return <div> All Events Page Loading</div>
@@ -43,39 +41,23 @@ export default function AllEvents()
             </div>
             <div className="allEventsContainer">
                 {
-                    groups.map(ele => (
+                    events.map(ele => (
                         <div id={`eventBlock${ele.id}`} className="eventBlock" onClick={onClick} key={`event${ele.id}`}>
-                            <div className="groupImageContainer">
+                            <div className="eventImageContainer">
                                 <img alt="alt" src={ele.previewImage}></img>
                             </div>
 
                             <div>
+                                <div>{`Starts on ${ele.startDate.slice(0,10)} Ends on ${ele.endDate.slice(0,10)}`}</div>
                                 <div>{ele.name}</div>
-                                <div>{`${ele.city}, ${ele.state}`}</div>
+                                {/* add seeder data to get rid of null venues */}
+                                <div>{ele.Venue !== null && `${ele.Venue.city}, ${ele.Venue.state}`}</div>
                                 <div>{ele.about}</div>
-                                <div className="numType">
-                                    {/* <div>### events</div>
-                                    <div>Public or Private</div> */}
-                                    <div className="numTypeLeft">{`${ele.numMembers} Members`}</div>
-                                    {/* change this asterisk to a dot later */}
-                                    <div className="numTypeCenter">&bull;</div>
-                                    <div>{ele.private ? "Private" : "Public"}</div>
-                                </div>
-
                             </div>
                         </div>
                     ))
                 }
             </div>
-            {/* <ul>
-                {
-                    groups.map(ele => (
-                        <li key={ele.id}>
-                          {ele.id} --- {ele.name} ----- {ele.about}
-                        </li>
-                    ))
-                }
-            </ul> */}
         </>
     )
 }

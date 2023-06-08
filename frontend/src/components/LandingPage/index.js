@@ -17,6 +17,8 @@ export default function LandingPage()
             <div>LANDING PAGE!</div>
             <NavLink exact to ="/groups">See all groups</NavLink>
             <div>some space</div>
+            <NavLink exact to ="/events">See all events</NavLink>
+            <div>some space</div>
             <NavLink exact to ="/groups/new">Create Group Test</NavLink>
             {!sessionUser && signUpButton}
         </>

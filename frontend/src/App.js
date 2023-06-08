@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import AllGroups from "./components/AllGroups";
+import AllEvents from "./components/AllEvents";
 import SingleGroup from "./components/SingleGroup";
 import LandingPage from "./components/LandingPage";
 import GroupForm from "./components/GroupForm";
@@ -26,6 +27,9 @@ function App() {
             </Route>
             <Route exact path="/groups">
               <AllGroups />
+            </Route>
+            <Route exact path="/events">
+              <AllEvents />
             </Route>
             <Route exact path ="/groups/new">
               <GroupForm formType="Create" />

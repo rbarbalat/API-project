@@ -10,8 +10,8 @@ export default function AllGroups()
     const groups = useSelector(state => Object.values(state.groups.allGroups));
     const history = useHistory();
     const dispatch = useDispatch();
-    const [neverLoaded, setNeverLoaded] = useState(true);
-    console.log("neverLoaded -----  ", neverLoaded);
+    // const [neverLoaded, setNeverLoaded] = useState(true);
+    // console.log("neverLoaded -----  ", neverLoaded);
     useEffect(() => {
         //dispatch if groups empty but problem is you create a group before
         //ever loading, now won't load the remaining groups unless you delete
@@ -32,7 +32,7 @@ export default function AllGroups()
         <>
             <div className="allGroupsHeader">
                 <div className="EventsGroupsContainer">
-                    <NavLink id="EventsNavLink" to ="/">
+                    <NavLink id="EventsNavLink" to ="/events">
                         Events
                     </NavLink>
                     <NavLink to="/">
@@ -69,15 +69,6 @@ export default function AllGroups()
                     ))
                 }
             </div>
-            {/* <ul>
-                {
-                    groups.map(ele => (
-                        <li key={ele.id}>
-                          {ele.id} --- {ele.name} ----- {ele.about}
-                        </li>
-                    ))
-                }
-            </ul> */}
         </>
     )
 }
