@@ -73,7 +73,7 @@ const actionReceiveEvent = (event) => {
     }
 }
 
-export const thunkReceiveEvent = (group, event) => async (dispatch) => {
+export const thunkReceiveEvent = (group, priv, event) => async (dispatch) => {
     const imgBody = {
             url: event.url,
             preview: true
@@ -95,6 +95,7 @@ export const thunkReceiveEvent = (group, event) => async (dispatch) => {
             //might hardcore a venue later
             serverData.Venue = null;
             serverData.Group = group;
+            serverData.private = priv;
 
             const imgOptions = {
                 method: "Post",

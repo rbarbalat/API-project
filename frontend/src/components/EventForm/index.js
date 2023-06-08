@@ -94,15 +94,16 @@ export default function EventForm()
                 city: group.city,
                 state: group.state
             };
-            const serverObject = await dispatch(thunkReceiveEvent(groupKey, {
+            const priv = privatepublic === "Private" ? true : false;
+            const serverObject = await dispatch(thunkReceiveEvent(groupKey, priv, {
                 venueId: null,
                 name,
                 type,
-                capacity,
-                price,
+                capacity: Number(capacity),
+                price: Number(price),
                 description: about,
-                startDate,
-                endDate,
+                startDate: new Date(startDate),
+                endDate: new Date(startDate),
                 //private: privatepublic === "Private" ? true : false,
                 url
             }));
