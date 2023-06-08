@@ -5,6 +5,8 @@ import { thunkLoadSingleGroup } from "../../store/groups.js";
 import { thunkLoadEventsByGroupId } from "../../store/events.js";
 import { thunkDeleteGroup } from "../../store/groups.js";
 import "./SingleGroup.css";
+import OpenModalButton from "../OpenModalButton/index.js";
+import DeleteModal from "../DeleteModal/index.js";
 
 export default function SingleGroup()
 {
@@ -56,6 +58,7 @@ export default function SingleGroup()
         else history.push("/")
         //maybe history.replace() to prevent going back or <Redirect> instead?
     }
+    //eventually move to this function to the DeleteModal
     async function onDeleteClick()
     {
         if(userIsOrganizer)
@@ -88,6 +91,8 @@ export default function SingleGroup()
             <button>Create event</button>
             <button onClick={onUpdateClick}>Update</button>
             <button onClick = {onDeleteClick}>Delete</button>
+            <OpenModalButton id="deleteGroup" buttonText="Delete Group"
+                modalComponent={<DeleteModal typeId={groupId} type="group"/>}/>
             <div className="ImageAndSide">
                 <div>
                     <img alt="alt" src={group.GroupImages[0].url}></img>
