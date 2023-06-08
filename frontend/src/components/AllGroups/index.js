@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadGroups } from "../../store/groups.js"
 import {NavLink, useHistory} from "react-router-dom";
@@ -10,11 +10,11 @@ export default function AllGroups()
     const groups = useSelector(state => Object.values(state.groups.allGroups));
     const history = useHistory();
     const dispatch = useDispatch();
+    const [neverLoaded, setNeverLoaded] = useState(true);
+    console.log("neverLoaded -----  ", neverLoaded);
     useEffect(() => {
-        //don't need to load groups unless its empty, b/c anything created/deleted
-        //caused a change in the store that was captured in line 10
-        //can reload only if groups is empty, but problem is if you create a group
-        //from landing page w/o ever loading groups, then navigate to /groups
+        //dispatch if groups empty but problem is you create a group before
+        //ever loading, now won't load the remaining groups unless you delete
         dispatch(thunkLoadGroups());
     }, [dispatch])
 
