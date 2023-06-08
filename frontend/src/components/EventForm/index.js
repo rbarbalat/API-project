@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./EventForm.css";
-// import { thunkReceiveEvent } from "../../store/events";
+import { thunkReceiveEvent } from "../../store/events";
 
 export default function EventForm()
 {
@@ -87,10 +87,36 @@ export default function EventForm()
         {
             setDisplayErrors(true);
         }else{
+            const groupKey = {
+                id: group.id,
+                name: group.name,
+                private: group.private,
+                city: group.city,
+                state: group.state
+            };
+            const serverObject = await dispatch(thunkReceiveEvent(groupKey, {
+                venueId: null,
+                name,
+                type,
+                capacity,
+                price,
+                description: about,
+                startDate,
+                endDate,
+                //private: privatepublic === "Private" ? true : false,
+                url
+            }));
+            if(serverObject.errors === undefined)
+            {
+                const newId = serverObject.id;
+                //maybe not necessary to reset since going to new page
+                reset();
+                history.push(`/events/${newId}`);
+                return;
+            }
+            setDisplayErrors(true);
+            setValidationErrors(serverObject.errors);
         }
-        //reset();
-        //history.push("/");
-        return;
     }
 
         //for now, adjust when adding links to this page (only available to logged in users)

@@ -39,7 +39,7 @@ export default function GroupForm({formType})
         errors.state = "State is required"
 
         if(name.length === 0)
-        errors.name = "Name is required";
+        errors.name = "Name is required"
 
         //the backend validation is < 50, need to change backend?
         if(about.length < 30)
@@ -84,6 +84,7 @@ export default function GroupForm({formType})
             //get rid of if statements and set all values with ternaries, create ?
             if(create === true)
             {
+                //may have accidnetially changed osmething here double check this
                 const Organizer = {
                     id: sessionUser.id,
                     firstName: sessionUser.firstName,
