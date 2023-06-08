@@ -7,7 +7,12 @@ import "./AllEvents.css";
 export default function AllEvents()
 {
     //can do obj.values right away b/c allGroups initial state {}, can't be undefined
-    const events = useSelector(state => Object.values(state.events.allEvents));
+    let events = useSelector(state => Object.values(state.events.allEvents));
+    events.sort((a,b) => {
+        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    });
+    //also need to separate into past and future
+
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {

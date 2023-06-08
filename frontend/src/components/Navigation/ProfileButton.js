@@ -45,6 +45,10 @@ function ProfileButton({ user }) {
   {
     return history.push("/groups");
   }
+  function viewEvents()
+  {
+    return history.push("/events");
+  }
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
   const arrowDown = "fa-solid fa-arrow-down";
@@ -66,6 +70,9 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             <li>
               <button onClick ={viewGroups}>View Groups</button>
+            </li>
+            <li>
+              <button onClick={viewEvents}>View Events</button>
             </li>
             <li id="containsButton">
               <button onClick={logout}>Log Out</button>
