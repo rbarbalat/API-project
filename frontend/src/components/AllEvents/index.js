@@ -33,16 +33,11 @@ export default function AllEvents()
         <>
             <div className="allEventsHeader">
                 <div className="EventsGroupsContainer">
-                    <NavLink id="EventsNavLink" to ="/">
-                        Events
-                    </NavLink>
-                    <NavLink to="/groups">
-                        Groups
-                    </NavLink>
+                    {/* <NavLink id="EventsNavLink" to ="/events">Events</NavLink> */}
+                    <span id="EventsSpan">Events</span>
+                    <NavLink id="linkToGroupsFromEvents" to="/groups">Groups</NavLink>
                 </div>
-                <div>
-                    Events in Meetup
-                </div>
+                <div id="eventsInMeetup">Events in Meetup</div>
             </div>
             <div className="allEventsContainer">
                 {
@@ -54,16 +49,16 @@ export default function AllEvents()
                                 </div>
 
                                 <div className="eventInfoContainer">
-                                    <div>{`Starts on ${ele.startDate.slice(0,10)} `} &bull;  {` ${ele.startDate.slice(10)}`}</div>
+                                    <div>{`${ele.startDate.slice(0,10)} `} &bull;  {` ${ele.startDate.slice(10)}`}</div>
                                     <div>{ele.name}</div>
-                                    {/* add seeder data to get rid of null venues */}
-                                    <div>{ele.Venue !== null && `${ele.Venue.city}, ${ele.Venue.state}`}</div>
+                                    <div>{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
                                 </div>
                             </div>
 
-                            <div>
-                                {ele.description}
+                            <div className="eventBlockBottomDescription">
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                             </div>
+
                         </div>
                     ))
                 }
