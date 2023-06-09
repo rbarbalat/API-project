@@ -14,6 +14,10 @@
     font-size: .85rem;
     color:teal;
 }
+#singleEventLessThanSign {
+    color:teal;
+    margin-right: .3rem;
+}
 #singleEventName {
     font-size: 1.5rem;
 }
@@ -24,7 +28,7 @@
 
 .middleSingleEvent {
     width: 45rem;
-    height: 20rem;
+    height: 16rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -37,10 +41,11 @@
 }
 
 .eventImage {
+    /* margin-top: 1.5rem; */
+
     width: 60%;
     height: 100%;
     margin-right: 1rem;
-    /* border: 2px dashed red; */
 }
 
 #eventImagePic {
@@ -50,37 +55,44 @@
 
 .rightSection {
     width: 40%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     margin: .5rem;
     /* border: 2px dashed green; */
 }
 .rightTop {
+    background-color: white;
+    flex: 1 1 0;
+    padding: 1rem;
+    border-radius:20px;
+    margin-bottom: .5rem;
+    margin-top: .5rem;
+
     width: 100%;
-    height: 15%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content:space-between;
-
-    margin-top: 1rem;
-    margin-bottom:3rem;
-    /* border: 2px dashed orange; */
 }
 .groupImage {
     width: 30%;
     height: 100%;
     margin-right: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 .groupInfoOnSingleEvent {
     width: 70%;
     display: flex;
     flex-direction:column;
-    justify-content:space-between;
+    justify-content:space-evenly;
 }
 #groupImagePic {
     width: 100%;
-    height: 100%;
+    height:60%;
 }
 #singleEventPrivate {
     font-size: .85rem;
@@ -88,17 +100,21 @@
 }
 
 .rightBottom {
+    background-color: white;
+    border-radius:20px;
+
+    flex: 2 1 0;
+
     width: 100%;
-    height: 65%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     color:gray;
     font-size: .85rem;
 
-    margin-top: 2rem;
-    margin-bottom:2rem;
-    /* border: 2px dashed violet; */
+    margin-top: .5rem;
+    padding-left: 1rem;
 }
 .dateTimeSectionSingleEvent {
     display: flex;
@@ -117,6 +133,12 @@
 .typeSectionSingleEvent {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+}
+.manageEventButtons > button {
+    background-color:darkgray;
+    color: whitesmoke;
+    margin-right: 1rem;
 }
 
 #singleEventDetails {
@@ -128,4 +150,8 @@
 .description {
     width: 45rem;
     margin: 1rem auto;
+}
+
+.testBackGround {
+    background-color: #eeedf2;
 }

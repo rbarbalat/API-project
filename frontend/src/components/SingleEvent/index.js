@@ -28,9 +28,13 @@ export default function SingleEvent()
     }
     let showButtons = false;
     if(userIsOrganizer) showButtons = true;
+    function featureComingSoon()
+    {
+        return window.alert("Feature Coming Soon");
+    }
     const buttons = (
-        <div>
-            <button>Update</button>
+        <div className="manageEventButtons">
+            <button onClick={featureComingSoon}>Update</button>
             <OpenModalButton id="deleteEvent" buttonText="Delete"
                 modalComponent={<DeleteModal typeId={eventId} type="event" eventGroupId={groupId}/>}/>
         </div>
@@ -50,10 +54,15 @@ export default function SingleEvent()
     return (
         <>
         <div className='singleEventHeader'>
-            <NavLink id="singleEventLinkToEvents" to="/events">Events</NavLink>
+            <div>
+                <i id="singleEventLessThanSign" className="fa-light fa-less-than"></i>
+                <NavLink id="singleEventLinkToEvents" to="/events">Events</NavLink>
+            </div>
             <div id="singleEventName">{event.name}</div>
             <div id="singleEventHost">Hosted by {group.Organizer.firstName} {group.Organizer.lastName}</div>
         </div>
+
+<div className="testBackGround">
 
         <div className="middleSingleEvent">
                 <div className="eventImage">
@@ -81,11 +90,13 @@ export default function SingleEvent()
                             <div>{event.price === 0 ? "FREE" : event.price}</div>
                         </div>
                         <div className ="typeSectionSingleEvent">
-                            {/* map pins aren't display */}
-                            <i class="fa-sharp fa-light fa-map-pin"></i>
-                            <div>{event.type}</div>
+                            <div>
+                                <i class="fa-sharp fa-light fa-map-pin"></i>
+                                <span>{event.type}</span>
+                            </div>
+                            {showButtons && buttons}
                         </div>
-                        {showButtons && buttons}
+                        {/* {showButtons && buttons} */}
                     </div>
                 </div>
         </div>
@@ -93,6 +104,7 @@ export default function SingleEvent()
         <div id="singleEventDetails">Details</div>
         {/* <div className="description">{event.description}</div> */}
         <div className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+</div>
         </>
     )
 }
