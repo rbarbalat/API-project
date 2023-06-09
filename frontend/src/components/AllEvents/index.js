@@ -62,7 +62,7 @@ export default function AllEvents()
                             </div>
 
                             <div>
-                                A long wonderful description goes inside here, change the backend to give me a description
+                                {ele.description}
                             </div>
                         </div>
                     ))
