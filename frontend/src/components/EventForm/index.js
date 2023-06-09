@@ -128,7 +128,7 @@ export default function EventForm()
 
                 <div>
                     <div>What is the name of your event?</div>
-                    <input type="text" name="about" placeholder="What is your group's name?"
+                    <input type="text" name="about" placeholder="Event Name"
                         value={name} onChange={e => setName(e.target.value)}
                     />
                     <div className="errors">
@@ -140,7 +140,7 @@ export default function EventForm()
                 </div>
 
                 <div>
-                    <div>Is this an in person or online event?</div>
+                    <div>Is this an in person or online group?</div>
                         <select value={type} onChange={e => setType(e.target.value)}>
                             {/* //change to a default value that is not an option */}
                             <option>(select one)</option>
@@ -199,7 +199,7 @@ export default function EventForm()
 
                 <div>
                     <div>When does your event start?</div>
-                    <input type="text" name="startDate" placeholder="MM/DDYYYY HH:MM PM"
+                    <input type="text" name="startDate" placeholder="MM/DDYYYY HH:mm AM"
                         value={startDate} onChange={e => setStartDate(e.target.value)}
                     />
                     <div className="errors">
@@ -212,7 +212,7 @@ export default function EventForm()
 
                 <div>
                     <div>When does your event end?</div>
-                    <input type="text" name="endDate" placeholder="MM/DDYYYY HH:MM PM"
+                    <input type="text" name="endDate" placeholder="MM/DDYYYY HH:mm PM"
                         value={endDate} onChange={e => setEndDate(e.target.value)}
                     />
                     <div className="errors">
@@ -224,8 +224,8 @@ export default function EventForm()
                 </div>
 
                 <div>
-                    <div>Please add in image url for your group below:</div>
-                    <input type="text" name="url" placeholder="https://somewhere.com/image.gif"
+                    <div>Please add in image url for your event below:</div>
+                    <input type="text" name="url" placeholder="Image URL"
                         value={url} onChange={e => setUrl(e.target.value)}
                     />
                     <div className="errors">
@@ -238,7 +238,7 @@ export default function EventForm()
 
                 <div>
                     <div>Please describe your event:</div>
-                    <textarea type="text" name="about" placeholder="Please write at least 30 characters?"
+                    <textarea type="text" name="about" placeholder="Please include at least 30 characters?"
                         value={about} onChange={e => setAbout(e.target.value)}
                     />
                     <div className="errors">
