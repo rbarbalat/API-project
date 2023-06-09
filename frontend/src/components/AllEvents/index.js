@@ -48,16 +48,21 @@ export default function AllEvents()
                 {
                     events.map(ele => (
                         <div id={`eventBlock${ele.id}`} className="eventBlock" onClick={onClick} key={`event${ele.id}`}>
-                            <div className="eventImageContainer">
-                                <img alt="alt" src={ele.previewImage}></img>
+                            <div className="eventBlockTop">
+                                <div className="eventImageContainer">
+                                    <img alt="alt" src={ele.previewImage}></img>
+                                </div>
+
+                                <div className="eventInfoContainer">
+                                    <div>{`Starts on ${ele.startDate.slice(0,10)} `} &bull;  {` ${ele.startDate.slice(10)}`}</div>
+                                    <div>{ele.name}</div>
+                                    {/* add seeder data to get rid of null venues */}
+                                    <div>{ele.Venue !== null && `${ele.Venue.city}, ${ele.Venue.state}`}</div>
+                                </div>
                             </div>
 
                             <div>
-                                <div>{`Starts on ${ele.startDate.slice(0,10)} Ends on ${ele.endDate.slice(0,10)}`}</div>
-                                <div>{ele.name}</div>
-                                {/* add seeder data to get rid of null venues */}
-                                <div>{ele.Venue !== null && `${ele.Venue.city}, ${ele.Venue.state}`}</div>
-                                <div>{ele.about}</div>
+                                A long wonderful description goes inside here, change the backend to give me a description
                             </div>
                         </div>
                     ))
