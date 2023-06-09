@@ -28,7 +28,11 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 3rem auto;
+
+    margin-top: 3rem;
+    margin-bottom:1rem;
+    margin-left: auto;
+    margin-right: auto;
     /* border: 2px dashed blue; */
 }
 
@@ -89,16 +93,39 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    color:gray;
+    font-size: .85rem;
+
+    margin-top: 2rem;
+    margin-bottom:2rem;
     /* border: 2px dashed violet; */
 }
 .dateTimeSectionSingleEvent {
     display: flex;
     flex-direction: row;
+    align-items:center;
     /* justify-content:space-between; */
-    font-size: .85rem;
+    /* font-size: .85rem; */
+}
+.rightBottom i {
+    margin-right: .5rem;
+}
+.priceSectionSingleEvent {
+    display: flex;
+    flex-direction:row;
+}
+.typeSectionSingleEvent {
+    display: flex;
+    flex-direction: row;
+}
+
+#singleEventDetails {
+    font-size: 1.5rem;
+    width: 45rem;
+    margin: 0 auto;
 }
 
 .description {
     width: 45rem;
-    margin: 2rem auto;
+    margin: 1rem auto;
 }

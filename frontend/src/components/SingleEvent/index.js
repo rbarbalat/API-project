@@ -72,15 +72,15 @@ export default function SingleEvent()
                         <div className="dateTimeSectionSingleEvent">
                             <i class="fa-regular fa-clock"></i>
                             <div>
-                                <div>Start {event.startDate.slice(0,10)} &bull;</div>
-                                <div>End {event.endDate.slice(0,10)} &bull;</div>
+                                <div>START {event.startDate.slice(0,10)} &bull; {event.startDate.slice(11, -1)}</div>
+                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {event.endDate.slice(11, -1)}</div>
                             </div>
                         </div>
-                        <div>
+                        <div className="priceSectionSingleEvent">
                             <i class="fa-solid fa-dollar-sign"></i>
-                            <div>{event.price}</div>
+                            <div>{event.price === 0 ? "FREE" : event.price}</div>
                         </div>
-                        <div>
+                        <div className ="typeSectionSingleEvent">
                             {/* map pins aren't display */}
                             <i class="fa-sharp fa-light fa-map-pin"></i>
                             <div>{event.type}</div>
@@ -90,6 +90,7 @@ export default function SingleEvent()
                 </div>
         </div>
 
+        <div id="singleEventDetails">Details</div>
         {/* <div className="description">{event.description}</div> */}
         <div className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
         </>
