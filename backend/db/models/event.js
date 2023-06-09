@@ -78,6 +78,14 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           msg: "Description can't be null"
+        },
+        isLongEnough(value)
+        {
+          if(value.length < 30 || value == "")
+          {
+            let err =  new Error("Description must be 30 characters or more");
+            throw err;
+          }
         }
       }
     },
