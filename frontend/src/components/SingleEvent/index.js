@@ -57,11 +57,12 @@ export default function SingleEvent()
 
         <div className="middleSingleEvent">
                 <div className="eventImage">
-                    <img alt="alt" src={event.EventImages[0].url}></img>
+                    <img id="eventImagePic" alt="alt" src={event.EventImages[0].url}></img>
                 </div>
                 <div className="rightSection">
                     <div className="rightTop">
-                        <div className="groupImage"><img alt="alt" src={group.GroupImages[0].url}></img></div>
+                        <div className="groupImage"><img id="groupImagePic" alt="alt" src={group.GroupImages[0].url}></img></div>
+                        {/* <img id="groupImagePic" alt="alt" src={group.GroupImages[0].url}></img> */}
                         <div>
                             <div>{group.name}</div>
                             <div>Private</div>
@@ -87,7 +88,8 @@ export default function SingleEvent()
                 </div>
         </div>
 
-        <div className="description">{event.description}</div>
+        {/* <div className="description">{event.description}</div> */}
+        <div className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
         </>
     )
 }
