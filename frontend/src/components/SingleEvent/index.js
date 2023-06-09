@@ -49,20 +49,25 @@ export default function SingleEvent()
     if( eventIsNotEmpty === false || groupIsNotEmpty === false) return <div>loading</div>
     return (
         <>
-        <NavLink to="/events"></NavLink>
+        <div className='singleEventHeader'>
+            <NavLink to="/events">Events</NavLink>
+            <div>{event.name}</div>
+            <div>Hosted by {group.Organizer.firstName} {group.Organizer.lastName}</div>
+        </div>
 
-        <div>{event.name}</div>
-        <div>Hosted by {group.Organizer.firstName} {group.Organizer.lastName}</div>
-        <div>
-            <div>
-                {/* might need to put this img inside a div */}
-                <img alt="alt" src={event.EventImages[0].url}></img>
-                <div>
-                    <div>
-                        <img alt="alt" src={group.GroupImages[0].url}></img>
-                        <div>{group.name} and {group.private}</div>
+        <div className="middleSingleEvent">
+                <div className="eventImage">
+                    <img alt="alt" src={event.EventImages[0].url}></img>
+                </div>
+                <div className="rightSection">
+                    <div className="rightTop">
+                        <div className="groupImage"><img alt="alt" src={group.GroupImages[0].url}></img></div>
+                        <div>
+                            <div>{group.name}</div>
+                            <div>Private</div>
+                        </div>
                     </div>
-                    <div>
+                    <div className="rightBottom">
                         <div>
                             <i class="fa-regular fa-clock"></i>
                             <div>{event.startDate}</div>
@@ -77,15 +82,12 @@ export default function SingleEvent()
                             <i class="fa-sharp fa-light fa-map-pin"></i>
                             <div>{event.type}</div>
                         </div>
+                        {showButtons && buttons}
                     </div>
                 </div>
-            </div>
-            <div>
-                {event.description}
-            </div>
-
-            {showButtons && buttons}
         </div>
+
+        <div className="description">{event.description}</div>
         </>
     )
 }

@@ -1,4 +1,51 @@
-img {
-    height: 200px;
-    width: 200px;
+/* .groupImage {
+    height: 50px;
+    width: 50px;
+}
+
+.eventImage {
+    height: 10 rem;
+    width: 10 rem;
+} */
+
+/* img {
+    max-width: 50%;
+    height: auto;
+} */
+.groupImage > img {
+    max-width: 30%;
+    height: auto;
+}
+
+.singleEventHeader {
+    margin: 1rem auto;
+    width: 35rem;
+}
+
+.middleSingleEvent {
+    width: 35rem;
+    display: flex;
+    flex-direction: row;
+    margin: 5rem auto;
+}
+
+.rightSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.rightTop {
+    display: flex;
+    flex-direction: row;
+}
+
+.rightBottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.description {
+    width: 35rem;
+    margin: 2rem auto;
 }
