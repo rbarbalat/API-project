@@ -16,24 +16,33 @@
     /* border: 3px dashed red; */
     display: flex;
     flex-direction: column;
-    align-items: center
+    align-items: center;
+    width: 40rem;
+    margin: 2rem auto;
 }
 
 .eventBlock {
     /* border: 3px dashed blue; */
-    width: 35rem;
+    width: 100%;
     margin: 1rem;
     display: flex;
     flex-direction: column;
+    border:2px dashed red;
 }
 .eventBlockTop {
     display:flex;
     flex-direction: row;
     margin-bottom: 1rem;
+    width: 100%
 }
 
 .eventImageContainer {
-    margin-right: 1rem;
+    max-width: 80%
+}
+.allEventImages {
+    width: 40%;
+    /* object-fit: contain; */
+    object-fit:contain;
 }
 
 .eventInfoContainer {

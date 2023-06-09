@@ -50,7 +50,7 @@ export default function AllEvents()
                         <div id={`eventBlock${ele.id}`} className="eventBlock" onClick={onClick} key={`event${ele.id}`}>
                             <div className="eventBlockTop">
                                 <div className="eventImageContainer">
-                                    <img alt="alt" src={ele.previewImage}></img>
+                                    <img className="allEventImages" alt="alt" src={ele.previewImage}></img>
                                 </div>
 
                                 <div className="eventInfoContainer">
@@ -62,7 +62,7 @@ export default function AllEvents()
                             </div>
 
                             <div>
-                                A long wonderful description goes inside here, change the backend to give me a description
+                                {ele.description}
                             </div>
                         </div>
                     ))

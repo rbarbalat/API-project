@@ -96,7 +96,7 @@ router.get("/", async (req,res) => {
     }
 
     let allEvents = await Event.findAll({
-        attributes: ["id", "groupId", "venueId", "name", "type", "startDate", "endDate"],
+        attributes: ["id", "groupId", "venueId", "name", "type", "description", "capacity", "price", "startDate", "endDate"],
         ...pagination,
         where,
         include: [

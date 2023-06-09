@@ -425,7 +425,7 @@ router.get("/:groupId/events", async (req, res) => {
             groupId: group.id,
         },
         attributes: {
-            exclude: ["createdAt", "updatedAt", "description", "capacity", "price"]
+            exclude: ["createdAt", "updatedAt"]
         },
         include: [
                     {

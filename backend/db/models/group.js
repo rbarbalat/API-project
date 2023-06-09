@@ -81,10 +81,9 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isLongEnough(value)
         {
-          if(value.length < 50 || value == "")
+          if(value.length < 30 || value == "")
           {
             let err =  new Error("About must be 50 characters or more");
-            //err.roman = true;
             throw err;
           }
         },
