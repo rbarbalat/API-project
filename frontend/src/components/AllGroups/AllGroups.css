@@ -1,20 +1,75 @@
-.allGroupsHeader, .allGroupsContainer {
-    width: 60%;
-    margin: 0 auto;
+#GroupsSpan {
+    text-decoration:underline;
+    color:teal;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+}
+#EventsNavLink {
+    color:gray;
+    text-decoration:none;
+    font-size:1.5rem;
+}
+
+#groupsInMeetUp {
+    font-size: .75rem;
+    color: gray;
 }
 
 .allGroupsHeader {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    border-bottom: 2px solid black;
+    /* border: 3px dashed green; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 40rem;
+    height: 4rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
 }
 
+.allGroupsContainer {
+    display: flex;
+    flex-direction:column;
+
+
+    width: 40rem;
+    margin: 1rem auto;
+}
+
+
 .groupBlock {
+    height: 15rem;
+    width: 100%;
+
     display: flex;
     flex-direction: row;
-    margin-bottom: 20px;
-    border-bottom: 2px solid black;
+    margin: 1rem;
+
+    border-top: 2px solid lightgray;
+    padding-top: 1rem;
     cursor: pointer;
+}
+
+.groupImageContainer {
+    /*groupImageContainer is flex object,
+    so width is 100% of the flexed width not 100%
+    of the parent container width */
+    width: 100%;
+    height: 100%;
+    margin-right: 1rem;
+}
+
+.groupImageContainer > img {
+    width: 100%;
+    height: 100%;
+}
+
+.groupInfoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
 }
 
 .numType {
@@ -29,14 +84,4 @@
 
 .numTypeLeft, .numTypeCenter {
     margin-right: 15px;
-}
-
-.groupImageContainer {
-    width: 500px;
-    height: 300px;
-}
-
-.groupImageContainer > img {
-    width: 100%;
-    height: 100%;
 }

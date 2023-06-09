@@ -32,28 +32,24 @@ export default function AllGroups()
         <>
             <div className="allGroupsHeader">
                 <div className="EventsGroupsContainer">
-                    <NavLink id="EventsNavLink" to ="/events">
-                        Events
-                    </NavLink>
-                    <NavLink to="/">
-                        Groups
-                    </NavLink>
+                    <NavLink id="EventsNavLink" to ="/events">Events</NavLink>
+                    <span id="GroupsSpan">Groups</span>
                 </div>
-                <div>
-                    Groups in Meetup
-                </div>
+                <div id="groupsInMeetUp">Groups in Meetup</div>
             </div>
             <div className="allGroupsContainer">
                 {
                     groups.map(ele => (
                         <div id={`groupBlock${ele.id}`} className="groupBlock" onClick={onClick} key={`group${ele.id}`}>
                             <div className="groupImageContainer">
-                                <img alt="alt" src={ele.previewImage}></img>
+                                <img alt="alt" className="allGroupImages" src={ele.previewImage}></img>
                             </div>
 
-                            <div>
-                                <div>{ele.name}</div>
-                                <div>{`${ele.city}, ${ele.state}`}</div>
+                            <div className="groupInfoContainer">
+                                <div>
+                                    <div>{ele.name}</div>
+                                    <div>{`${ele.city}, ${ele.state}`}</div>
+                                </div>
                                 <div>{ele.about}</div>
                                 <div className="numType">
                                     {/* <div>### events</div>
@@ -63,7 +59,6 @@ export default function AllGroups()
                                     <div className="numTypeCenter">&bull;</div>
                                     <div>{ele.private ? "Private" : "Public"}</div>
                                 </div>
-
                             </div>
                         </div>
                     ))
