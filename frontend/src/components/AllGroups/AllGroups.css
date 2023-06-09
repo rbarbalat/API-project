@@ -8,10 +8,11 @@
     color:gray;
     text-decoration:none;
     font-size:1.5rem;
+    margin-right: 1rem;
 }
 
 #groupsInMeetUp {
-    font-size: .75rem;
+    font-size: .85rem;
     color: gray;
 }
 
@@ -45,7 +46,8 @@
 
     display: flex;
     flex-direction: row;
-    margin: 1rem auto;
+    margin: 0 auto;
+    margin-bottom: 1rem;
 
     border-top: 2px solid lightgray;
     padding-top: 1rem;
@@ -53,7 +55,7 @@
 }
 
 .groupImageContainer {
-    /*groupImageContainer is flex object,
+    /*groupImageContainer is flex object (only once you use justify-content?),
     so width is 100% of the flexed width not 100%
     of the parent container width */
     width: 100%;
@@ -71,17 +73,23 @@
     flex-direction: column;
     justify-content:space-between;
 }
-
-.numType {
-    display: flex;
-    flex-direction: row;
+.groupName {
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+}
+.groupLocation {
+    font-size: .85rem;
+    color:gray;
 }
 
-#EventsNavLink {
-    text-decoration: none;
-    margin-right: 20px;
+.groupInfoBottom > span {
+    font-size: .85rem;
+    color:gray;
 }
 
-.numTypeLeft, .numTypeCenter {
-    margin-right: 15px;
+.numMembersAllGroups {
+    margin-right: .75rem;
+}
+.typeAllGroups {
+    margin-left: .75rem;
 }

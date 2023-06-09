@@ -47,17 +47,16 @@ export default function AllGroups()
 
                             <div className="groupInfoContainer">
                                 <div>
-                                    <div>{ele.name}</div>
-                                    <div>{`${ele.city}, ${ele.state}`}</div>
+                                    <div className="groupName">{ele.name}</div>
+                                    <div className="groupLocation">{`${ele.city}, ${ele.state}`}</div>
                                 </div>
-                                <div>{ele.about}</div>
-                                <div className="numType">
-                                    {/* <div>### events</div>
-                                    <div>Public or Private</div> */}
-                                    <div className="numTypeLeft">{`${ele.numMembers} Members`}</div>
-                                    {/* change this asterisk to a dot later */}
-                                    <div className="numTypeCenter">&bull;</div>
-                                    <div>{ele.private ? "Private" : "Public"}</div>
+
+                                <div className="groupAbout">{ele.about}</div>
+
+                                <div className="groupInfoBottom">
+                                    <span className="numMembersAllGroups">{`${ele.numMembers === 0 ? 1 : ele.numMembers} Member(s)`}</span>
+                                    <span className="dotAllGroups">&bull;</span>
+                                    <span className="typeAllGroups">{ele.private ? "Private" : "Public"}</span>
                                 </div>
                             </div>
                         </div>

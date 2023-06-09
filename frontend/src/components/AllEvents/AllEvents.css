@@ -14,7 +14,6 @@
     color: gray;
 }
 
-
 .allEventsHeader {
     /* border: 3px dashed green; */
     display: flex;
@@ -41,14 +40,16 @@
     height: 15rem;
     width: 100%;
 
-    margin: 1rem;
+    margin: 1rem auto;
 
     display: flex;
     flex-direction: column;
+    /* justify-content:space-between; */
 
-    /* border:2px dashed red; */
     border-top: 2px solid lightgray;
     padding-top: 1rem;
+
+    overflow:hidden;
 
     cursor:pointer;
 }
@@ -65,15 +66,15 @@
 .eventBlockBottomDescription {
     height: 35%;
     width: 100%;
-    text-overflow:ellipsis;
+    /* text-overflow:ellipsis;
     white-space:wrap;
-    overflow:hidden;
+    overflow:hidden; */
 }
 
 .eventImageContainer {
     width: 30%;
     height: 100%;
-    border:2px dashed blue;
+    /* border:2px dashed blue; */
 }
 .allEventImages {
     width: 100%;
@@ -90,4 +91,11 @@
 
     margin-left: .5rem;
     width: 70%;
+}
+
+.EventDateTime {
+    color: teal;
+}
+.eventLocation {
+    color:gray;
 }

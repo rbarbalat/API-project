@@ -49,14 +49,18 @@ export default function AllEvents()
                                 </div>
 
                                 <div className="eventInfoContainer">
-                                    <div>{`${ele.startDate.slice(0,10)} `} &bull;  {` ${ele.startDate.slice(10)}`}</div>
-                                    <div>{ele.name}</div>
-                                    <div>{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
+                                    <div className="EventDateTime">
+                                        <span>{`${ele.startDate.slice(0,10)} `}</span>
+                                        <span>&bull;</span>
+                                        <span>{` ${ele.startDate.slice(10)}`}</span>
+                                    </div>
+                                    <div className="eventName">{ele.name}</div>
+                                    <div className="eventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
                                 </div>
                             </div>
 
                             <div className="eventBlockBottomDescription">
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugi
                             </div>
 
                         </div>

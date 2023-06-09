@@ -50,9 +50,9 @@ export default function SingleEvent()
     return (
         <>
         <div className='singleEventHeader'>
-            <NavLink to="/events">Events</NavLink>
-            <div>{event.name}</div>
-            <div>Hosted by {group.Organizer.firstName} {group.Organizer.lastName}</div>
+            <NavLink id="singleEventLinkToEvents" to="/events">Events</NavLink>
+            <div id="singleEventName">{event.name}</div>
+            <div id="singleEventHost">Hosted by {group.Organizer.firstName} {group.Organizer.lastName}</div>
         </div>
 
         <div className="middleSingleEvent">
@@ -63,16 +63,18 @@ export default function SingleEvent()
                     <div className="rightTop">
                         <div className="groupImage"><img id="groupImagePic" alt="alt" src={group.GroupImages[0].url}></img></div>
                         {/* <img id="groupImagePic" alt="alt" src={group.GroupImages[0].url}></img> */}
-                        <div>
+                        <div className="groupInfoOnSingleEvent">
                             <div>{group.name}</div>
-                            <div>Private</div>
+                            <div id="singleEventPrivate">Private</div>
                         </div>
                     </div>
                     <div className="rightBottom">
-                        <div>
+                        <div className="dateTimeSectionSingleEvent">
                             <i class="fa-regular fa-clock"></i>
-                            <div>{event.startDate}</div>
-                            <div>{event.endDate}</div>
+                            <div>
+                                <div>Start {event.startDate.slice(0,10)} &bull;</div>
+                                <div>End {event.endDate.slice(0,10)} &bull;</div>
+                            </div>
                         </div>
                         <div>
                             <i class="fa-solid fa-dollar-sign"></i>
