@@ -91,7 +91,7 @@ export default function SingleEvent()
                         </div>
                         <div className ="typeSectionSingleEvent">
                             <div>
-                                <i class="fa-sharp fa-light fa-map-pin"></i>
+                                <i class="fa-solid fa-map-pin"></i>
                                 <span>{event.type}</span>
                             </div>
                             {showButtons && buttons}
