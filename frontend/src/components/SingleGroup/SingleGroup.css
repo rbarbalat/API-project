@@ -86,3 +86,48 @@
     height: 2rem;
     width: 9rem;
 }
+
+.singleGroupOrganizerInfo {
+    width: 40rem;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+    gap:1rem;
+
+    margin: 1rem auto 0 auto;
+
+    position:relative;
+    top: 1rem;
+}
+#singleGroupOrganizer {
+    font-size: 1.2rem;
+}
+#singleGroupOrganizerNames {
+    font-size: .85rem;
+    color: gray;
+}
+
+#singleGroupAboutLabel {
+    width: 40rem;
+    font-size:1.2rem;
+    margin: 2rem auto .3rem auto;
+}
+#singleGroupAbout {
+    width:40rem;
+    font-size: .9rem;
+    margin: 0 auto;
+}
+
+.grayBottom {
+    background-color: #eeedf2;
+}
+
+.upComingWrapper {
+    width: 40rem;
+    margin: 1rem auto 0 auto;
+}
+
+.upComingHeader {
+    font-size:1.2rem;
+    margin-bottom: .4rem;
+}

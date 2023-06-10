@@ -18,7 +18,18 @@ export default function SingleGroup()
 
     //state.events.allEvents is initially an empty obj so events is an empty obj before the first useEffect
     let events = useSelector(state => Object.values(state.events.allEvents));
-    //console.log("events-----   ", events);
+    events.sort((a,b) => {
+        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    });
+    const upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
+    const pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
+    upcomingEvents.sort((a,b) => {
+        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    });
+    //most recent first, descending order
+    pastEvents.sort((a,b) => {
+        return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+    });
 
     const sessionUser = useSelector((state) => state.session.user);
     let userIsOrganizer;
@@ -30,11 +41,12 @@ export default function SingleGroup()
     }
     let showJoinButton = true;
     if(userIsOrganizer || sessionUser === null) showJoinButton = false;
-    const joinButton = <div className="singleGroupJoinButton"><button onClick={onClick}>Join this group</button></div>;
+    const joinButton = <div className="singleGroupJoinButton"><button onClick={onJoinClick}>Join this group</button></div>;
     const manageButtons = (<div className="singleGroupManageButtons">
                                 <button onClick={onCreateEventClick}>Create Event</button>
                                 <button onClick={onUpdateClick}>Update</button>
-                                <button>Delete</button>
+                                <OpenModalButton id="deleteGroup" buttonText="Delete Group"
+                                modalComponent={<DeleteModal typeId={groupId} type="group"/>}/>
                             </div>);
 
     const history = useHistory();
@@ -52,7 +64,7 @@ export default function SingleGroup()
         }
     }, [dispatch, groupId])
 
-    function onClick()
+    function onJoinClick()
     {
         return window.alert("Feature Coming Soon");
     }
@@ -67,21 +79,21 @@ export default function SingleGroup()
         history.push(`/groups/${groupId}/events/new`);
     }
     //eventually move to this function to the DeleteModal
-    async function onDeleteClick()
-    {
-        if(userIsOrganizer)
-        {
-            const serverObject = await dispatch(thunkDeleteGroup(groupId));
-            if(serverObject.message === "Successfully deleted")
-            {
-                console.log("the group was deleted");
-                history.replace("/groups");
-            }else{
-                //adjust later
-                return window.alert("Something went wrong");
-            }
-        }
-    }
+    // async function onDeleteClick()
+    // {
+    //     if(userIsOrganizer)
+    //     {
+    //         const serverObject = await dispatch(thunkDeleteGroup(groupId));
+    //         if(serverObject.message === "Successfully deleted")
+    //         {
+    //             console.log("the group was deleted");
+    //             history.replace("/groups");
+    //         }else{
+    //             //adjust later
+    //             return window.alert("Something went wrong");
+    //         }
+    //     }
+    // }
     function linkToEvent(e)
     {
         //clicking anywhere on the div that has details for eventId links to the event details page
@@ -97,8 +109,6 @@ export default function SingleGroup()
                 <i id="singleGroupLessThanSign" className="fa-light fa-less-than"></i>
                 <NavLink id="singleGroupLinkToGroups" to="/groups">Groups</NavLink>
             </div>
-            {/* <button>Create event</button>
-            <button onClick = {onDeleteClick}>Delete</button> */}
             {/* <OpenModalButton id="deleteGroup" buttonText="Delete Group"
                 modalComponent={<DeleteModal typeId={groupId} type="group"/>}/> */}
             <div className="middleSingleGroup">
@@ -118,55 +128,44 @@ export default function SingleGroup()
                 </div>
             </div>
 
-            <div>
-                <h2>Organizer</h2>
-                <div>{group.Organizer.firstName} {group.Organizer.lastName}</div>
+            {/* visible if upcomingEvents.length > 0 || pastEvents.length > 0 */}
+            <div className="grayBottom">
+
+                <div className="singleGroupOrganizerInfo">
+                    <div id="singleGroupOrganizer">Organizer</div>
+                    <div id="singleGroupOrganizerNames">{group.Organizer.firstName} {group.Organizer.lastName}</div>
+                </div>
+
+                <div id="singleGroupAboutLabel">What we're about</div>
+                <div id="singleGroupAbout">{group.about}</div>
+
+                {upcomingEvents.length > 0 &&
+                (<div className="upComingWrapper">
+                    <div className="upComingHeader">Upcoming Events ({upcomingEvents.length})</div>
+                    <div className="allFutureEventsByGroupContainer">
+                        {
+                            events.map(ele => (
+                                <div id={`groupEventBlock${ele.id}`} className="groupEventBlock" onClick={linkToEvent} key={`groupEvent${ele.id}`}>
+                                    <div>
+                                        <img alt="alt" src={ele.previewImage}></img>
+                                    </div>
+
+                                    <div>
+                                        <div>{`Starts on ${ele.startDate.slice(0,10)} Ends on ${ele.endDate.slice(0,10)}`}</div>
+                                        <div>{ele.name }</div>
+                                        <div>{`${ele.Group.city}, ${ele.Group.state}`}</div>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>)}
+
+                {pastEvents.length > 0 &&
+                (<div className="pastWrapper">
+                    <div>Past Events</div>
+                </div>)}
             </div>
-
-            <h2>What we're about</h2>
-            <div>{group.about}</div>
-
-            <div>Upcoming Events</div>
-
-            <div className="allEventsByGroupContainer">
-                {
-                    events.map(ele => (
-                        <div id={`groupEventBlock${ele.id}`} className="groupEventBlock" onClick={linkToEvent} key={`groupEvent${ele.id}`}>
-                            <div>
-                                <img alt="alt" src={ele.previewImage}></img>
-                            </div>
-
-                            <div>
-                                <div>{`Starts on ${ele.startDate.slice(0,10)} Ends on ${ele.endDate.slice(0,10)}`}</div>
-                                <div>{ele.name }</div>
-                                <div>{`${ele.Group.city}, ${ele.Group.state}`}</div>
-                            </div>
-
-                                {/* {
-                                userIsOrganizer &&
-                                    (<div>
-                                        <button>Create Event</button>
-                                        <button>Update</button>
-                                        <button>Delete</button>
-                                    </div>)
-                                } */}
-
-                        </div>
-                    ))
-
-                }
-            </div>
-
-            {/* {
-                userIsOrganizer &&
-                    (<div>
-                        <button>Create Event</button>
-                        <button>Update</button>
-                        <button>Delete</button>
-                    </div>)
-            } */}
-
-            <div>Past Events</div>
         </>
     )
 }
