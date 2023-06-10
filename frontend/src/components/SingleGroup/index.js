@@ -3,7 +3,6 @@ import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadSingleGroup } from "../../store/groups.js";
 import { thunkLoadEventsByGroupId } from "../../store/events.js";
-import { thunkDeleteGroup } from "../../store/groups.js";
 import "./SingleGroup.css";
 import OpenModalButton from "../OpenModalButton/index.js";
 import DeleteModal from "../DeleteModal/index.js";
@@ -78,22 +77,6 @@ export default function SingleGroup()
         //button only visible if userIsOrganizer
         history.push(`/groups/${groupId}/events/new`);
     }
-    //eventually move to this function to the DeleteModal
-    // async function onDeleteClick()
-    // {
-    //     if(userIsOrganizer)
-    //     {
-    //         const serverObject = await dispatch(thunkDeleteGroup(groupId));
-    //         if(serverObject.message === "Successfully deleted")
-    //         {
-    //             console.log("the group was deleted");
-    //             history.replace("/groups");
-    //         }else{
-    //             //adjust later
-    //             return window.alert("Something went wrong");
-    //         }
-    //     }
-    // }
     function linkToEvent(e)
     {
         //clicking anywhere on the div that has details for eventId links to the event details page
@@ -142,18 +125,31 @@ export default function SingleGroup()
                 {upcomingEvents.length > 0 &&
                 (<div className="upComingWrapper">
                     <div className="upComingHeader">Upcoming Events ({upcomingEvents.length})</div>
-                    <div className="allFutureEventsByGroupContainer">
+                    <div className="allGroupEventsContainer">
                         {
-                            events.map(ele => (
+                            upcomingEvents.map(ele => (
                                 <div id={`groupEventBlock${ele.id}`} className="groupEventBlock" onClick={linkToEvent} key={`groupEvent${ele.id}`}>
-                                    <div>
-                                        <img alt="alt" src={ele.previewImage}></img>
-                                    </div>
+                                    <div className="groupEventBlockTop">
 
-                                    <div>
-                                        <div>{`Starts on ${ele.startDate.slice(0,10)} Ends on ${ele.endDate.slice(0,10)}`}</div>
-                                        <div>{ele.name }</div>
-                                        <div>{`${ele.Group.city}, ${ele.Group.state}`}</div>
+                                        <div className="groupEventImageContainer">
+                                            <img className="allGroupEventImages" alt="alt" src={ele.previewImage}></img>
+                                        </div>
+
+                                        {/* <div>
+                                            <div>{`Starts on ${ele.startDate.slice(0,10)} Ends on ${ele.endDate.slice(0,10)}`}</div>
+                                            <div>{ele.name }</div>
+                                            <div>{`${ele.Group.city}, ${ele.Group.state}`}</div>
+                                        </div> */}
+
+                                        <div className="groupEventInfoContainer">
+                                            <div className="groupEventDateTime">
+                                                <span>{`${ele.startDate.slice(0,10)} `}</span>
+                                                <span>&bull;</span>
+                                                <span>{` ${ele.startDate.slice(10)}`}</span>
+                                            </div>
+                                            <div className="groupEventName">{ele.name}</div>
+                                            <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
+                                        </div>
                                     </div>
                                 </div>
                             ))

@@ -33,7 +33,6 @@ export default function AllEvents()
         <>
             <div className="allEventsHeader">
                 <div className="EventsGroupsContainer">
-                    {/* <NavLink id="EventsNavLink" to ="/events">Events</NavLink> */}
                     <span id="EventsSpan">Events</span>
                     <NavLink id="linkToGroupsFromEvents" to="/groups">Groups</NavLink>
                 </div>
