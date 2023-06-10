@@ -136,14 +136,14 @@ export default function GroupForm({formType})
         }
     }
     const topSection = create ?
-    (<div>
-        <div>BECOME AN ORGANIZER</div>
-        <div>We'll walk you through a few steps to build your local community</div>
+    (<div className="groupFormHeader">
+        <div className="startOrUpdate">START A NEW GROUP</div>
+        <div className="formSectionHeader">We'll walk you through a few steps to build your local community</div>
     </div>)
     :
-    (<div>
-        <div>UPDATE YOUR GROUP'S INFORMATION</div>
-        <div>We'll walk you through a few steps to update your group's information</div>
+    (<div className="groupFormHeader">
+        <div className="startOrUpdate">UPDATE YOUR GROUP'S INFORMATION</div>
+        <div className="formSectionHeader">We'll walk you through a few steps to update your group's information</div>
     </div>)
 
     const urlSection = create ?
@@ -166,114 +166,108 @@ export default function GroupForm({formType})
     if(sessionUser === null) return null;
     return (
         <form onSubmit={onSubmit} className={formType === "create" ? "createGroupForm" : "editGroupForm"}>
-            <div>
-                <div>{topSection}</div>
-                <div>First, set your group's location</div>
-                <div>Groups meet locally and online</div>
-                <input type="text" name="city" placeholder="City"
-                    value={city} onChange={e => setCity(e.target.value)}
-                />
-                <div className="errors">
+            <div className="groupFormWrapper">
+                {topSection}
+                <div className="groupFormLocation formSection">
+                    <div id="setLocation" className="formSectionHeader">First, set your group's location</div>
+                    <div className="formLabel">Meetup groups meet locally, in person and online.  We'll connect you with people in your area, and more can join you online</div>
+                    <input type="text" name="city" placeholder="City"
+                        value={city} onChange={e => setCity(e.target.value)}
+                    />
+                    <div className="errors">
                     {
-                    validationErrors.city !== undefined && displayErrors
-                    && validationErrors.city
+                        validationErrors.city !== undefined && displayErrors
+                        && validationErrors.city
                     }
-                </div>
-                <input type="text" name="state" placeholder="State"
-                    value={state} onChange={e => setState(e.target.value)}
-                />
-                <div className="errors">
+                    </div>
+                    <input type="text" name="state" placeholder="State"
+                        value={state} onChange={e => setState(e.target.value)}
+                    />
+                    <div className="errors">
                     {
-                    validationErrors.state !== undefined && displayErrors
-                    && validationErrors.state
+                        validationErrors.state !== undefined && displayErrors
+                        && validationErrors.state
                     }
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <div>What will your group's name be?</div>
-                <div>Choose a name that will give people a clear idea</div>
-                <input type="text" name="about" placeholder="What is your group's name?"
-                    value={name} onChange={e => setName(e.target.value)}
-                />
-                <div className="errors">
+                <div className="groupFormName formSection">
+                    <div id="setName" className="formSectionHeader">What will your group's name be?</div>
+                    <div className="formLabel">Choose a name that will give people a clear idea of what the group is about.  Feel free to get creative!  You can edit this later if you change your mind</div>
+                    <input type="text" name="about" placeholder="What is your group's name?"
+                        value={name} onChange={e => setName(e.target.value)}
+                    />
+                    <p className="errors">
                     {
-                    validationErrors.name !== undefined && displayErrors
-                    && validationErrors.name
+                        validationErrors.name !== undefined && displayErrors
+                        && validationErrors.name
                     }
+                    </p>
                 </div>
-            </div>
 
-            <div>
-                <div>Now describe what your group will be about</div>
-                <div>
-                    People will this when we promote your group, but you'll be able
-                    to add to it later
-                </div>
-                <ul>
-                    <li>What's the purpose of your group?</li>
-                    <li>Who sould join?</li>
-                    <li>What will you do at your events??</li>
-                </ul>
-                <textarea type="text" name="about" placeholder="Please write at least 30 characters?"
-                    value={about} onChange={e => setAbout(e.target.value)}
-                />
-                <div className="errors">
+                <div className="groupFormAbout formSection">
+                    <div id="setDescription" className="formSectionHeader">Now describe what your group will be about</div>
+                    <div className="formLabel"> People will this when we promote your group, but you'll be able to add to it later</div>
+                    <ol>
+                        <li>What's the purpose of your group?</li>
+                        <li>Who sould join?</li>
+                        <li>What will you do at your events??</li>
+                    </ol>
+
+                    <textarea type="text" name="about" placeholder="Please write at least 30 characters?"
+                        value={about} onChange={e => setAbout(e.target.value)}
+                    />
+                    <div className="errors">
                     {
-                    validationErrors.about !== undefined && displayErrors
-                    && validationErrors.about
+                        validationErrors.about !== undefined && displayErrors
+                        && validationErrors.about
                     }
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <div>Final Steps...</div>
-                <div>Is this an in person or online group?</div>
-                <select value={type} onChange={e => setType(e.target.value)}>
+                <div className="groupFormBottom formSection">
+                    <div id="Final" className="formSectionHeader">Final Steps...</div>
+
+                    <div id="setTypeDes">Is this an in person or online group?</div>
+                    <select value={type} onChange={e => setType(e.target.value)}>
                     {/* //change to a default value that is not an option */}
-                    <option>(select one)</option>
-                    <option>Online</option>
-                    <option>In person</option>
-                </select>
+                        <option>(select one)</option>
+                        <option>Online</option>
+                        <option>In person</option>
+                    </select>
 
-                <div className="errors">
+                    <div className="errors">
                     {
-                    validationErrors.type !== undefined && displayErrors
-                    && validationErrors.type
+                        validationErrors.type !== undefined && displayErrors
+                        && validationErrors.type
                     }
+                    </div>
+
+                    <div id="setVisDes">Is this group private or public?</div>
+                    <select value={privatepublic} onChange={e => setPrivatePublic(e.target.value)}>
+                        <option>(select one)</option>
+                        <option>Private</option>
+                        <option>Public</option>
+                    </select>
+
+                    <div className="errors">
+                    {
+                        validationErrors.privatepublic !== undefined && displayErrors
+                        && validationErrors.privatepublic
+                    }
+                    </div>
+
+                    {urlSection}
+
                 </div>
 
-                <div>Is this group private or public?</div>
-                <select value={privatepublic} onChange={e => setPrivatePublic(e.target.value)}>
-                    <option>(select one)</option>
-                    <option>Private</option>
-                    <option>Public</option>
-                </select>
-
-                <div className="errors">
-                    {
-                    validationErrors.privatepublic !== undefined && displayErrors
-                    && validationErrors.privatepublic
-                    }
+                <div id="groupFormButton" className="formSection">
+                    <button type="submit"> {create ? "Create Group" : "Update Group"}</button>
                 </div>
 
-                {urlSection}
+        </div>
 
-            </div>
-            <button type="submit">
-                {create ? "Create Group" : "Update Group"}
-            </button>
         </form>
-      );
-}
+    );
 
-/*
-{
-  "name": "Evening Tennis on the Water",
-  "about": "Enjoy rounds of tennis with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
-  "type": "In person",
-  "private": true,
-  "city": "New York",
-  "state": "NY",
 }
-*/

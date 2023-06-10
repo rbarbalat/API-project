@@ -101,7 +101,7 @@ export default function SingleGroup()
                     <div className="rightSectionSingleGroupTop">
                         <div className="singleGroupName">{group.name}</div>
                         <div className="singleGroupLocation">{`${group.city}, ${group.state}`}</div>
-                        <div className="singleGroupNumType">{group.numMembers === 0 ? 1 : group.numMembers} &bull; {group.private ? "Private" : "Public"}</div>
+                        <div className="singleGroupNumType">{group.numMembers === 0 ? 1 : group.numMembers} Member(s) &bull; {group.private ? "Private" : "Public"}</div>
                         <div className="singleGroupOrganizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
                     </div>
                     { showJoinButton && joinButton }
