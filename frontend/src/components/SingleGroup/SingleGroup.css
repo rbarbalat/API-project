@@ -116,6 +116,9 @@
     width:40rem;
     font-size: .9rem;
     margin: 0 auto;
+
+    word-wrap: break-word;
+    overflow: scroll;
 }
 
 .grayBottom {
@@ -200,9 +203,11 @@
 
 .groupEventDateTime {
     color: teal;
+    font-size: .85rem;
 }
 .groupEventLocation {
     color:gray;
+    font-size: .85rem;
 }
 
 .groupEventBlockBottomDescription {

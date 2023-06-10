@@ -20,8 +20,8 @@ export default function SingleGroup()
     events.sort((a,b) => {
         return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
     });
-    const upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
-    const pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
+    let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
+    let pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
     upcomingEvents.sort((a,b) => {
         return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
     });
@@ -29,6 +29,9 @@ export default function SingleGroup()
     pastEvents.sort((a,b) => {
         return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
     });
+
+    // pastEvents = upcomingEvents;
+    // upcomingEvents = [];
 
     const sessionUser = useSelector((state) => state.session.user);
     let userIsOrganizer;
@@ -51,15 +54,9 @@ export default function SingleGroup()
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
-        //only reload the singleGroup in the store if the current singleGroup
-        //does not match the page (groupId) you are on, if empty does not match
         if(Number(groupId) !== group.id)
         {
-            //double that check if right singleGroup guarantees
-            //the right allEvents group
             dispatch(thunkLoadSingleGroup(groupId));
-            //dispatch(thunkLoadEventsByGroupId(groupId));
-            //loading delay for images pulled from events by group id
         }
         //must reload this b/c even if the current group is there, might go to
         //all events page and back and then will have all events instead of events by group id
@@ -95,8 +92,7 @@ export default function SingleGroup()
                 <i id="singleGroupLessThanSign" className="fa-light fa-less-than"></i>
                 <NavLink id="singleGroupLinkToGroups" to="/groups">Groups</NavLink>
             </div>
-            {/* <OpenModalButton id="deleteGroup" buttonText="Delete Group"
-                modalComponent={<DeleteModal typeId={groupId} type="group"/>}/> */}
+
             <div className="middleSingleGroup">
                 <div className="groupImageSingleGroup">
                     <img id="groupImagePicSingleGroup" alt="alt" src={group.GroupImages[0].url}></img>
@@ -104,7 +100,6 @@ export default function SingleGroup()
                 <div className="rightSectionSingleGroup">
                     <div className="rightSectionSingleGroupTop">
                         <div className="singleGroupName">{group.name}</div>
-                        {/* <NavLink to={`/groups/${groupId}/events/new`}>Temp Create Event</NavLink> */}
                         <div className="singleGroupLocation">{`${group.city}, ${group.state}`}</div>
                         <div className="singleGroupNumType">{group.numMembers === 0 ? 1 : group.numMembers} &bull; {group.private ? "Private" : "Public"}</div>
                         <div className="singleGroupOrganizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
@@ -160,10 +155,43 @@ export default function SingleGroup()
                     </div>
                 </div>)}
 
+                        {/* past events */}
                 {pastEvents.length > 0 &&
-                (<div className="pastWrapper">
-                    <div>Past Events</div>
+                (<div className="upComingWrapper">
+                    <div className="upComingHeader">Past Events ({pastEvents.length})</div>
+                    <div className="allGroupEventsContainer">
+                        {
+                            pastEvents.map(ele => (
+                                <div id={`groupEventBlock${ele.id}`} className="groupEventBlock" onClick={linkToEvent} key={`groupEvent${ele.id}`}>
+                                    <div className="groupEventBlockTop">
+
+                                        <div className="groupEventImageContainer">
+                                            <img className="allGroupEventImages" alt="alt" src={ele.previewImage}></img>
+                                        </div>
+
+                                        <div className="groupEventInfoContainer">
+                                            <div className="groupEventDateTime">
+                                                <span>{`${ele.startDate.slice(0,10)} `}</span>
+                                                <span>&bull;</span>
+                                                <span>{` ${ele.startDate.slice(10)}`}</span>
+                                            </div>
+                                            <div className="groupEventName">{ele.name}</div>
+                                            <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
+                                        </div>
+                                    </div>
+
+                                    {/* change to ele.description */}
+                                    <div className="groupEventBlockBottomDescription">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugi
+                                    </div>
+
+                                </div>
+                            ))
+                        }
+                    </div>
                 </div>)}
+
+
             </div>
         </>
     )
