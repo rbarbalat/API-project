@@ -140,13 +140,17 @@
     align-items: center;
     width: 30rem;
     margin: 1rem auto;
+
+    position: relative;
+    left: -5rem;
 }
 
 .groupEventBlock {
-    height: 15rem;
+    height: 11rem;
     width: 100%;
+    /* width: 75%; */
 
-    margin: 1rem auto;
+    margin: 0 auto 1rem auto;
 
     display: flex;
     flex-direction: column;
@@ -167,21 +171,15 @@
     justify-content:center;
     margin-bottom: 1rem;
     width: 100%;
-    height: 65%;
+    height: 55%;
 
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
 }
-/*
-.eventBlockBottomDescription {
-    height: 35%;
-    width: 100%;
-}
-*/
 
 .groupEventImageContainer {
     width: 30%;
     height: 100%;
-    /* border:2px dashed blue; */
+    margin-left: .5rem;
 }
 .allGroupEventImages {
     width: 100%;
@@ -205,4 +203,11 @@
 }
 .groupEventLocation {
     color:gray;
+}
+
+.groupEventBlockBottomDescription {
+ word-wrap: break-word;
+ overflow: scroll;
+ margin-left: .5rem;
+ margin-right: .5rem;
 }

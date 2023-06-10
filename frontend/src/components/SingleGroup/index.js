@@ -58,9 +58,12 @@ export default function SingleGroup()
             //double that check if right singleGroup guarantees
             //the right allEvents group
             dispatch(thunkLoadSingleGroup(groupId));
-            dispatch(thunkLoadEventsByGroupId(groupId));
+            //dispatch(thunkLoadEventsByGroupId(groupId));
             //loading delay for images pulled from events by group id
         }
+        //must reload this b/c even if the current group is there, might go to
+        //all events page and back and then will have all events instead of events by group id
+        dispatch(thunkLoadEventsByGroupId(groupId));
     }, [dispatch, groupId])
 
     function onJoinClick()
@@ -135,12 +138,6 @@ export default function SingleGroup()
                                             <img className="allGroupEventImages" alt="alt" src={ele.previewImage}></img>
                                         </div>
 
-                                        {/* <div>
-                                            <div>{`Starts on ${ele.startDate.slice(0,10)} Ends on ${ele.endDate.slice(0,10)}`}</div>
-                                            <div>{ele.name }</div>
-                                            <div>{`${ele.Group.city}, ${ele.Group.state}`}</div>
-                                        </div> */}
-
                                         <div className="groupEventInfoContainer">
                                             <div className="groupEventDateTime">
                                                 <span>{`${ele.startDate.slice(0,10)} `}</span>
@@ -151,6 +148,12 @@ export default function SingleGroup()
                                             <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
                                         </div>
                                     </div>
+
+                                    {/* change to ele.description */}
+                                    <div className="groupEventBlockBottomDescription">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugi
+                                    </div>
+
                                 </div>
                             ))
                         }

@@ -60,6 +60,10 @@
     margin: .5rem;
     gap: 1rem;
 }
+.rightSection div {
+    word-wrap: break-word;
+    overflow: scroll;
+}
 .rightTop {
     background-color: white;
     flex: 1 1 0;
@@ -149,6 +153,8 @@
 .description {
     width: 45rem;
     margin: 1rem auto;
+    word-wrap: break-word;
+    overflow: scroll;
 }
 
 .testBackGround {
