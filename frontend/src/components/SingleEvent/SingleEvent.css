@@ -132,7 +132,7 @@
     justify-content: space-between;
 }
 .manageEventButtons > button {
-    background-color: #808080;
+    background-color: #999999;
     color: whitesmoke;
     margin-right: 1rem;
 }

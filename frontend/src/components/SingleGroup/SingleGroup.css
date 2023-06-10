@@ -1,4 +1,88 @@
-.ImageAndSide  img {
+/* .ImageAndSide  img {
     width: 300px;
     height: 300px;
+} */
+
+.singleGroupLinkFavicon {
+    margin-top: 3rem;
+    width: 40rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#singleGroupLinkToGroups {
+    font-size: .85rem;
+    color:teal;
+}
+#singleGroupLessThanSign {
+    color:teal;
+    margin-right: .3rem;
+}
+
+.middleSingleGroup {
+    /* border: 2px dashed blue; */
+
+    width: 40rem;
+    height: 16rem;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.groupImageSingleGroup {
+    /* border: 2px dashed red; */
+    height: 100%;
+    width: 100%;
+}
+.rightSectionSingleGroup {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.rightSectionSingleGroupTop {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: .5rem;
+}
+#groupImagePicSingleGroup {
+    height:100%;
+    width: 100%;
+}
+
+.singleGroupLocation, .singleGroupNumType, .singleGroupOrganizer {
+    font-size:.85rem;
+    color:gray;
+
+    overflow-wrap: break-word;
+    word-break:break-all;/*break-word diff setting also try*/
+}
+
+.singleGroupManageButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: .7rem;
+}
+.singleGroupManageButtons > button {
+    background-color: #999999;
+    color: whitesmoke;
+    font-size: .85rem;
+    border: 2px solid black;
+    box-shadow:2px 2px 2px black;
+    cursor: pointer;
+}
+
+.singleGroupJoinButton > button {
+    background-color: red;
+    color:white;
+    border:2px solid black;
+    box-shadow:5px 5px 5px black;
+    height: 2rem;
+    width: 9rem;
 }

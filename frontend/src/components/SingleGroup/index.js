@@ -28,9 +28,14 @@ export default function SingleGroup()
         group.organizerId === sessionUser.id ?
         userIsOrganizer = true : userIsOrganizer = false;
     }
-    let showButton = true;
-    if(userIsOrganizer || sessionUser === null) showButton = false;
-    const joinButton = <button onClick={onClick}>Join this group</button>;
+    let showJoinButton = true;
+    if(userIsOrganizer || sessionUser === null) showJoinButton = false;
+    const joinButton = <div className="singleGroupJoinButton"><button onClick={onClick}>Join this group</button></div>;
+    const manageButtons = (<div className="singleGroupManageButtons">
+                                <button onClick={onCreateEventClick}>Create Event</button>
+                                <button onClick={onUpdateClick}>Update</button>
+                                <button>Delete</button>
+                            </div>);
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -53,9 +58,13 @@ export default function SingleGroup()
     }
     function onUpdateClick()
     {
-        if(userIsOrganizer) history.push(`/groups/${groupId}/edit`);
-        else history.push("/")
-        //maybe history.replace() to prevent going back or <Redirect> instead?
+        //button only visible if userIsOrganizer
+        history.push(`/groups/${groupId}/edit`);
+    }
+    function onCreateEventClick()
+    {
+        //button only visible if userIsOrganizer
+        history.push(`/groups/${groupId}/events/new`);
     }
     //eventually move to this function to the DeleteModal
     async function onDeleteClick()
@@ -84,27 +93,28 @@ export default function SingleGroup()
     if( groupIsNotEmpty === false) return <div>loading</div>
     return (
         <>
-            <div>SINGLE GROUP PAGE -- GROUP {groupId} REMOVE LATER</div>
-            <NavLink to="/groups">Groups</NavLink>
-            {/* <NavLink to={`/groups/${groupId}/edit`}>Update</NavLink> */}
-            <button>Create event</button>
-            <button onClick={onUpdateClick}>Update</button>
-            <button onClick = {onDeleteClick}>Delete</button>
-            <OpenModalButton id="deleteGroup" buttonText="Delete Group"
-                modalComponent={<DeleteModal typeId={groupId} type="group"/>}/>
-            <div className="ImageAndSide">
-                <div>
-                    <img alt="alt" src={group.GroupImages[0].url}></img>
+            <div className="singleGroupLinkFavicon">
+                <i id="singleGroupLessThanSign" className="fa-light fa-less-than"></i>
+                <NavLink id="singleGroupLinkToGroups" to="/groups">Groups</NavLink>
+            </div>
+            {/* <button>Create event</button>
+            <button onClick = {onDeleteClick}>Delete</button> */}
+            {/* <OpenModalButton id="deleteGroup" buttonText="Delete Group"
+                modalComponent={<DeleteModal typeId={groupId} type="group"/>}/> */}
+            <div className="middleSingleGroup">
+                <div className="groupImageSingleGroup">
+                    <img id="groupImagePicSingleGroup" alt="alt" src={group.GroupImages[0].url}></img>
                 </div>
-                <div>
-                    <h1>{group.name}</h1>
-                    <NavLink to={`/groups/${groupId}/events/new`}>Temp Create Event</NavLink>
-                    <div>{`${group.city}, ${group.state}`}</div>
-                        {/* put the dot in its own div in all groups */}
-                    <div>{group.numMembers} &bull; {group.private ? "Private" : "Public"}</div>
-                    <div>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
-                    { showButton && joinButton }
-                    {/* { showButton && <button onClick={onClick}>Join this group</button> } */}
+                <div className="rightSectionSingleGroup">
+                    <div className="rightSectionSingleGroupTop">
+                        <div className="singleGroupName">{group.name}</div>
+                        {/* <NavLink to={`/groups/${groupId}/events/new`}>Temp Create Event</NavLink> */}
+                        <div className="singleGroupLocation">{`${group.city}, ${group.state}`}</div>
+                        <div className="singleGroupNumType">{group.numMembers === 0 ? 1 : group.numMembers} &bull; {group.private ? "Private" : "Public"}</div>
+                        <div className="singleGroupOrganizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
+                    </div>
+                    { showJoinButton && joinButton }
+                    { userIsOrganizer && manageButtons}
                 </div>
             </div>
 
@@ -132,14 +142,14 @@ export default function SingleGroup()
                                 <div>{`${ele.Group.city}, ${ele.Group.state}`}</div>
                             </div>
 
-                                {
+                                {/* {
                                 userIsOrganizer &&
                                     (<div>
                                         <button>Create Event</button>
                                         <button>Update</button>
                                         <button>Delete</button>
                                     </div>)
-                                }
+                                } */}
 
                         </div>
                     ))
