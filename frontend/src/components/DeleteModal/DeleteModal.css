@@ -1,0 +1,49 @@
+.deleteModalWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    gap: .75rem;
+}
+
+#confirm {
+    width: 80%;
+    margin-top: 1rem;
+
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.25rem;
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+}
+
+#youSure {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: .65rem;
+}
+
+.yesDelete {
+    background-color: red;
+    color:white;
+    border:2px solid black;
+    box-shadow:5px 5px 5px black;
+    height: 2rem;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.noDelete {
+    background-color: gray;
+    color:white;
+    border:2px solid black;
+    box-shadow:5px 5px 5px black;
+    height: 2rem;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+}

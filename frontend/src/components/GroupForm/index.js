@@ -10,6 +10,9 @@ export default function GroupForm({formType})
 {
     const create = (formType === "Create");
     //on updates, the singleGroup in the store holds current group data
+    //if user refreshes while on the update page, group is empty before useEffect runs
+    //and group.name, group.about etc are undefined, for project don't have to worry
+    //about not being guaranteed to have data in state from refresh/direct browser navigation
     const group = useSelector(state => state.groups.singleGroup);
     const [name, setName] = useState(create ? "" : group.name);
     const [about, setAbout] = useState(create ? "" : group.about);
