@@ -162,7 +162,7 @@ export default function EventForm()
                 <div className="eventFormSection">
                     <div className="subSection">
                         <div className="eventFormLabel">When does your event start?</div>
-                        <input type="text" name="startDate" placeholder="MM/DDYYYY HH:mm AM"
+                        <input type="text" name="startDate" placeholder="MM/DD/YYYY, HH/mm AM"
                             value={startDate} onChange={e => setStartDate(e.target.value)}
                             className="eventDateInput eventStartInput"
                         />
@@ -170,7 +170,7 @@ export default function EventForm()
 
                     <div className="subSection">
                         <div className="eventFormLabel">When does your event end?</div>
-                        <input type="text" name="endDate" placeholder="MM/DDYYYY HH:mm PM"
+                        <input type="text" name="endDate" placeholder="MM/DD/YYYY, HH/mm PM"
                             value={endDate} onChange={e => setEndDate(e.target.value)}
                             className="eventDateInput"
                         />
