@@ -11,9 +11,10 @@ export default function EventForm()
 
     const [name, setName] = useState("");
     const [type, setType] = useState("(select one)");
-    const [privatepublic, setPrivatePublic]  = useState("(select one)");
+    // const [privatepublic, setPrivatePublic]  = useState("(select one)");
     const [price, setPrice] = useState(0);
-    const [capacity, setCapacity] = useState(0);
+    //const [capacity, setCapacity] = useState(0);
+    const capacity = 100;
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [url, setUrl] = useState("");
@@ -44,12 +45,6 @@ export default function EventForm()
         if(!["Online", "In person"].includes(type))
         errors.type = "Group Type is required";
 
-        if(!["Private", "Public"].includes(privatepublic))
-        errors.privatepublic = "Visibility Type is required";
-
-        if(capacity === 0)
-        errors.capacity = "Capacity is required";
-
         if(startDate.length === 0)
         errors.startDate = "Event start is required";
 
@@ -63,7 +58,7 @@ export default function EventForm()
         if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
         setValidationErrors(errors);
-    }, [name, about, type, privatepublic, capacity, startDate, endDate,  url])
+    }, [name, about, type, capacity, startDate, endDate,  url])
 
     function reset()
     {
@@ -71,10 +66,8 @@ export default function EventForm()
         setName("");
         setAbout("");
         setPrice(0);
-        setCapacity("");
         setUrl("");
         setType("(select one)");
-        setPrivatePublic("(select one)");
 
         setDisplayErrors(false);
         setValidationErrors({});
@@ -94,17 +87,15 @@ export default function EventForm()
                 city: group.city,
                 state: group.state
             };
-            const priv = privatepublic === "Private" ? true : false;
-            const serverObject = await dispatch(thunkReceiveEvent(groupKey, priv, {
+            const serverObject = await dispatch(thunkReceiveEvent(groupKey, {
                 venueId: null,
                 name,
                 type,
-                capacity: Number(capacity),
+                capacity: Number(capacity),//capacity hardcoded for now
                 price: Number(price),
                 description: about,
                 startDate: new Date(startDate),
                 endDate: new Date(startDate),
-                //private: privatepublic === "Private" ? true : false,
                 url
             }));
             if(serverObject.errors === undefined)
@@ -119,9 +110,8 @@ export default function EventForm()
             setValidationErrors(serverObject.errors);
         }
     }
-
         //for now, adjust when adding links to this page (only available to logged in users)
-        if(sessionUser === null) return null;
+        if(sessionUser === null) return <div>unauthorized</div>;
         return (
             <form onSubmit={onSubmit} className="CreateEventForm">
                 <div>Create an event for {group.name} </div>
@@ -132,42 +122,25 @@ export default function EventForm()
                         value={name} onChange={e => setName(e.target.value)}
                     />
                     <div className="errors">
-                        {
+                    {
                         validationErrors.name !== undefined && displayErrors
                         && validationErrors.name
-                        }
+                    }
                     </div>
                 </div>
 
                 <div>
                     <div>Is this an in person or online group?</div>
                         <select value={type} onChange={e => setType(e.target.value)}>
-                            {/* //change to a default value that is not an option */}
                             <option>(select one)</option>
                             <option>Online</option>
                             <option>In person</option>
                         </select>
                     <div className="errors">
-                        {
+                    {
                         validationErrors.type !== undefined && displayErrors
                         && validationErrors.type
-                        }
-                    </div>
-                </div>
-
-                <div>
-                    <div>Is this group private or public?</div>
-                    <select value={privatepublic} onChange={e => setPrivatePublic(e.target.value)}>
-                        <option>(select one)</option>
-                        <option>Private</option>
-                        <option>Public</option>
-                    </select>
-
-                    <div className="errors">
-                        {
-                        validationErrors.privatepublic !== undefined && displayErrors
-                        && validationErrors.privatepublic
-                        }
+                    }
                     </div>
                 </div>
 
@@ -177,23 +150,10 @@ export default function EventForm()
                         value={price} onChange={e => setPrice(e.target.value)}
                     />
                     <div className="errors">
-                        {
+                    {
                         validationErrors.price !== undefined && displayErrors
                         && validationErrors.price
-                        }
-                    </div>
-                </div>
-
-                <div>
-                    <div>What is the capacity of your event?</div>
-                    <input type="text" name="capacity" placeholder="0"
-                        value={capacity} onChange={e => setCapacity(e.target.value)}
-                    />
-                    <div className="errors">
-                        {
-                        validationErrors.capacity !== undefined && displayErrors
-                        && validationErrors.capacity
-                        }
+                    }
                     </div>
                 </div>
 
@@ -203,10 +163,10 @@ export default function EventForm()
                         value={startDate} onChange={e => setStartDate(e.target.value)}
                     />
                     <div className="errors">
-                        {
+                    {
                         validationErrors.startDate !== undefined && displayErrors
                         && validationErrors.startDate
-                        }
+                    }
                     </div>
                 </div>
 
@@ -216,10 +176,10 @@ export default function EventForm()
                         value={endDate} onChange={e => setEndDate(e.target.value)}
                     />
                     <div className="errors">
-                        {
+                    {
                         validationErrors.endDate !== undefined && displayErrors
                         && validationErrors.endDate
-                        }
+                    }
                     </div>
                 </div>
 
@@ -242,10 +202,10 @@ export default function EventForm()
                         value={about} onChange={e => setAbout(e.target.value)}
                     />
                     <div className="errors">
-                        {
+                    {
                         validationErrors.about !== undefined && displayErrors
                         && validationErrors.about
-                        }
+                    }
                     </div>
                 </div>
 
