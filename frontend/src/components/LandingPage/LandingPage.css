@@ -1,0 +1,100 @@
+/*
+            section1 title and intro text on the left/infographic right
+            section2 subtitle and caption centered on the PAGE
+            section3 3cols  "See all groups", Find an event, Start a groups (enabled on log in)
+            section 4 join button centered horiz, not visible to signed in
+
+            {/* <div>LANDING PAGE!</div>
+            <NavLink exact to ="/groups">See all groups</NavLink>
+            <div>some space</div>
+            <NavLink exact to ="/events">See all events</NavLink>
+            <div>some space</div>
+            <NavLink exact to ="/groups/new">Create Group Test</NavLink>
+
+            {/* show the sign up button if viewer is not logged in
+            {/* {!sessionUser && signUpButton}
+
+*/
+
+.landingWrapper {
+    width: 80%;
+    margin: 3rem auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    gap: 3rem;
+}
+
+.sectionOne {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    height: 40vh;
+    border: 2px dashed blue;
+}
+.titleIntroText {
+    height: 100%;
+    width: 100%;
+}
+.infographicWrapper {
+    height: 100%;
+    width: 100%;
+}
+.infographicWrapper > img {
+    height: 100%;
+    width: 100%;
+}
+
+.sectionTwo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .3rem;
+
+    height: 4rem;
+
+}
+
+.sectionThree {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1.5rem;
+
+    height: 25vh;
+    border: 2px dashed red;
+}
+.sectionThreePart {
+    width: 20%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+}
+
+.sectionThreeImage {
+    width: 100%;
+    height: 60%;
+}
+.sectionThreeImage > img {
+    height: 100%;
+    width: 100%;
+}
+.nL {
+    font-size: .75rem;
+}
+.sectionThreeText {
+    font-size: .5rem;
+}
+
+.sectionFour {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    height: 4rem;
+}
