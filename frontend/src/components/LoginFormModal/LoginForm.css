@@ -10,14 +10,15 @@ form {
 }
 
 #loginSpan {
-    padding-top: 5px;
+    padding-top: 10px;
     margin-bottom: 12px;
+    font-size:20px;
 }
 
 #loginInputs > input {
     /*inside a div which takes up fill width of the form*/
     width: 90%;
-    height: 15px;
+    height: 30px;
     margin-bottom:10px;
     border:2px solid black;
     color: gray;
@@ -25,22 +26,22 @@ form {
 }
 /*login button either has class disabled or enabled*/
 
-.disabled {
+#loginButton {
+    height: 45px;
+    font-size: 13px;
+    width: 90%
+}
+
+#loginButton.disabled {
     background-color: white;
     color: gray;
-    font-size: 11px;
     border: 1px solid #CCCCCC;
-    width: 90%;
-    height: 30px;
     box-shadow:5px 5px 5px gray;
 }
-.enabled {
+#loginButton.enabled {
     background-color: red;
     color: white;
-    font-size: 11px;
     border: 1px solid black;
-    width: 90%;
-    height: 30px;
     box-shadow:5px 5px 5px black;
     cursor: pointer
 }
@@ -49,9 +50,9 @@ form {
     border: none;
     text-decoration: underline;
     margin-top: 10px;
-    padding-bottom: 15px;
+    padding-bottom: 25px;
     color: teal;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer
 }
 

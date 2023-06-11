@@ -7,38 +7,39 @@
 #signupSpan {
     margin-top: 15px;
     margin-bottom: 12px;
+    font-size: 20px;
 }
 
 #signupInputs > input {
     width: 90%;
-    height: 20px;
-    margin-bottom:5px;
+    height: 25px;
+    margin-bottom: .4rem;
     border:2px solid black;
     color: gray;
     background-color:#E8F0FE;
 }
 
-.disabled {
-    background-color: white;
-    color: gray;
-    font-size: 11px;
-    border: 1px solid #CCCCCC;
+#signUpButton {
+    margin-top: .4rem;
+    height: 45px;
+    font-size: 14px;
     width: 90%;
-    height: 30px;
-    box-shadow:5px 5px 5px gray;
-    margin-bottom:20px;
+    margin-bottom: 20px;
 }
 
-.enabled {
+#signUpButton.disabled {
+    background-color: white;
+    color: gray;
+    border: 1px solid #CCCCCC;
+    box-shadow:5px 5px 5px gray;
+}
+
+#signUpButton.enabled {
     background-color: red;
     color: white;
-    font-size: 11px;
     border: 1px solid black;
-    width: 90%;
-    height: 30px;
     box-shadow:5px 5px 5px black;
-    margin-bottom:20px;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .signupErrors {

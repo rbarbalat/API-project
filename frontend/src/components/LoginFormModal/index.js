@@ -59,6 +59,7 @@ function LoginFormModal() {
             }
           <input
             type="text"
+            id="credentialInput"
             placeholder={credential.length > 0 ? "" : "Username"}
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
@@ -66,6 +67,7 @@ function LoginFormModal() {
           />
           <input
             type="password"
+            id="passwordInput"
             placeholder={password.length > 0 ? "" : "Password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}

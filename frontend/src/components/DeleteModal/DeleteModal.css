@@ -4,6 +4,8 @@
     flex-direction: column;
     justify-content:space-between;
     gap: .75rem;
+    border:4px solid black;
+    border-radius:15px;
 }
 
 #confirm {
@@ -13,6 +15,7 @@
     margin-left: auto;
     margin-right: auto;
     font-size: 1.25rem;
+    font-weight: bold;
     display:flex;
     flex-direction:row;
     justify-content:center;
@@ -22,7 +25,8 @@
     width: 90%;
     margin-left: auto;
     margin-right: auto;
-    font-size: .65rem;
+    font-size: .75rem;
+    font-weight:bold;
 }
 
 .yesDelete {
@@ -30,7 +34,7 @@
     color:white;
     border:2px solid black;
     box-shadow:5px 5px 5px black;
-    height: 2rem;
+    height: 2.5rem;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
@@ -41,7 +45,7 @@
     color:white;
     border:2px solid black;
     box-shadow:5px 5px 5px black;
-    height: 2rem;
+    height: 2.5rem;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
