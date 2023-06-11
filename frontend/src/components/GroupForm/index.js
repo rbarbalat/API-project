@@ -222,7 +222,7 @@ export default function GroupForm({formType})
                     <div className="formLabel"> People will this when we promote your group, but you'll be able to add to it later</div>
                     <ol>
                         <li>What's the purpose of your group?</li>
-                        <li>Who sould join?</li>
+                        <li>Who should join?</li>
                         <li>What will you do at your events??</li>
                     </ol>
 

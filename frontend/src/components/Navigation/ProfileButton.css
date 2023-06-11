@@ -3,7 +3,7 @@ containing the favicon*/
 #containsFavicon {
     border: none;
     height: 100%;
-    width: 100%;
+    /* removed width*/
     cursor: pointer
 }
 /*needs to be adjusted along with
@@ -14,7 +14,8 @@ changes to dimensions of headerRightProfile*/
     right:20px;
 }
 
-ul {
+/* change this .profile-dropdown*/
+.profile-dropdown {
     /* width: 150px; */
     width: fit-content;
     border:2px solid black;
