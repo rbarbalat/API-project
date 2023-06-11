@@ -148,19 +148,19 @@ export default function GroupForm({formType})
 
     const urlSection = create ?
     ( <div>
-        <div>Please add in image url for your group below:</div>
-        <input type="text" name="url" placeholder="https://somewhere.com/image.gif"
+        <div className="urlLabel">Please add in image url for your group below:</div>
+        <input className="urlInput" type="text" name="url" placeholder="Image Url"
             value={url} onChange={e => setUrl(e.target.value)}
         />
-        <div className="errors">
-            {
+        <p className="errors">
+        {
             validationErrors.url !== undefined && displayErrors
             && validationErrors.url
-            }
-        </div>
+        }
+        </p>
     </div>)
     :
-    (<div></div>)
+    (<div></div>);
 
     //for now, adjust when adding links to this page (only available to logged in users)
     if(sessionUser === null) return null;
@@ -174,21 +174,21 @@ export default function GroupForm({formType})
                     <input type="text" name="city" placeholder="City"
                         value={city} onChange={e => setCity(e.target.value)}
                     />
-                    <div className="errors">
+                    <p className="errors">
                     {
                         validationErrors.city !== undefined && displayErrors
                         && validationErrors.city
                     }
-                    </div>
+                    </p>
                     <input type="text" name="state" placeholder="State"
                         value={state} onChange={e => setState(e.target.value)}
                     />
-                    <div className="errors">
+                    <p className="errors">
                     {
                         validationErrors.state !== undefined && displayErrors
                         && validationErrors.state
                     }
-                    </div>
+                    </p>
                 </div>
 
                 <div className="groupFormName formSection">
@@ -217,45 +217,44 @@ export default function GroupForm({formType})
                     <textarea type="text" name="about" placeholder="Please write at least 30 characters?"
                         value={about} onChange={e => setAbout(e.target.value)}
                     />
-                    <div className="errors">
+                    <p className="errors">
                     {
                         validationErrors.about !== undefined && displayErrors
                         && validationErrors.about
                     }
-                    </div>
+                    </p>
                 </div>
 
                 <div className="groupFormBottom formSection">
                     <div id="Final" className="formSectionHeader">Final Steps...</div>
 
-                    <div id="setTypeDes">Is this an in person or online group?</div>
+                    <div className="formLabelBottom">Is this an in person or online group?</div>
                     <select value={type} onChange={e => setType(e.target.value)}>
-                    {/* //change to a default value that is not an option */}
                         <option>(select one)</option>
                         <option>Online</option>
                         <option>In person</option>
                     </select>
 
-                    <div className="errors">
+                    <p className="errors typeVis">
                     {
                         validationErrors.type !== undefined && displayErrors
                         && validationErrors.type
                     }
-                    </div>
+                    </p>
 
-                    <div id="setVisDes">Is this group private or public?</div>
+                    <div className="formLabelBottom">Is this group private or public?</div>
                     <select value={privatepublic} onChange={e => setPrivatePublic(e.target.value)}>
                         <option>(select one)</option>
                         <option>Private</option>
                         <option>Public</option>
                     </select>
 
-                    <div className="errors">
+                    <p className="errors typeVis">
                     {
                         validationErrors.privatepublic !== undefined && displayErrors
                         && validationErrors.privatepublic
                     }
-                    </div>
+                    </p>
 
                     {urlSection}
 
