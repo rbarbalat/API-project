@@ -3,6 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./GroupForm.css";
 import { thunkReceiveGroup } from "../../store/groups";
+import { thunkLoadSingleGroup } from "../../store/groups.js";
 
 
 export default function GroupForm({formType})
@@ -25,6 +26,13 @@ export default function GroupForm({formType})
     const dispatch = useDispatch();
 
     const sessionUser = useSelector((state) => state.session.user);
+
+    //when user linked from the group details page so has info by default,
+    //but if refreshes loses the info
+    useEffect( () => {
+        if(Object.keys(group).length === 0 && !create)
+        dispatch(thunkLoadSingleGroup(groupId))
+    }, [])
 
     //const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
     useEffect(() => {
@@ -163,7 +171,8 @@ export default function GroupForm({formType})
     (<div></div>);
 
     //for now, adjust when adding links to this page (only available to logged in users)
-    if(sessionUser === null) return null;
+    if(sessionUser === null) return <div>unauthorized</div>;
+    if(Object.keys(group).length === 0 && !create) return <div>loading</div>;
     return (
         <form onSubmit={onSubmit} className={formType === "create" ? "createGroupForm" : "editGroupForm"}>
             <div className="groupFormWrapper">
@@ -260,7 +269,7 @@ export default function GroupForm({formType})
 
                 </div>
 
-                <div id="groupFormButton" className="formSection">
+                <div className="groupFormButton formSection">
                     <button type="submit"> {create ? "Create Group" : "Update Group"}</button>
                 </div>
 
