@@ -172,8 +172,10 @@ export default function SingleGroup()
                                         <div className="groupEventInfoContainer">
                                             <div className="groupEventDateTime">
                                                 <span>{`${ele.startDate.slice(0,10)} `}</span>
+                                                {/* <span>{`${ele.startDate}`}</span> */}
                                                 <span>&bull;</span>
                                                 <span>{` ${ele.startDate.slice(10)}`}</span>
+                                                {/* <span>{` ${ele.startDate}`}</span> */}
                                             </div>
                                             <div className="groupEventName">{ele.name}</div>
                                             <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>

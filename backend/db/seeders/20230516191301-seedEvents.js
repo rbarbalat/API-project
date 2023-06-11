@@ -50,8 +50,8 @@ const arr =
     type: "In person",
     capacity: 35,
     price: 5.84,
-    startDate: new Date("2090-05-19 05:22" + "UTC"),
-    endDate: new Date("2090-05-19 09:47" + "UTC")
+    startDate: new Date(new Date("2090-05-19 05:37").toString() + "UTC"),
+    endDate: new Date(new Date("2090-05-21 15:41").toString() + "UTC")
   },
   {
     groupId: 3,//matched to venueid 5 in venue seeder
