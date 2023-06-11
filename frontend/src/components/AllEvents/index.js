@@ -36,7 +36,7 @@ export default function AllEvents()
                     <span id="EventsSpan">Events</span>
                     <NavLink id="linkToGroupsFromEvents" to="/groups">Groups</NavLink>
                 </div>
-                <div id="eventsInMeetup">Events in Meetup</div>
+                <div id="eventsInMeetup">Events in FourLegsGood</div>
             </div>
             <div className="allEventsContainer">
                 {

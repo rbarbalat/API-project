@@ -123,6 +123,8 @@
 
 .grayBottom {
     background-color: #eeedf2;
+    /*for the background to extend even if no content*/
+    min-height: 800px;
 }
 
 .upComingWrapper {

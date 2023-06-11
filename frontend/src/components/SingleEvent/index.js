@@ -53,6 +53,7 @@ export default function SingleEvent()
     if( eventIsNotEmpty === false || groupIsNotEmpty === false) return <div>loading</div>
     return (
         <>
+    {/* <div className="testBackGround"> */}
         <div className='singleEventHeader'>
             <div>
                 <i id="singleEventLessThanSign" className="fa-light fa-less-than"></i>
@@ -62,7 +63,7 @@ export default function SingleEvent()
             <div id="singleEventHost">Hosted by {group.Organizer.firstName} {group.Organizer.lastName}</div>
         </div>
 
-<div className="testBackGround">
+<div className="backGroundSingleEvent">
 
         <div className="middleSingleEvent">
                 <div className="eventImage">

@@ -182,7 +182,7 @@ export default function GroupForm({formType})
                 {topSection}
                 <div className="groupFormLocation formSection">
                     <div id="setLocation" className="formSectionHeader">First, set your group's location</div>
-                    <div className="formLabel">Meetup groups meet locally, in person and online.  We'll connect you with people in your area, and more can join you online</div>
+                    <div className="formLabel">FourLegsGood groups meet locally, in person and online.  We'll connect you with people in your area, and more can join you online</div>
                     <input type="text" name="city" placeholder="City"
                         value={city} onChange={e => setCity(e.target.value)}
                     />

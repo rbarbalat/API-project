@@ -8,6 +8,7 @@
     justify-content: space-between;
     height: 5rem;
     margin-top: 3rem;
+    background-color:white;
 
 }
 #singleEventLinkToEvents {
@@ -157,6 +158,9 @@
     overflow: scroll;
 }
 
-.testBackGround {
+.backGroundSingleEvent {
+    /*make the gray background extend to the bottom even if no content*/
+    min-height:800px;
     background-color: #eeedf2;
+    margin: 0 auto;
 }
