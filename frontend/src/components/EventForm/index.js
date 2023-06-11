@@ -114,102 +114,120 @@ export default function EventForm()
         if(sessionUser === null) return <div>unauthorized</div>;
         return (
             <form onSubmit={onSubmit} className="CreateEventForm">
-                <div>Create an event for {group.name} </div>
+            <div className="eventFormWrapper">
 
-                <div>
-                    <div>What is the name of your event?</div>
-                    <input type="text" name="about" placeholder="Event Name"
-                        value={name} onChange={e => setName(e.target.value)}
-                    />
-                    <div className="errors">
-                    {
-                        validationErrors.name !== undefined && displayErrors
-                        && validationErrors.name
-                    }
-                    </div>
+                <div className="eventFormHeader">Create an event for {group.name} </div>
+
+                <div className="eventFormNameSection">
+                        <div className="eventFormLabel">What is the name of your event?</div>
+                        <input type="text" name="about" placeholder="Event Name"
+                            value={name} onChange={e => setName(e.target.value)}
+                            className="eventNameInput"
+                        />
+                        <p className="errors">
+                        {
+                            validationErrors.name !== undefined && displayErrors
+                            && validationErrors.name
+                        }
+                        </p>
                 </div>
 
-                <div>
-                    <div>Is this an in person or online group?</div>
+                <div className="eventFormSection">
+                    <div className="subSection">
+                        <div className="eventFormLabel">Is this an in person or online group?</div>
                         <select value={type} onChange={e => setType(e.target.value)}>
                             <option>(select one)</option>
                             <option>Online</option>
                             <option>In person</option>
                         </select>
-                    <div className="errors">
-                    {
-                        validationErrors.type !== undefined && displayErrors
-                        && validationErrors.type
-                    }
+                        <p className="errors">
+                        {
+                            validationErrors.type !== undefined && displayErrors
+                            && validationErrors.type
+                        }
+                        </p>
+                    </div>
+
+                    <div className="subSection">
+                        <div className="eventFormLabel">What is the price of your event?</div>
+                        <input type="text" name="price" placeholder="0"
+                            value={price} onChange={e => setPrice(e.target.value)}
+                            className="eventPriceInput"
+                        />
+                        <p className="errors">
+                        {
+                            validationErrors.price !== undefined && displayErrors
+                            && validationErrors.price
+                        }
+                        </p>
+                    </div>
+
+                </div>
+
+                <div className="eventFormSection">
+                    <div className="subSection">
+                        <div className="eventFormLabel">When does your event start?</div>
+                        <input type="text" name="startDate" placeholder="MM/DDYYYY HH:mm AM"
+                            value={startDate} onChange={e => setStartDate(e.target.value)}
+                            className="eventDateInput"
+                        />
+                        <p className="errors">
+                        {
+                            validationErrors.startDate !== undefined && displayErrors
+                            && validationErrors.startDate
+                        }
+                        </p>
+                    </div>
+
+                    <div className="subSection">
+                        <div className="eventFormLabel">When does your event end?</div>
+                        <input type="text" name="endDate" placeholder="MM/DDYYYY HH:mm PM"
+                            value={endDate} onChange={e => setEndDate(e.target.value)}
+                            className="eventDateInput"
+                        />
+                        <p className="errors">
+                        {
+                            validationErrors.endDate !== undefined && displayErrors
+                            && validationErrors.endDate
+                        }
+                        </p>
                     </div>
                 </div>
 
-                <div>
-                    <div>What is the price of your event?</div>
-                    <input type="text" name="price" placeholder="0"
-                        value={price} onChange={e => setPrice(e.target.value)}
-                    />
-                    <div className="errors">
-                    {
-                        validationErrors.price !== undefined && displayErrors
-                        && validationErrors.price
-                    }
+                <div className="eventFormSection">
+                    <div className="subSection">
+                        <div className="eventFormLabel">Please add in image url for your event below:</div>
+                        <input type="text" name="url" placeholder="Image URL"
+                            value={url} onChange={e => setUrl(e.target.value)}
+                            className="eventUrlInput"
+                        />
+                        <p className="errors">
+                        {
+                            validationErrors.url !== undefined && displayErrors
+                            && validationErrors.url
+                        }
+                        </p>
                     </div>
                 </div>
 
-                <div>
-                    <div>When does your event start?</div>
-                    <input type="text" name="startDate" placeholder="MM/DDYYYY HH:mm AM"
-                        value={startDate} onChange={e => setStartDate(e.target.value)}
-                    />
-                    <div className="errors">
-                    {
-                        validationErrors.startDate !== undefined && displayErrors
-                        && validationErrors.startDate
-                    }
-                    </div>
-                </div>
-
-                <div>
-                    <div>When does your event end?</div>
-                    <input type="text" name="endDate" placeholder="MM/DDYYYY HH:mm PM"
-                        value={endDate} onChange={e => setEndDate(e.target.value)}
-                    />
-                    <div className="errors">
-                    {
-                        validationErrors.endDate !== undefined && displayErrors
-                        && validationErrors.endDate
-                    }
-                    </div>
-                </div>
-
-                <div>
-                    <div>Please add in image url for your event below:</div>
-                    <input type="text" name="url" placeholder="Image URL"
-                        value={url} onChange={e => setUrl(e.target.value)}
-                    />
-                    <div className="errors">
-                    {
-                        validationErrors.url !== undefined && displayErrors
-                        && validationErrors.url
-                    }
-                    </div>
-                </div>
-
-                <div>
-                    <div>Please describe your event:</div>
-                    <textarea type="text" name="about" placeholder="Please include at least 30 characters?"
-                        value={about} onChange={e => setAbout(e.target.value)}
-                    />
-                    <div className="errors">
-                    {
-                        validationErrors.about !== undefined && displayErrors
-                        && validationErrors.about
-                    }
+                <div className="eventFormSection">
+                    <div className="subSection">
+                        <div className="eventFormLabel">Please describe your event:</div>
+                        <textarea type="text" name="about" placeholder="Please include at least 30 characters?"
+                            value={about} onChange={e => setAbout(e.target.value)}
+                        />
+                        <p className="errors">
+                        {
+                            validationErrors.about !== undefined && displayErrors
+                            && validationErrors.about
+                        }
+                        </p>
                     </div>
                 </div>
 
                 <button type="submit">Create Event</button>
+
+            </div>
             </form>
           );
 

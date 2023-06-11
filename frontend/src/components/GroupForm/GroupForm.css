@@ -47,7 +47,7 @@
     font-weight: bold;
     margin-bottom:0;
 }
-input {
+.groupFormWrapper input {
     width: 40%;
     height: 1.5rem;
     margin-top: 1rem;
@@ -58,7 +58,7 @@ input {
 .urlInput {
     margin-top: .2rem;
 }
-textarea {
+.groupFormWrapper textarea {
     width: 40%;
     height: 8rem;
     background-color: lightskyblue;
@@ -66,7 +66,7 @@ textarea {
     color:gray;
     background-color:#E8F0FE;
 }
-select {
+.groupFormWrapper select {
     color:gray;
     background-color:#E8F0FE;
     width: 15%;
