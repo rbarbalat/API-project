@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
+import { useHistory } from "react-router-dom";
 
 //current
 function SignupFormModal() {
@@ -16,6 +17,7 @@ function SignupFormModal() {
   const [disabled, setDisabled] = useState(true);
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,6 +33,7 @@ function SignupFormModal() {
         })
       )
         .then(closeModal)
+        .then(() => history.push("/"))
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) {
