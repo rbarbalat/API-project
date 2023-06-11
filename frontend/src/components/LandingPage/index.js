@@ -9,7 +9,7 @@ export default function LandingPage()
     const sessionUser = useSelector((state) => state.session.user);
     const signUpButton = (
         <div>
-            <OpenModalButton id="signup" buttonText="Join Meetup"
+            <OpenModalButton id="signUpLanding" buttonText="Join FourLegsGood"
                 modalComponent={<SignupFormModal/>} />
         </div>
                         );
