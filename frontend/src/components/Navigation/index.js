@@ -40,7 +40,7 @@ function Navigation({ isLoaded }) {
     <div className="header">
       <div>
         <NavLink id="MeetUp" exact to="/">
-          MeetUp
+          FourLegsGood
         </NavLink>
       </div>
         {isLoaded && sessionLinks}

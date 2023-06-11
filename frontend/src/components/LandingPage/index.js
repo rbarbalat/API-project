@@ -9,7 +9,7 @@ export default function LandingPage()
     const sessionUser = useSelector((state) => state.session.user);
     const signUpButton = (
         <div>
-            <OpenModalButton id="signup" buttonText="Sign Up"
+            <OpenModalButton id="signup" buttonText="Join Meetup"
                 modalComponent={<SignupFormModal/>} />
         </div>
                         );
@@ -18,67 +18,71 @@ export default function LandingPage()
 
                 <div className="sectionOne">
                     <div className="titleIntroText">
-                        {/* maybe 3 divs here for 3 lines? */}
-                        <div className="landingTitle">
-                            The animal platform-- Where interests
-                            become friendships
+                        <div>
+                            <div className="bigTitle">The animal platform</div>
+                            <div className="bigTitle">Where interests</div>
+                            <div className="bigTitle">become friendships</div>
                         </div>
                         <div className="landingIntroText">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                                Whatever your interest, from chewing on shoes and drinking from the toilet bowl to running around and barking there are thousands who share it on DogUp.
                         </div>
                     </div>
                     <div className="infographicWrapper">
-                        <img className="infographic" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Walking_tiger_female.jpg"alt="infographic"></img>
+                        <img className="infographic" src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Social_Network_Analysis_Visualization.png" alt="infographic"></img>
                     </div>
                 </div>
 
                 <div className="sectionTwo">
-                    <div className="landingSubtitle">How meetup works</div>
-                    <div className="landingCaption">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, se
-                    </div>
+                    <div className="landingSubTitle">How FourLegsGood works</div>
+                    <div className="landingCaption">Our basic idea is TwoLegsBad.</div>
+                    <div className="landingCaption">Everything follows from that.</div>
                 </div>
 
                 <div className="sectionThree">
 
                     <div className="sectionThreePart">
                         <div className="sectionThreeImage">
-                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Walking_tiger_female.jpg"></img>
+                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/German_Shepherd_-_DSC_0346_%2810096362833%29.jpg"></img>
                         </div>
                         <div className="sectionThreeLink">
                             <NavLink className="nL" exact to="/groups">See all groups</NavLink>
                         </div>
                         <div>
                             <div className="sectionThreeText">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, se
+                                There is almost a group for everything!  And it is easy to find it here.
                             </div>
                         </div>
                     </div>
 
                     <div className="sectionThreePart">
                         <div className="sectionThreeImage">
-                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Walking_tiger_female.jpg"></img>
+                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_Retriever_Dukedestiny01_drvd.jpg"></img>
                         </div>
                         <div className="sectionThreeLink">
                             <NavLink className="nL" exact to="/events">Find an event</NavLink>
                         </div>
                         <div>
                             <div className="sectionThreeText">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, se
+                                No matter the location, date or time we have something for you.
                             </div>
                         </div>
                     </div>
 
                     <div className="sectionThreePart">
                         <div className="sectionThreeImage">
-                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Walking_tiger_female.jpg"></img>
+                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/1/18/Samojed00.jpg"></img>
                         </div>
                         <div className="sectionThreeLink">
+                        {
+                            sessionUser ?
                             <NavLink className="nL" exact to="/groups/new">Start a new group</NavLink>
+                            :
+                            <span className="disabledNavLink">Start a new group</span>
+                        }
                         </div>
                         <div>
                             <div className="sectionThreeText">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, se
+                                The organizers are the ones who make this place work!
                             </div>
                         </div>
                     </div>
