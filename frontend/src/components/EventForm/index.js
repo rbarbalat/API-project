@@ -38,6 +38,9 @@ export default function EventForm()
         if(name.length === 0)
         errors.name = "Name is required";
 
+        if(price.length === 0 || Number(price) < 0)
+        errors.price = "Price is required";
+
         //the backend validation is < 50, need to change backend?
         if(about.length < 30)
         errors.about = "Description must be at least 30 characters long";
@@ -58,7 +61,7 @@ export default function EventForm()
         if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
         setValidationErrors(errors);
-    }, [name, about, type, capacity, startDate, endDate,  url])
+    }, [name, about, type, price, startDate, endDate,  url])
 
     function reset()
     {
@@ -115,6 +118,13 @@ export default function EventForm()
         return (
             <form onSubmit={onSubmit} className="CreateEventForm">
             <div className="eventFormWrapper">
+                {validationErrors.name && displayErrors && <div className="errors">{validationErrors.name}</div>}
+                {validationErrors.type && displayErrors && <div className="errors">{validationErrors.type}</div>}
+                {validationErrors.price && displayErrors && <div className="errors">{validationErrors.price}</div>}
+                {validationErrors.startDate && displayErrors && <div className="errors">{validationErrors.startDate}</div>}
+                {validationErrors.endDate && displayErrors && <div className="errors">{validationErrors.endDate}</div>}
+                {validationErrors.url && displayErrors && <div className="errors">{validationErrors.url}</div>}
+                {validationErrors.about && displayErrors && <div className="errors">{validationErrors.about}</div>}
 
                 <div className="eventFormHeader">Create an event for {group.name} </div>
 
@@ -124,12 +134,6 @@ export default function EventForm()
                             value={name} onChange={e => setName(e.target.value)}
                             className="eventNameInput"
                         />
-                        <p className="errors">
-                        {
-                            validationErrors.name !== undefined && displayErrors
-                            && validationErrors.name
-                        }
-                        </p>
                 </div>
 
                 <div className="eventFormSection">
@@ -140,26 +144,17 @@ export default function EventForm()
                             <option>Online</option>
                             <option>In person</option>
                         </select>
-                        <p className="errors">
-                        {
-                            validationErrors.type !== undefined && displayErrors
-                            && validationErrors.type
-                        }
-                        </p>
                     </div>
 
                     <div className="subSection">
                         <div className="eventFormLabel">What is the price of your event?</div>
-                        <input type="text" name="price" placeholder="0"
-                            value={price} onChange={e => setPrice(e.target.value)}
-                            className="eventPriceInput"
-                        />
-                        <p className="errors">
-                        {
-                            validationErrors.price !== undefined && displayErrors
-                            && validationErrors.price
-                        }
-                        </p>
+                        <div className="inputAndIcon">
+                            {/* <i id="eventDollar" className="fa-solid fa-dollar-sign"></i> */}
+                            <input type="text" name="price" placeholder="0"
+                                value={price} onChange={e => setPrice(e.target.value)}
+                                className="eventPriceInput"
+                            />
+                        </div>
                     </div>
 
                 </div>
@@ -169,14 +164,8 @@ export default function EventForm()
                         <div className="eventFormLabel">When does your event start?</div>
                         <input type="text" name="startDate" placeholder="MM/DDYYYY HH:mm AM"
                             value={startDate} onChange={e => setStartDate(e.target.value)}
-                            className="eventDateInput"
+                            className="eventDateInput eventStartInput"
                         />
-                        <p className="errors">
-                        {
-                            validationErrors.startDate !== undefined && displayErrors
-                            && validationErrors.startDate
-                        }
-                        </p>
                     </div>
 
                     <div className="subSection">
@@ -185,12 +174,6 @@ export default function EventForm()
                             value={endDate} onChange={e => setEndDate(e.target.value)}
                             className="eventDateInput"
                         />
-                        <p className="errors">
-                        {
-                            validationErrors.endDate !== undefined && displayErrors
-                            && validationErrors.endDate
-                        }
-                        </p>
                     </div>
                 </div>
 
@@ -201,12 +184,6 @@ export default function EventForm()
                             value={url} onChange={e => setUrl(e.target.value)}
                             className="eventUrlInput"
                         />
-                        <p className="errors">
-                        {
-                            validationErrors.url !== undefined && displayErrors
-                            && validationErrors.url
-                        }
-                        </p>
                     </div>
                 </div>
 
@@ -216,12 +193,6 @@ export default function EventForm()
                         <textarea type="text" name="about" placeholder="Please include at least 30 characters?"
                             value={about} onChange={e => setAbout(e.target.value)}
                         />
-                        <p className="errors">
-                        {
-                            validationErrors.about !== undefined && displayErrors
-                            && validationErrors.about
-                        }
-                        </p>
                     </div>
                 </div>
 

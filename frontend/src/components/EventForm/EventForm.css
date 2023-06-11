@@ -1,8 +1,16 @@
-.errors {
+.eventFormWrapper .errors {
     color: red;
     font-size: .75rem;
-    margin-bottom:0;
-    padding-bottom:0;
+    margin: 0;
+    padding: 0;
+}
+
+.eventStartInput {
+    margin-bottom: 1.25rem;
+}
+
+.eventFormWrapper select {
+    margin-bottom: 1.25rem;
 }
 
 .eventFormWrapper {
@@ -43,6 +51,19 @@
 .eventPriceInput {
     width: 14%;
 }
+.eventPriceInput::placeholder {
+    text-align: right;
+}
+/* .inputAndIcon {
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items:center;
+}
+.inputAndIcon > i {
+    padding-left:10px;
+    padding-right:5px;
+} */
 .eventDateInput {
     width: 32%;
 }
