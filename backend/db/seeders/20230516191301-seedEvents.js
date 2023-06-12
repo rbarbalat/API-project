@@ -56,7 +56,7 @@ const arr =
   {
     groupId: 3,//matched to venueid 5 in venue seeder
     //allow null venues, try a second event for it w/ null venue
-    name: "Swim Lessos",
+    name: "Swim Lessons",
     description: "Are you terrified of the water?  Join this group for a gentle introduction to the world of water.  Get comfortable in the pool or the ocean in no time.",
     type: "Online",
     capacity: 20,

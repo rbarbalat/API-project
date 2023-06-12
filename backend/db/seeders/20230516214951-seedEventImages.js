@@ -11,27 +11,27 @@ const arr =
 [
   {
     eventId: 1,
-    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/EventSight/new-york-city-sunset-skyline-river.jpg",
+    url: "https://upload.wikimedia.org/wikipedia/commons/1/1f/Chinese_Crested_hairless_agility.jpg",
     preview: true
   },
   {
     eventId: 2,
-    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/MyReads/sample-book-photo-1.png",
+    url: "https://upload.wikimedia.org/wikipedia/commons/b/b6/US_Navy_040807-N-0331L-002_Rudy_Hutchinson_and_Susan_Frank_are_led_by_cadaver_dog%2C_Tucker_during_the_recovery_of_a_Navy_P-2V_Neptune_aircraft_that_crashed_over_Greenland_in_1962.jpg",
     preview: true
   },
   {
     eventId: 3,
-    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/MyReads/sample-book-photo-2.png",
+    url: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Hearing_dog%2C_2011.jpg",
     preview: true
   },
   {
     eventId: 4,
-    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/EventSight/new-york-city-brooklyn-bridge-river.jpg",
+    url: "https://upload.wikimedia.org/wikipedia/commons/c/c7/U.S._Air_Force_military_working_dog_Jackson_sits_on_a_U.S._Army_M2A3_Bradley_Fighting_Vehicle_before_heading_out_on_a_mission_in_Kahn_Bani_Sahd%2C_Iraq%2C_Feb._13%2C_2007.jpg",
     preview: true
   },
   {
     eventId: 5,
-    url: "https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-07/EventSight/new-york-manhattan-city-street-yellow-cabs.jpg",
+    url: "https://upload.wikimedia.org/wikipedia/commons/9/93/20060128DalmenyOtto_002.jpg",
     preview: true
   }
 ];
