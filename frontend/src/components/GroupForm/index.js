@@ -68,6 +68,9 @@ export default function GroupForm({formType})
 
         if(!validEnding && create) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
+        if(url.trim().length === 0)
+        errors.url = "Url is required";
+
         setValidationErrors(errors);
     }, [name, about, type, privatepublic, city, state, url, create])
 

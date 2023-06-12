@@ -11,7 +11,7 @@ export default function EventForm()
 
     const [name, setName] = useState("");
     const [type, setType] = useState("(select one)");
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState("");
     const capacity = 100;
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -50,17 +50,20 @@ export default function EventForm()
     useEffect(() => {
         const errors = {};
 
-        if(name.length === 0)
+        if(name.trim().length === 0)
         errors.name = "Name is required";
 
-        if(price.length === 0)
+        if(Number(price) < 0)
+        errors.price = "Price can't be lower than zero";
+
+        if(Number(price) != price)
+        errors.price = "Price must be a number";
+
+        if(price.trim().length === 0)
         errors.price = "Price is required";
 
-        if(Number(price) < 0)
-        errors.price = "Price can't be lower than zero"
-
         //the backend validation is < 50, need to change backend?
-        if(about.length < 30)
+        if(about.trim().length < 30)
         errors.about = "Description must be at least 30 characters long";
 
         if(!["Online", "In person"].includes(type))
@@ -83,6 +86,7 @@ export default function EventForm()
 
         AMPM = endDate.slice(-3);
         let end = reformatDateString(endDate);
+        //valid end before accounting for something > 12 like 16:00 AM
         const validEnd = new Date(end).toString();
         if(validEnd === "Invalid Date" || (AMPM !== " AM" && AMPM !== " PM"))
         {
@@ -95,6 +99,9 @@ export default function EventForm()
         url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
         validEnding = true : validEnding = false;
         if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
+
+        if(url.trim().length === 0)
+        errors.url = "Image Url is required";
 
         setValidationErrors(errors);
     }, [name, about, type, price, startDate, endDate,  url])
