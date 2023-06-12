@@ -82,8 +82,8 @@ export default function SingleEvent()
                         <div className="dateTimeSectionSingleEvent">
                             <i className="fa-regular fa-clock"></i>
                             <div>
-                                <div>START {event.startDate.slice(0,10)} &bull; {event.startDate.slice(11, -1)}</div>
-                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {event.endDate.slice(11, -1)}</div>
+                                <div>START {event.startDate.slice(0,10)} &bull; {event.startDate.slice(11, 16)}</div>
+                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {event.endDate.slice(11, 16)}</div>
                             </div>
                         </div>
                         <div className="priceSectionSingleEvent">

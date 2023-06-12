@@ -18,6 +18,7 @@ export default function AllEvents()
     pastEvents.sort((a,b) => {
         return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
     });
+    events = [...upcomingEvents, ...pastEvents];
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -57,7 +58,7 @@ export default function AllEvents()
                                     <div className="EventDateTime">
                                         <span>{`${ele.startDate.slice(0,10)} `}</span>
                                         <span>&bull;</span>
-                                        <span>{` ${ele.startDate.slice(10)}`}</span>
+                                        <span>{` ${ele.startDate.slice(11, 16)}`}</span>
                                     </div>
                                     <div className="eventName">{ele.name}</div>
                                     <div className="eventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
