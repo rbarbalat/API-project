@@ -97,8 +97,8 @@ export default function EventForm()
                 capacity: Number(capacity),//capacity hardcoded for now
                 price: Number(price),
                 description: about,
-                startDate: new Date(startDate),
-                endDate: new Date(startDate),
+                startDate: new Date(new Date(startDate) + "UTC"),
+                endDate: new Date(new Date(endDate) + "UTC"),
                 url
             }));
             if(serverObject.errors === undefined)

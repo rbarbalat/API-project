@@ -19,7 +19,7 @@ export default function LandingPage()
                 <div className="sectionOne">
                     <div className="titleIntroText">
                         <div>
-                            <div className="bigTitle">The animal platform</div>
+                            <div className="bigTitle">The animal network</div>
                             <div className="bigTitle">Where interests</div>
                             <div className="bigTitle">become friendships</div>
                         </div>
