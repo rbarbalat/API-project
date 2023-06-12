@@ -11,9 +11,7 @@ export default function EventForm()
 
     const [name, setName] = useState("");
     const [type, setType] = useState("(select one)");
-    // const [privatepublic, setPrivatePublic]  = useState("(select one)");
     const [price, setPrice] = useState(0);
-    //const [capacity, setCapacity] = useState(0);
     const capacity = 100;
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -38,8 +36,11 @@ export default function EventForm()
         if(name.length === 0)
         errors.name = "Name is required";
 
-        if(price.length === 0 || Number(price) < 0)
+        if(price.length === 0)
         errors.price = "Price is required";
+
+        if(Number(price) < 0)
+        errors.price = "Price can't be lower than zero"
 
         //the backend validation is < 50, need to change backend?
         if(about.length < 30)
@@ -48,11 +49,11 @@ export default function EventForm()
         if(!["Online", "In person"].includes(type))
         errors.type = "Group Type is required";
 
-        if(startDate.length === 0)
-        errors.startDate = "Event start is required";
+        if(startDate.length !== 17 )
+        errors.startDate = "Event start is invalid";
 
-        if(endDate.length === 0)
-        errors.endDate = "Event end is required";
+        if(endDate.length != 17)
+        errors.endDate = "Event end is invalid";
 
         let validEnding = false;
         url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
