@@ -30,6 +30,23 @@ export default function EventForm()
     const sessionUser = useSelector((state) => state.session.user);
 
     //const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
+
+    //input format is MM/DD/YYYY, HH/mm AM(orPM)
+    //converting MM/DD/YYYY, HH/mm where HH is from 00 to 24
+    function reformatDateString(date)
+    {
+        let AMPM = date.slice(-3);
+        let newDate = date.slice(0, -3); //remove space and AM or PM
+        newDate = newDate.slice(0,-3) + ":" + newDate.slice(-2);//replace slash with :
+        return newDate;
+    }
+    function adjustForPM(date)
+    {
+        let hour = String(Number(date.slice(11,13)) + 12);
+        let newDate = date.slice(0, 11) + hour +  date.slice(13);
+        return newDate;
+    }
+
     useEffect(() => {
         const errors = {};
 
@@ -49,16 +66,34 @@ export default function EventForm()
         if(!["Online", "In person"].includes(type))
         errors.type = "Group Type is required";
 
-        if(startDate.length !== 17 )
-        errors.startDate = "Event start is invalid";
+        //input format is MM/DD/YYYY, HH/mm AM(orPM)
+        //convert into acceptable format, if it becomes an invalid
+        //Date object then didn't start with the right format
 
-        if(endDate.length != 17)
-        errors.endDate = "Event end is invalid";
+        let AMPM = startDate.slice(-3);
+        let start = reformatDateString(startDate);
+        const validStart = new Date(start).toString();
+        if(validStart === "Invalid Date" || (AMPM !== " AM" && AMPM !== " PM"))
+        {
+            errors.startDate = "Start date is invalid";
+        }
+        else if( Number(start.slice(-5,-3)) > 12 ) {
+            errors.startdate = "Start date is invalid"
+        }
+
+        AMPM = endDate.slice(-3);
+        let end = reformatDateString(endDate);
+        const validEnd = new Date(end).toString();
+        if(validEnd === "Invalid Date" || (AMPM !== " AM" && AMPM !== " PM"))
+        {
+            errors.endDate = "End date is invalid";
+        }else if(end.slice(-5,-3) > 12){
+            errors.endDate = "End date is invalid"
+        }
 
         let validEnding = false;
         url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
         validEnding = true : validEnding = false;
-
         if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
         setValidationErrors(errors);
@@ -72,6 +107,8 @@ export default function EventForm()
         setPrice(0);
         setUrl("");
         setType("(select one)");
+        setStartDate("");
+        setEndDate("");
 
         setDisplayErrors(false);
         setValidationErrors({});
@@ -91,6 +128,12 @@ export default function EventForm()
                 city: group.city,
                 state: group.state
             };
+
+            let start = reformatDateString(startDate);
+            let end = reformatDateString(endDate);
+            if(startDate.slice(-2) === "PM") start = adjustForPM(start);
+            if(endDate.slice(-2) === "PM") end = adjustForPM(end);
+
             const serverObject = await dispatch(thunkReceiveEvent(groupKey, {
                 venueId: null,
                 name,
@@ -98,8 +141,8 @@ export default function EventForm()
                 capacity: Number(capacity),//capacity hardcoded for now
                 price: Number(price),
                 description: about,
-                startDate: new Date(new Date(startDate) + "UTC"),
-                endDate: new Date(new Date(endDate) + "UTC"),
+                startDate: new Date(new Date(start) + "UTC"),
+                endDate: new Date(new Date(end) + "UTC"),
                 url
             }));
             if(serverObject.errors === undefined)
