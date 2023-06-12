@@ -12,8 +12,8 @@ const arr =
   {
     groupId: 1,
     venueId: 1,
-    name: "Event One",
-    description: "blah blah blah blah blah blah blah blah blah blah blah blah",
+    name: "Agility Competition",
+    description: "An agility course consists of a set of standard obstacles laid out by a judge in a design of their own choosing in an area of a specified size. The surface may be of grass, dirt, rubber, or special matting.",
     type: "Online",
     capacity: 100,
     price: 13.37,
@@ -23,8 +23,8 @@ const arr =
   {
     groupId: 1,
     venueId: 2,
-    name: "Event Two",
-    description: "gah gah gah gah gah gah gah gah gah gah gah gah gah",
+    name: "Search and Rescue Training",
+    description: "Train to find missing people and animals after natural or man made disasters.  Use your nose to find people under water, under snow and under collapsed buildings.",
     type: "In person",
     capacity: 120,
     price: 16.17,
@@ -34,8 +34,8 @@ const arr =
   {
     groupId: 1,
     venueId: 3,
-    name: "Event Three",
-    description: "abc abc abc abc abc abc abc abc abc",
+    name: "Assistance Dog Support",
+    description: "Come talk to your colleagues about all the difficulties you encounter on the job dealing with humans who can't do anything on their own.  You need a break",
     type: "Online",
     capacity: 100,
     price: 13.37,
@@ -45,8 +45,8 @@ const arr =
   {
     groupId: 2,
     venueId: 4,
-    name: "Event Four",
-    description: "xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz",
+    name: "Military Dogs",
+    description: "Interested in the role of dogs in warfare, in the past and present?  We discuss our participation in man's most dangerous activity.",
     type: "In person",
     capacity: 35,
     price: 5.84,
@@ -56,8 +56,8 @@ const arr =
   {
     groupId: 3,//matched to venueid 5 in venue seeder
     //allow null venues, try a second event for it w/ null venue
-    name: "Event Five",
-    description: "mno mno mno mno mno mno mno mno mno mno mno mno mno mno",
+    name: "Swim Lessos",
+    description: "Are you terrified of the water?  Join this group for a gentle introduction to the world of water.  Get comfortable in the pool or the ocean in no time.",
     type: "Online",
     capacity: 20,
     price: 3.37,
