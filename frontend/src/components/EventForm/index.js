@@ -50,7 +50,7 @@ export default function EventForm()
     useEffect(() => {
         const errors = {};
 
-        if(name.trim().length === 0)
+        if(name.trim().length === 0 || name.length === 0)
         errors.name = "Name is required";
 
         if(Number(price) < 0)
@@ -59,11 +59,11 @@ export default function EventForm()
         if(Number(price) != price)
         errors.price = "Price must be a number";
 
-        if(price.trim().length === 0)
+        if(price.length === 0)
         errors.price = "Price is required";
 
         //the backend validation is < 50, need to change backend?
-        if(about.trim().length < 30)
+        if(about.trim().length < 30 || about.length < 30)
         errors.about = "Description must be at least 30 characters long";
 
         if(!["Online", "In person"].includes(type))
@@ -100,7 +100,7 @@ export default function EventForm()
         validEnding = true : validEnding = false;
         if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
-        if(url.trim().length === 0)
+        if(url.trim().length === 0 || url.length === 0)
         errors.url = "Image Url is required";
 
         setValidationErrors(errors);

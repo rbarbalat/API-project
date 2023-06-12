@@ -43,17 +43,17 @@ export default function GroupForm({formType})
         // if str === "", then str[0] is undefined, remember for strings that
         //spaces
 
-        if(city.trim().length === 0)
+        if(city.trim().length === 0 || city.length === 0)
         errors.city = "City is required";
 
-        if(state.trim().length === 0)
+        if(state.trim().length === 0 || state.length === 0)
         errors.state = "State is required"
 
-        if(name.trim().length === 0)
+        if(name.trim().length === 0 || name.length === 0)
         errors.name = "Name is required"
 
         //the backend validation is < 50, need to change backend?
-        if(about.trim().length < 30)
+        if(about.trim().length < 30 || about.length < 30)
         errors.about = "Description must be at least 30 characters long";
 
         if(!["Online", "In person"].includes(type))
@@ -68,7 +68,7 @@ export default function GroupForm({formType})
 
         if(!validEnding && create) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
-        if(url.trim().length === 0)
+        if(url.trim().length === 0 || url.length === 0)
         errors.url = "Url is required";
 
         setValidationErrors(errors);

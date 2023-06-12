@@ -47,9 +47,9 @@ function SignupFormModal() {
   };
 
   useEffect(() => {
-    username.trim().length < 4 || password.trim().length < 6 ||
-    password !== confirmPassword || email.trim().length < 1 ||
-    firstName.trim().length < 1 || lastName.trim().length < 1
+    username.trim().length < 4 || username.length < 4 || password.trim().length < 6 || password.length < 6 ||
+    password !== confirmPassword || email.trim().length < 1 || email.length < 1 ||
+    firstName.trim().length < 1 || lastName.trim().length < 1 || firstName.length < 1 || lastName.length < 1
     ?
     setDisabled(true) : setDisabled(false)
   }, [email, username, firstName, lastName, password, confirmPassword])
