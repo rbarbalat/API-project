@@ -49,7 +49,7 @@ export default function LandingPage()
                         </div>
                         <div>
                             <div className="sectionThreeText">
-                                There is almost a group for everything!  And it is easy to find it here.
+                                There is almost a group for everything!  Easy to find it here.
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@ export default function LandingPage()
                         </div>
                         <div>
                             <div className="sectionThreeText">
-                                No matter the location, date or time we have something for you.
+                                No matter where you are we have an event for you.
                             </div>
                         </div>
                     </div>
