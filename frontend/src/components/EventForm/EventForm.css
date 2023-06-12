@@ -51,9 +51,9 @@
 .eventPriceInput {
     width: 14%;
 }
-.eventPriceInput::placeholder {
+/* .eventPriceInput::placeholder {
     text-align: right;
-}
+} */
 /* .inputAndIcon {
     display:flex;
     flex-direction: row;
