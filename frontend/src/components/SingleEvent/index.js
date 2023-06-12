@@ -80,19 +80,19 @@ export default function SingleEvent()
                     </div>
                     <div className="rightBottom">
                         <div className="dateTimeSectionSingleEvent">
-                            <i class="fa-regular fa-clock"></i>
+                            <i className="fa-regular fa-clock"></i>
                             <div>
                                 <div>START {event.startDate.slice(0,10)} &bull; {event.startDate.slice(11, -1)}</div>
                                 <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {event.endDate.slice(11, -1)}</div>
                             </div>
                         </div>
                         <div className="priceSectionSingleEvent">
-                            <i class="fa-solid fa-dollar-sign"></i>
+                            <i className="fa-solid fa-dollar-sign"></i>
                             <div>{event.price === 0 ? "FREE" : event.price}</div>
                         </div>
                         <div className ="typeSectionSingleEvent">
                             <div>
-                                <i class="fa-solid fa-map-pin"></i>
+                                <i className="fa-solid fa-map-pin"></i>
                                 <span>{event.type}</span>
                             </div>
                             {showButtons && buttons}
