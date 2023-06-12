@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
+import { useHistory } from "react-router-dom";
 
 //current
 function SignupFormModal() {
@@ -16,6 +17,7 @@ function SignupFormModal() {
   const [disabled, setDisabled] = useState(true);
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,6 +33,7 @@ function SignupFormModal() {
         })
       )
         .then(closeModal)
+        .then(() => history.push("/"))
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) {
@@ -44,9 +47,9 @@ function SignupFormModal() {
   };
 
   useEffect(() => {
-    username.length < 4 || password.length < 6 ||
-    password !== confirmPassword || email.length < 1 ||
-    firstName.length < 1 || lastName.length < 1
+    username.trim().length < 4 || password.trim().length < 6 ||
+    password !== confirmPassword || email.trim().length < 1 ||
+    firstName.trim().length < 1 || lastName.trim().length < 1
     ?
     setDisabled(true) : setDisabled(false)
   }, [email, username, firstName, lastName, password, confirmPassword])
@@ -111,7 +114,7 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <div className="signupErrors">{errors.confirmPassword}</div>
         )}
-        <button id="signupButton" className={disabled ? "disabled" : "enabled"} type="submit" disabled={disabled}>Sign Up</button>
+        <button id="signUpButton" className={disabled ? "disabled" : "enabled"} type="submit" disabled={disabled}>Sign Up</button>
         </div>
       </form>
     </>

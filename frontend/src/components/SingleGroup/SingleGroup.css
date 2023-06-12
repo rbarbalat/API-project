@@ -1,4 +1,230 @@
-.ImageAndSide  img {
+/* .ImageAndSide  img {
     width: 300px;
     height: 300px;
+} */
+
+.singleGroupLinkFavicon {
+    margin-top: 3rem;
+    width: 40rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#singleGroupLinkToGroups {
+    font-size: .85rem;
+    color:teal;
+}
+#singleGroupLessThanSign {
+    color:teal;
+    margin-right: .3rem;
+}
+
+.middleSingleGroup {
+    /* border: 2px dashed blue; */
+
+    width: 40rem;
+    height: 16rem;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.groupImageSingleGroup {
+    /* border: 2px dashed red; */
+    height: 100%;
+    width: 100%;
+}
+.rightSectionSingleGroup {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.rightSectionSingleGroupTop {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: .5rem;
+}
+#groupImagePicSingleGroup {
+    height:100%;
+    width: 100%;
+}
+
+.singleGroupLocation, .singleGroupNumType, .singleGroupOrganizer {
+    font-size:.85rem;
+    color:gray;
+
+    overflow-wrap: break-word;
+    word-break:break-all;/*break-word diff setting also try*/
+}
+
+.singleGroupManageButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: .7rem;
+}
+.singleGroupManageButtons > button {
+    background-color: #999999;
+    color: whitesmoke;
+    font-size: .85rem;
+    border: 2px solid black;
+    box-shadow:2px 2px 2px black;
+    cursor: pointer;
+}
+
+.singleGroupJoinButton > button {
+    background-color: red;
+    color:white;
+    border:2px solid black;
+    box-shadow:5px 5px 5px black;
+    height: 2rem;
+    width: 9rem;
+}
+
+.singleGroupOrganizerInfo {
+    width: 40rem;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+    gap:1rem;
+
+    margin: 1rem auto 0 auto;
+
+    position:relative;
+    top: 1rem;
+}
+#singleGroupOrganizer {
+    font-size: 1.2rem;
+}
+#singleGroupOrganizerNames {
+    font-size: .85rem;
+    color: gray;
+}
+
+#singleGroupAboutLabel {
+    width: 40rem;
+    font-size:1.2rem;
+    margin: 2rem auto .3rem auto;
+}
+#singleGroupAbout {
+    width:40rem;
+    font-size: .9rem;
+    margin: 0 auto;
+
+    word-wrap: break-word;
+    overflow: scroll;
+}
+
+.grayBottom {
+    background-color: #eeedf2;
+    /*for the background to extend even if no content*/
+    min-height: 800px;
+}
+
+.upComingWrapper {
+    width: 40rem;
+    margin: 1rem auto 0 auto;
+}
+
+.noEventsAtAll {
+    width: 40rem;
+    margin: 1rem auto 0 auto;
+    font-size: 1.2rem;
+}
+
+.upComingHeader {
+    font-size:1.2rem;
+    margin-bottom: .4rem;
+}
+
+
+
+.allGroupEventsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30rem;
+    margin: 1rem auto;
+
+    position: relative;
+    left: -5rem;
+}
+
+.groupEventBlock {
+    height: 11rem;
+    width: 100%;
+    /* width: 75%; */
+
+    margin: 0 auto 1rem auto;
+
+    display: flex;
+    flex-direction: column;
+    /* justify-content:space-between; */
+
+    background-color:white;
+    border-radius: 15px;
+
+    padding-top: 1rem;
+
+    overflow:hidden;
+
+    cursor:pointer;
+}
+.groupEventBlockTop {
+    display:flex;
+    flex-direction: row;
+    justify-content:center;
+    margin-bottom: 1rem;
+    width: 100%;
+    height: 55%;
+
+    /* margin-bottom: 2rem; */
+}
+
+.groupEventImageContainer {
+    width: 30%;
+    height: 100%;
+    margin-left: .5rem;
+}
+.allGroupEventImages {
+    width: 100%;
+    height: 100%;
+    /* object-fit: contain; */
+    /* object-fit:cover; */
+    /*cover*/
+}
+
+.groupEventInfoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+
+    margin-left: .5rem;
+    width: 70%;
+}
+
+.groupEventDateTime {
+    color: teal;
+    font-size: .85rem;
+}
+.groupEventLocation {
+    color:gray;
+    font-size: .85rem;
+}
+
+.groupEventBlockBottomDescription {
+ word-wrap: break-word;
+ overflow: scroll;
+ margin-left: .5rem;
+ margin-right: .5rem;
+}
+
+.pastEventsWrapper {
+    padding-bottom: 60px;
 }

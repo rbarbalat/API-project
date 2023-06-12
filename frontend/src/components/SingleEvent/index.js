@@ -28,9 +28,13 @@ export default function SingleEvent()
     }
     let showButtons = false;
     if(userIsOrganizer) showButtons = true;
+    function featureComingSoon()
+    {
+        return window.alert("Feature Coming Soon");
+    }
     const buttons = (
-        <div>
-            <button>Update</button>
+        <div className="manageEventButtons">
+            <button onClick={featureComingSoon}>Update</button>
             <OpenModalButton id="deleteEvent" buttonText="Delete"
                 modalComponent={<DeleteModal typeId={eventId} type="event" eventGroupId={groupId}/>}/>
         </div>
@@ -49,11 +53,17 @@ export default function SingleEvent()
     if( eventIsNotEmpty === false || groupIsNotEmpty === false) return <div>loading</div>
     return (
         <>
+    {/* <div className="testBackGround"> */}
         <div className='singleEventHeader'>
-            <NavLink to="/events">Events</NavLink>
-            <div>{event.name}</div>
-            <div>Hosted by {group.Organizer.firstName} {group.Organizer.lastName}</div>
+            <div>
+                <i id="singleEventLessThanSign" className="fa-light fa-less-than"></i>
+                <NavLink id="singleEventLinkToEvents" to="/events">Events</NavLink>
+            </div>
+            <div id="singleEventName">{event.name}</div>
+            <div id="singleEventHost">Hosted by {group.Organizer.firstName} {group.Organizer.lastName}</div>
         </div>
+
+<div className="backGroundSingleEvent">
 
         <div className="middleSingleEvent">
                 <div className="eventImage">
@@ -63,33 +73,39 @@ export default function SingleEvent()
                     <div className="rightTop">
                         <div className="groupImage"><img id="groupImagePic" alt="alt" src={group.GroupImages[0].url}></img></div>
                         {/* <img id="groupImagePic" alt="alt" src={group.GroupImages[0].url}></img> */}
-                        <div>
+                        <div className="groupInfoOnSingleEvent">
                             <div>{group.name}</div>
-                            <div>Private</div>
+                            <div id="singleEventPrivate">Private</div>
                         </div>
                     </div>
                     <div className="rightBottom">
-                        <div>
-                            <i class="fa-regular fa-clock"></i>
-                            <div>{event.startDate}</div>
-                            <div>{event.endDate}</div>
+                        <div className="dateTimeSectionSingleEvent">
+                            <i className="fa-regular fa-clock"></i>
+                            <div>
+                                <div>START {event.startDate.slice(0,10)} &bull; {event.startDate.slice(11, 16)}</div>
+                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {event.endDate.slice(11, 16)}</div>
+                            </div>
                         </div>
-                        <div>
-                            <i class="fa-solid fa-dollar-sign"></i>
-                            <div>{event.price}</div>
+                        <div className="priceSectionSingleEvent">
+                            <i className="fa-solid fa-dollar-sign"></i>
+                            <div>{event.price === 0 ? "FREE" : event.price}</div>
                         </div>
-                        <div>
-                            {/* map pins aren't display */}
-                            <i class="fa-sharp fa-light fa-map-pin"></i>
-                            <div>{event.type}</div>
+                        <div className ="typeSectionSingleEvent">
+                            <div>
+                                <i className="fa-solid fa-map-pin"></i>
+                                <span>{event.type}</span>
+                            </div>
+                            {showButtons && buttons}
                         </div>
-                        {showButtons && buttons}
+                        {/* {showButtons && buttons} */}
                     </div>
                 </div>
         </div>
 
+        <div id="singleEventDetails">Details</div>
         {/* <div className="description">{event.description}</div> */}
-        <div className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+        <div className="description"> {event.description} </div>
+</div>
         </>
     )
 }

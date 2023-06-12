@@ -25,12 +25,12 @@ const arr =
   },
   {
     groupId: 2,
-    url: "https://upload.wikimedia.org/wikipedia/commons/9/9e/Ours_brun_parcanimalierpyrenees_1.jpg",
+    url: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_Retriever_Dukedestiny01_drvd.jpg",
     preview: true
   },
   {
     groupId: 3,
-    url: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Penguins_collage.png",
+    url: "https://upload.wikimedia.org/wikipedia/commons/d/d0/German_Shepherd_-_DSC_0346_%2810096362833%29.jpg",
     preview: true
   }
 ]

@@ -1,0 +1,87 @@
+.eventFormWrapper .errors {
+    color: red;
+    font-size: .75rem;
+    margin: 0;
+    padding: 0;
+}
+
+.eventStartInput {
+    margin-bottom: 1.25rem;
+}
+
+.eventFormWrapper select {
+    margin-bottom: 1.25rem;
+}
+
+.eventFormWrapper {
+    width: 50%;
+    margin: 1.5rem auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    /* align-items:center; */
+    gap: .5rem;
+}
+.eventFormWrapper textarea, .eventFormWrapper input,
+.eventFormWrapper select {
+    color:gray;
+    background-color:#E8F0FE;
+    border: 2px solid black;
+}
+
+.eventFormHeader {
+    font-size: 1.2rem;
+    font-weight: bold
+}
+
+.eventFormSection {
+    border-top: 2px solid gray;
+    padding-top: .5rem;
+}
+
+.eventFormLabel {
+    font-size: .65rem;
+    font-weight: bold;
+    margin-bottom: .2rem;
+    word-wrap:break-word;
+}
+
+.eventNameInput {
+    width: 60%;
+}
+.eventPriceInput {
+    width: 14%;
+}
+.eventPriceInput::placeholder {
+    text-align: right;
+}
+/* .inputAndIcon {
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items:center;
+}
+.inputAndIcon > i {
+    padding-left:10px;
+    padding-right:5px;
+} */
+.eventDateInput {
+    width: 32%;
+}
+.eventUrlInput {
+    width: 60%;
+}
+.eventFormWrapper textarea {
+    width: 100%;
+    height: 5.5rem;
+    border: 2px solid black
+}
+.eventFormWrapper  button {
+    background-color: red;
+    color:white;
+    border:2px solid black;
+    box-shadow:5px 5px 5px black;
+    height: 2.5rem;
+    width: 10rem;
+    margin-top: .3rem;
+    /* margin-bottom: 10rem; */
+}

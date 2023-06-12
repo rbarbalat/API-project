@@ -15,6 +15,7 @@ function Navigation({ isLoaded }) {
   if (sessionUser) {
     sessionLinks = (
       <div className="headerRightProfile">
+        <NavLink id="startGroupHeader" to="/groups/new">Start a new group</NavLink>
         <ProfileButton user={sessionUser} />
       </div>
     );
@@ -39,7 +40,7 @@ function Navigation({ isLoaded }) {
     <div className="header">
       <div>
         <NavLink id="MeetUp" exact to="/">
-          MeetUp
+          FourLegsGood
         </NavLink>
       </div>
         {isLoaded && sessionLinks}

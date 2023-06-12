@@ -11,9 +11,8 @@ export default function EventForm()
 
     const [name, setName] = useState("");
     const [type, setType] = useState("(select one)");
-    const [privatepublic, setPrivatePublic]  = useState("(select one)");
     const [price, setPrice] = useState(0);
-    const [capacity, setCapacity] = useState(0);
+    const capacity = 100;
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [url, setUrl] = useState("");
@@ -31,11 +30,34 @@ export default function EventForm()
     const sessionUser = useSelector((state) => state.session.user);
 
     //const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
+
+    //input format is MM/DD/YYYY, HH/mm AM(orPM)
+    //converting MM/DD/YYYY, HH/mm where HH is from 00 to 24
+    function reformatDateString(date)
+    {
+        let AMPM = date.slice(-3);
+        let newDate = date.slice(0, -3); //remove space and AM or PM
+        newDate = newDate.slice(0,-3) + ":" + newDate.slice(-2);//replace slash with :
+        return newDate;
+    }
+    function adjustForPM(date)
+    {
+        let hour = String(Number(date.slice(11,13)) + 12);
+        let newDate = date.slice(0, 11) + hour +  date.slice(13);
+        return newDate;
+    }
+
     useEffect(() => {
         const errors = {};
 
         if(name.length === 0)
         errors.name = "Name is required";
+
+        if(price.length === 0)
+        errors.price = "Price is required";
+
+        if(Number(price) < 0)
+        errors.price = "Price can't be lower than zero"
 
         //the backend validation is < 50, need to change backend?
         if(about.length < 30)
@@ -44,26 +66,38 @@ export default function EventForm()
         if(!["Online", "In person"].includes(type))
         errors.type = "Group Type is required";
 
-        if(!["Private", "Public"].includes(privatepublic))
-        errors.privatepublic = "Visibility Type is required";
+        //input format is MM/DD/YYYY, HH/mm AM(orPM)
+        //convert into acceptable format, if it becomes an invalid
+        //Date object then didn't start with the right format
 
-        if(capacity === 0)
-        errors.capacity = "Capacity is required";
+        let AMPM = startDate.slice(-3);
+        let start = reformatDateString(startDate);
+        const validStart = new Date(start).toString();
+        if(validStart === "Invalid Date" || (AMPM !== " AM" && AMPM !== " PM"))
+        {
+            errors.startDate = "Start date is invalid";
+        }
+        else if( Number(start.slice(-5,-3)) > 12 ) {
+            errors.startdate = "Start date is invalid"
+        }
 
-        if(startDate.length === 0)
-        errors.startDate = "Event start is required";
-
-        if(endDate.length === 0)
-        errors.endDate = "Event end is required";
+        AMPM = endDate.slice(-3);
+        let end = reformatDateString(endDate);
+        const validEnd = new Date(end).toString();
+        if(validEnd === "Invalid Date" || (AMPM !== " AM" && AMPM !== " PM"))
+        {
+            errors.endDate = "End date is invalid";
+        }else if(end.slice(-5,-3) > 12){
+            errors.endDate = "End date is invalid"
+        }
 
         let validEnding = false;
         url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
         validEnding = true : validEnding = false;
-
         if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
         setValidationErrors(errors);
-    }, [name, about, type, privatepublic, capacity, startDate, endDate,  url])
+    }, [name, about, type, price, startDate, endDate,  url])
 
     function reset()
     {
@@ -71,10 +105,10 @@ export default function EventForm()
         setName("");
         setAbout("");
         setPrice(0);
-        setCapacity("");
         setUrl("");
         setType("(select one)");
-        setPrivatePublic("(select one)");
+        setStartDate("");
+        setEndDate("");
 
         setDisplayErrors(false);
         setValidationErrors({});
@@ -94,17 +128,21 @@ export default function EventForm()
                 city: group.city,
                 state: group.state
             };
-            const priv = privatepublic === "Private" ? true : false;
-            const serverObject = await dispatch(thunkReceiveEvent(groupKey, priv, {
+
+            let start = reformatDateString(startDate);
+            let end = reformatDateString(endDate);
+            if(startDate.slice(-2) === "PM") start = adjustForPM(start);
+            if(endDate.slice(-2) === "PM") end = adjustForPM(end);
+
+            const serverObject = await dispatch(thunkReceiveEvent(groupKey, {
                 venueId: null,
                 name,
                 type,
-                capacity: Number(capacity),
+                capacity: Number(capacity),//capacity hardcoded for now
                 price: Number(price),
                 description: about,
-                startDate: new Date(startDate),
-                endDate: new Date(startDate),
-                //private: privatepublic === "Private" ? true : false,
+                startDate: new Date(new Date(start) + "UTC"),
+                endDate: new Date(new Date(end) + "UTC"),
                 url
             }));
             if(serverObject.errors === undefined)
@@ -119,137 +157,92 @@ export default function EventForm()
             setValidationErrors(serverObject.errors);
         }
     }
-
         //for now, adjust when adding links to this page (only available to logged in users)
-        if(sessionUser === null) return null;
+        if(sessionUser === null) return <div>unauthorized</div>;
         return (
             <form onSubmit={onSubmit} className="CreateEventForm">
-                <div>Create an event for {group.name} </div>
+            <div className="eventFormWrapper">
+                {validationErrors.name && displayErrors && <div className="errors">{validationErrors.name}</div>}
+                {validationErrors.type && displayErrors && <div className="errors">{validationErrors.type}</div>}
+                {validationErrors.price && displayErrors && <div className="errors">{validationErrors.price}</div>}
+                {validationErrors.startDate && displayErrors && <div className="errors">{validationErrors.startDate}</div>}
+                {validationErrors.endDate && displayErrors && <div className="errors">{validationErrors.endDate}</div>}
+                {validationErrors.url && displayErrors && <div className="errors">{validationErrors.url}</div>}
+                {validationErrors.about && displayErrors && <div className="errors">{validationErrors.about}</div>}
 
-                <div>
-                    <div>What is the name of your event?</div>
-                    <input type="text" name="about" placeholder="Event Name"
-                        value={name} onChange={e => setName(e.target.value)}
-                    />
-                    <div className="errors">
-                        {
-                        validationErrors.name !== undefined && displayErrors
-                        && validationErrors.name
-                        }
-                    </div>
+                <div className="eventFormHeader">Create an event for {group.name} </div>
+
+                <div className="eventFormNameSection">
+                        <div className="eventFormLabel">What is the name of your event?</div>
+                        <input type="text" name="about" placeholder="Event Name"
+                            value={name} onChange={e => setName(e.target.value)}
+                            className="eventNameInput"
+                        />
                 </div>
 
-                <div>
-                    <div>Is this an in person or online group?</div>
+                <div className="eventFormSection">
+                    <div className="subSection">
+                        <div className="eventFormLabel">Is this an in person or online group?</div>
                         <select value={type} onChange={e => setType(e.target.value)}>
-                            {/* //change to a default value that is not an option */}
                             <option>(select one)</option>
                             <option>Online</option>
                             <option>In person</option>
                         </select>
-                    <div className="errors">
-                        {
-                        validationErrors.type !== undefined && displayErrors
-                        && validationErrors.type
-                        }
+                    </div>
+
+                    <div className="subSection">
+                        <div className="eventFormLabel">What is the price of your event?</div>
+                        <div className="inputAndIcon">
+                            {/* <i id="eventDollar" className="fa-solid fa-dollar-sign"></i> */}
+                            <input type="text" name="price" placeholder="0"
+                                value={price} onChange={e => setPrice(e.target.value)}
+                                className="eventPriceInput"
+                            />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className="eventFormSection">
+                    <div className="subSection">
+                        <div className="eventFormLabel">When does your event start?</div>
+                        <input type="text" name="startDate" placeholder="MM/DD/YYYY, HH/mm AM"
+                            value={startDate} onChange={e => setStartDate(e.target.value)}
+                            className="eventDateInput eventStartInput"
+                        />
+                    </div>
+
+                    <div className="subSection">
+                        <div className="eventFormLabel">When does your event end?</div>
+                        <input type="text" name="endDate" placeholder="MM/DD/YYYY, HH/mm PM"
+                            value={endDate} onChange={e => setEndDate(e.target.value)}
+                            className="eventDateInput"
+                        />
                     </div>
                 </div>
 
-                <div>
-                    <div>Is this group private or public?</div>
-                    <select value={privatepublic} onChange={e => setPrivatePublic(e.target.value)}>
-                        <option>(select one)</option>
-                        <option>Private</option>
-                        <option>Public</option>
-                    </select>
-
-                    <div className="errors">
-                        {
-                        validationErrors.privatepublic !== undefined && displayErrors
-                        && validationErrors.privatepublic
-                        }
+                <div className="eventFormSection">
+                    <div className="subSection">
+                        <div className="eventFormLabel">Please add in image url for your event below:</div>
+                        <input type="text" name="url" placeholder="Image URL"
+                            value={url} onChange={e => setUrl(e.target.value)}
+                            className="eventUrlInput"
+                        />
                     </div>
                 </div>
 
-                <div>
-                    <div>What is the price of your event?</div>
-                    <input type="text" name="price" placeholder="0"
-                        value={price} onChange={e => setPrice(e.target.value)}
-                    />
-                    <div className="errors">
-                        {
-                        validationErrors.price !== undefined && displayErrors
-                        && validationErrors.price
-                        }
-                    </div>
-                </div>
-
-                <div>
-                    <div>What is the capacity of your event?</div>
-                    <input type="text" name="capacity" placeholder="0"
-                        value={capacity} onChange={e => setCapacity(e.target.value)}
-                    />
-                    <div className="errors">
-                        {
-                        validationErrors.capacity !== undefined && displayErrors
-                        && validationErrors.capacity
-                        }
-                    </div>
-                </div>
-
-                <div>
-                    <div>When does your event start?</div>
-                    <input type="text" name="startDate" placeholder="MM/DDYYYY HH:mm AM"
-                        value={startDate} onChange={e => setStartDate(e.target.value)}
-                    />
-                    <div className="errors">
-                        {
-                        validationErrors.startDate !== undefined && displayErrors
-                        && validationErrors.startDate
-                        }
-                    </div>
-                </div>
-
-                <div>
-                    <div>When does your event end?</div>
-                    <input type="text" name="endDate" placeholder="MM/DDYYYY HH:mm PM"
-                        value={endDate} onChange={e => setEndDate(e.target.value)}
-                    />
-                    <div className="errors">
-                        {
-                        validationErrors.endDate !== undefined && displayErrors
-                        && validationErrors.endDate
-                        }
-                    </div>
-                </div>
-
-                <div>
-                    <div>Please add in image url for your event below:</div>
-                    <input type="text" name="url" placeholder="Image URL"
-                        value={url} onChange={e => setUrl(e.target.value)}
-                    />
-                    <div className="errors">
-                    {
-                        validationErrors.url !== undefined && displayErrors
-                        && validationErrors.url
-                    }
-                    </div>
-                </div>
-
-                <div>
-                    <div>Please describe your event:</div>
-                    <textarea type="text" name="about" placeholder="Please include at least 30 characters?"
-                        value={about} onChange={e => setAbout(e.target.value)}
-                    />
-                    <div className="errors">
-                        {
-                        validationErrors.about !== undefined && displayErrors
-                        && validationErrors.about
-                        }
+                <div className="eventFormSection">
+                    <div className="subSection">
+                        <div className="eventFormLabel">Please describe your event:</div>
+                        <textarea type="text" name="about" placeholder="Please include at least 30 characters?"
+                            value={about} onChange={e => setAbout(e.target.value)}
+                        />
                     </div>
                 </div>
 
                 <button type="submit">Create Event</button>
+
+            </div>
             </form>
           );
 

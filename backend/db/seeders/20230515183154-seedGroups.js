@@ -10,8 +10,8 @@ if (process.env.NODE_ENV === 'production') {
 const arr =
 [
   {
-    name: "Hockey on the Water",
-    about: "Enjoy rounds of hockey with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    name: "Australian Shepherds",
+    about: "Originally used solely as a herding dog, the Australian Shepherd has become one of the most popular companion dog breeds in North America.",
     type: "In person",
     private: true,
     city: "Pittsburgh",
@@ -19,8 +19,8 @@ const arr =
     organizerId: 1
   },
   {
-    name: "Soccer on the Water",
-    about: "Enjoy rounds of soccer with a loose-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    name: "Golden Retrievers",
+    about: "Golden Retrievers are characterized by their gentle and affectionate nature and a striking golden coat.",
     type: "Online",
     private: true,
     city: "Philadelphia",
@@ -28,8 +28,8 @@ const arr =
     organizerId: 1
   },
   {
-    name: "Baseball on the Water",
-    about: "Enjoy rounds of baseball with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    name: "German Shepherds",
+    about: "Originally bred as a herding dog, it is commonly kept as a companion dog but is also used for many types of work.",
     type: "In person",
     private: false,
     city: "Boston",
@@ -37,8 +37,8 @@ const arr =
     organizerId: 1
   },
   {
-    name: "Football on the Water",
-    about: "Enjoy rounds of football with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    name: "Alaskan Malamutes",
+    about: "Legenday for their endurance and ability to haul heavy freight.",
     type: "In person",
     private: false,
     city: "Boston",
@@ -46,8 +46,8 @@ const arr =
     organizerId: 2
   },
   {
-    name: "Lacrosse on the Water",
-    about: "Enjoy rounds of lacrosse with a tight-nit group of people on the water facing the Brooklyn Bridge. Singles or doubles.",
+    name: "Siberian Huskies",
+    about: "Notable for their cold weather tolerance and overall hardiness, they are great sled racing dogs.",
     type: "Online",
     private: false,
     city: "Denver",

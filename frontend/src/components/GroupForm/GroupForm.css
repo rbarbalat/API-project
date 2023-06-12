@@ -1,3 +1,99 @@
 .errors {
     color: red;
+    font-size: .75rem;
+    margin-bottom:0;
+    padding-bottom:0;
+}
+.errors.typeVis {
+    margin-bottom: .4rem;
+}
+
+.groupFormWrapper {
+    width: 80%;
+    margin: 1.5rem auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.startOrUpdate {
+    font-size: .85rem;
+    color:teal;
+    margin-bottom: .2rem;
+}
+.formSection {
+    border-top: 2px solid gray;
+    padding-top: .5rem;
+}
+.formSectionHeader {
+    font-size: 1.1rem;
+    font-weight:bold;
+}
+.formLabel {
+    font-size: .65rem;
+    font-weight: bold;
+    margin-top: .4rem;
+    margin-bottom: .4rem;
+    word-wrap:break-word;
+    width:55%;
+}
+.formLabelBottom {
+    font-size: .65rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: .2rem;
+}
+.urlLabel {
+    font-size: .65rem;
+    font-weight: bold;
+    margin-bottom:0;
+}
+.groupFormWrapper input {
+    width: 40%;
+    height: 1.5rem;
+    margin-top: 1rem;
+    border: 2px solid black;
+    background-color:#E8F0FE;
+    color:gray;
+}
+.urlInput {
+    margin-top: .2rem;
+}
+.groupFormWrapper textarea {
+    width: 40%;
+    height: 8rem;
+    background-color: lightskyblue;
+    border: 2px solid black;
+    color:gray;
+    background-color:#E8F0FE;
+}
+.groupFormWrapper select {
+    color:gray;
+    background-color:#E8F0FE;
+    width: 15%;
+    /* margin-bottom: .7rem; */
+}
+ol {
+    list-style-position:inside;
+    padding-left: 0;
+}
+li {
+    font-size: .65rem;
+    font-weight: bold;
+}
+
+#Final {
+    margin-bottom: .25rem;
+}
+
+.groupFormButton > button {
+    background-color: red;
+    color:white;
+    border:2px solid black;
+    box-shadow:5px 5px 5px black;
+    height: 2.5rem;
+    width: 10rem;
+    margin-top: .3rem;
+}
+.groupFormButton {
+    padding-bottom: 50px;
 }

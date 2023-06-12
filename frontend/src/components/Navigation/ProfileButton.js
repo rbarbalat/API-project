@@ -9,6 +9,8 @@ import "./ProfileButton.css";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  //useState(true), true if user just signed up, how to test for that?
+  //make a new context and that can determine default value of new state?
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
@@ -38,6 +40,7 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    history.replace("/");
     closeMenu();
   };
 

@@ -3,7 +3,6 @@ import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadSingleGroup } from "../../store/groups.js";
 import { thunkLoadEventsByGroupId } from "../../store/events.js";
-import { thunkDeleteGroup } from "../../store/groups.js";
 import "./SingleGroup.css";
 import OpenModalButton from "../OpenModalButton/index.js";
 import DeleteModal from "../DeleteModal/index.js";
@@ -18,7 +17,38 @@ export default function SingleGroup()
 
     //state.events.allEvents is initially an empty obj so events is an empty obj before the first useEffect
     let events = useSelector(state => Object.values(state.events.allEvents));
-    //console.log("events-----   ", events);
+
+    let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
+    let pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
+    upcomingEvents.sort((a,b) => {
+        return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    });
+    //most recent first, descending order
+    pastEvents.sort((a,b) => {
+        return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+    });
+
+    //time string format 2023-06-12T00:39:31.383Z
+    //"remove the T, change to AM/PM time and "AM" or "PM" to the end
+    // upcomingEvents.forEach( ele => {
+    //     let hour = Number(ele.startDate.slice(11,13));
+    //     if(hour > 12)
+    //     {
+    //         hour = "0" + String(hour - 12);
+    //         ele.startDate = ele.startDate.slice(0,10) + hour
+    //                         + ele.startDate.slice(13, 16);
+    //     }
+    //     console.log(ele.startDate);
+    // });
+    // pastEvents.forEach( ele => {
+    //     let hour = Number(ele.startDate.slice(11,13));
+    //     if(hour > 12)
+    //     {
+    //         hour = "0" + String(hour - 12);
+    //         ele.startDate = ele.startDate.slice(0,10) + hour
+    //                         + ele.startDate.slice(13, 16);
+    //     }
+    // });
 
     const sessionUser = useSelector((state) => state.session.user);
     let userIsOrganizer;
@@ -28,50 +58,41 @@ export default function SingleGroup()
         group.organizerId === sessionUser.id ?
         userIsOrganizer = true : userIsOrganizer = false;
     }
-    let showButton = true;
-    if(userIsOrganizer || sessionUser === null) showButton = false;
-    const joinButton = <button onClick={onClick}>Join this group</button>;
+    let showJoinButton = true;
+    if(userIsOrganizer || sessionUser === null) showJoinButton = false;
+    const joinButton = <div className="singleGroupJoinButton"><button onClick={onJoinClick}>Join this group</button></div>;
+    const manageButtons = (<div className="singleGroupManageButtons">
+                                <button onClick={onCreateEventClick}>Create Event</button>
+                                <button onClick={onUpdateClick}>Update</button>
+                                <OpenModalButton id="deleteGroup" buttonText="Delete Group"
+                                modalComponent={<DeleteModal typeId={groupId} type="group"/>}/>
+                            </div>);
 
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
-        //only reload the singleGroup in the store if the current singleGroup
-        //does not match the page (groupId) you are on, if empty does not match
         if(Number(groupId) !== group.id)
         {
-            //double that check if right singleGroup guarantees
-            //the right allEvents group
             dispatch(thunkLoadSingleGroup(groupId));
-            dispatch(thunkLoadEventsByGroupId(groupId));
-            //loading delay for images pulled from events by group id
         }
+        //must reload this b/c even if the current group is there, might go to
+        //all events page and back and then will have all events instead of events by group id
+        dispatch(thunkLoadEventsByGroupId(groupId));
     }, [dispatch, groupId])
 
-    function onClick()
+    function onJoinClick()
     {
         return window.alert("Feature Coming Soon");
     }
     function onUpdateClick()
     {
-        if(userIsOrganizer) history.push(`/groups/${groupId}/edit`);
-        else history.push("/")
-        //maybe history.replace() to prevent going back or <Redirect> instead?
+        //button only visible if userIsOrganizer
+        history.push(`/groups/${groupId}/edit`);
     }
-    //eventually move to this function to the DeleteModal
-    async function onDeleteClick()
+    function onCreateEventClick()
     {
-        if(userIsOrganizer)
-        {
-            const serverObject = await dispatch(thunkDeleteGroup(groupId));
-            if(serverObject.message === "Successfully deleted")
-            {
-                console.log("the group was deleted");
-                history.replace("/groups");
-            }else{
-                //adjust later
-                return window.alert("Something went wrong");
-            }
-        }
+        //button only visible if userIsOrganizer
+        history.push(`/groups/${groupId}/events/new`);
     }
     function linkToEvent(e)
     {
@@ -84,79 +105,114 @@ export default function SingleGroup()
     if( groupIsNotEmpty === false) return <div>loading</div>
     return (
         <>
-            <div>SINGLE GROUP PAGE -- GROUP {groupId} REMOVE LATER</div>
-            <NavLink to="/groups">Groups</NavLink>
-            {/* <NavLink to={`/groups/${groupId}/edit`}>Update</NavLink> */}
-            <button>Create event</button>
-            <button onClick={onUpdateClick}>Update</button>
-            <button onClick = {onDeleteClick}>Delete</button>
-            <OpenModalButton id="deleteGroup" buttonText="Delete Group"
-                modalComponent={<DeleteModal typeId={groupId} type="group"/>}/>
-            <div className="ImageAndSide">
-                <div>
-                    <img alt="alt" src={group.GroupImages[0].url}></img>
+            <div className="singleGroupLinkFavicon">
+                <i id="singleGroupLessThanSign" className="fa-light fa-less-than"></i>
+                <NavLink id="singleGroupLinkToGroups" to="/groups">Groups</NavLink>
+            </div>
+
+            <div className="middleSingleGroup">
+                <div className="groupImageSingleGroup">
+                    <img id="groupImagePicSingleGroup" alt="alt" src={group.GroupImages[0].url}></img>
                 </div>
-                <div>
-                    <h1>{group.name}</h1>
-                    <NavLink to={`/groups/${groupId}/events/new`}>Temp Create Event</NavLink>
-                    <div>{`${group.city}, ${group.state}`}</div>
-                        {/* put the dot in its own div in all groups */}
-                    <div>{group.numMembers} &bull; {group.private ? "Private" : "Public"}</div>
-                    <div>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
-                    { showButton && joinButton }
-                    {/* { showButton && <button onClick={onClick}>Join this group</button> } */}
+                <div className="rightSectionSingleGroup">
+                    <div className="rightSectionSingleGroupTop">
+                        <div className="singleGroupName">{group.name}</div>
+                        <div className="singleGroupLocation">{`${group.city}, ${group.state}`}</div>
+                        <div className="singleGroupNumType">{group.numMembers === 0 ? 1 : group.numMembers} Member(s) &bull; {group.private ? "Private" : "Public"}</div>
+                        <div className="singleGroupOrganizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
+                    </div>
+                    { showJoinButton && joinButton }
+                    { userIsOrganizer && manageButtons}
                 </div>
             </div>
 
-            <div>
-                <h2>Organizer</h2>
-                <div>{group.Organizer.firstName} {group.Organizer.lastName}</div>
+            {/* visible if upcomingEvents.length > 0 || pastEvents.length > 0 */}
+            <div className="grayBottom">
+
+                <div className="singleGroupOrganizerInfo">
+                    <div id="singleGroupOrganizer">Organizer</div>
+                    <div id="singleGroupOrganizerNames">{group.Organizer.firstName} {group.Organizer.lastName}</div>
+                </div>
+
+                <div id="singleGroupAboutLabel">What we're about</div>
+                <div id="singleGroupAbout">{group.about}</div>
+
+                {upcomingEvents.length === 0 && pastEvents.length === 0
+                    && <div className="noEventsAtAll">This group has no Upcoming or Past Events</div>}
+
+                {upcomingEvents.length > 0 &&
+                (<div className="upComingWrapper">
+                    <div className="upComingHeader">Upcoming Events ({upcomingEvents.length})</div>
+                    <div className="allGroupEventsContainer">
+                        {
+                            upcomingEvents.map(ele => (
+                                <div id={`groupEventBlock${ele.id}`} className="groupEventBlock" onClick={linkToEvent} key={`groupEvent${ele.id}`}>
+                                    <div className="groupEventBlockTop">
+
+                                        <div className="groupEventImageContainer">
+                                            <img className="allGroupEventImages" alt="alt" src={ele.previewImage}></img>
+                                        </div>
+
+                                        <div className="groupEventInfoContainer">
+                                            <div className="groupEventDateTime">
+                                                <span>{`${ele.startDate.slice(0,10)} `}</span>
+                                                <span>&bull;</span>
+                                                <span>{` ${ele.startDate.slice(11,16)}`}</span>
+                                            </div>
+                                            <div className="groupEventName">{ele.name}</div>
+                                            <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
+                                        </div>
+                                    </div>
+
+                                    {/* change to ele.description */}
+                                    <div className="groupEventBlockBottomDescription">
+                                       {ele.description}
+                                    </div>
+
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>)}
+
+                        {/* past events */}
+                {pastEvents.length > 0 &&
+                (<div className="upComingWrapper pastEventsWrapper">
+                    <div className="upComingHeader">Past Events ({pastEvents.length})</div>
+                    <div className="allGroupEventsContainer">
+                        {
+                            pastEvents.map(ele => (
+                                <div id={`groupEventBlock${ele.id}`} className="groupEventBlock" onClick={linkToEvent} key={`groupEvent${ele.id}`}>
+                                    <div className="groupEventBlockTop">
+
+                                        <div className="groupEventImageContainer">
+                                            <img className="allGroupEventImages" alt="alt" src={ele.previewImage}></img>
+                                        </div>
+
+                                        <div className="groupEventInfoContainer">
+                                            <div className="groupEventDateTime">
+                                                <span>{`${ele.startDate.slice(0,10)} `}</span>
+                                                <span>&bull;</span>
+                                                <span>{` ${ele.startDate.slice(11,16)}`}</span>
+                                            </div>
+                                            <div className="groupEventName">{ele.name}</div>
+                                            <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
+                                        </div>
+                                    </div>
+
+                                    {/* change to ele.description */}
+                                    <div className="groupEventBlockBottomDescription">
+                                        {ele.description}
+                                    </div>
+
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>)}
+
+
             </div>
-
-            <h2>What we're about</h2>
-            <div>{group.about}</div>
-
-            <div>Upcoming Events</div>
-
-            <div className="allEventsByGroupContainer">
-                {
-                    events.map(ele => (
-                        <div id={`groupEventBlock${ele.id}`} className="groupEventBlock" onClick={linkToEvent} key={`groupEvent${ele.id}`}>
-                            <div>
-                                <img alt="alt" src={ele.previewImage}></img>
-                            </div>
-
-                            <div>
-                                <div>{`Starts on ${ele.startDate.slice(0,10)} Ends on ${ele.endDate.slice(0,10)}`}</div>
-                                <div>{ele.name }</div>
-                                <div>{`${ele.Group.city}, ${ele.Group.state}`}</div>
-                            </div>
-
-                                {
-                                userIsOrganizer &&
-                                    (<div>
-                                        <button>Create Event</button>
-                                        <button>Update</button>
-                                        <button>Delete</button>
-                                    </div>)
-                                }
-
-                        </div>
-                    ))
-
-                }
-            </div>
-
-            {/* {
-                userIsOrganizer &&
-                    (<div>
-                        <button>Create Event</button>
-                        <button>Update</button>
-                        <button>Delete</button>
-                    </div>)
-            } */}
-
-            <div>Past Events</div>
         </>
     )
 }

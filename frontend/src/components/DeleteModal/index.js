@@ -44,10 +44,12 @@ export default function DeleteModal({typeId, type, eventGroupId})
 
     return (
         <>
-            <div>Confirm Delete</div>
-            <div>Are you sure you want to remove this {type}?</div>
-            <button onClick={onDeleteClick}>Yes (Delete {type})</button>
-            <button onClick={closeModal}>No (Keep {type})</button>
+        <div className="deleteModalWrapper">
+            <div id="confirm">Confirm Delete</div>
+            <div id="youSure">Are you sure you want to remove this {type}?</div>
+            <button className="yesDelete" onClick={onDeleteClick}>Yes (Delete {type})</button>
+            <button className="noDelete" onClick={closeModal}>No (Keep {type})</button>
+        </div>
         </>
     )
 }

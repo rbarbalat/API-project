@@ -17,8 +17,8 @@ const arr =
     type: "Online",
     capacity: 100,
     price: 13.37,
-    startDate: new Date("2090-04-16"),//pass in through new Date()
-    endDate: new Date("2090-04-17")
+    startDate: new Date(new Date("2030-03-06 07:15").toString() + "UTC"),
+    endDate: new Date(new Date("2030-03-06 019:15").toString() + "UTC")
   },
   {
     groupId: 1,
@@ -28,8 +28,8 @@ const arr =
     type: "In person",
     capacity: 120,
     price: 16.17,
-    startDate: new Date("2090-04-18"),
-    endDate: new Date("2090-04-19")
+    startDate: new Date(new Date("2029-04-11 14:15").toString() + "UTC"),
+    endDate: new Date(new Date("2029-04-12 07:15").toString() + "UTC")
   },
   {
     groupId: 1,
@@ -39,8 +39,8 @@ const arr =
     type: "Online",
     capacity: 100,
     price: 13.37,
-    startDate: new Date("2090-03-16"),
-    endDate: new Date("2090-04-01")
+    startDate: new Date(new Date("2020-04-06 19:15").toString() + "UTC"),
+    endDate: new Date(new Date("2020-04-07 07:15").toString() + "UTC")
   },
   {
     groupId: 2,
@@ -50,8 +50,8 @@ const arr =
     type: "In person",
     capacity: 35,
     price: 5.84,
-    startDate: new Date("2090-05-19"),
-    endDate: new Date("2090-05-19")
+    startDate: new Date(new Date("2090-05-19 05:37").toString() + "UTC"),
+    endDate: new Date(new Date("2090-05-21 15:41").toString() + "UTC")
   },
   {
     groupId: 3,//matched to venueid 5 in venue seeder
@@ -61,8 +61,8 @@ const arr =
     type: "Online",
     capacity: 20,
     price: 3.37,
-    startDate: new Date("2090-04-06"),
-    endDate: new Date("2090-04-11")
+    startDate: new Date(new Date("2020-04-06 07:31").toString() + "UTC"),
+    endDate: new Date(new Date("2020-04-07 12:15").toString() + "UTC")
   }
 ];
 

@@ -145,7 +145,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isAfter: {
           //nested array for double arguments but work for 1 as well?
-          args: new Date().toString(),//might need custom
+          args: new Date().toString(),
           msg: "Start date must be in the future"
         },
         notNull: {
@@ -163,10 +163,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         afterStart(value)
         {
-          if(!Validator.isDate(value))
-          throw new Error("End date must be a date");
-          else if(value < this.startDate)
-          throw new Error("End date is less than start date");
+          // if(!Validator.isDate(value))
+          // throw new Error("End date must be a date");
+          // else if(value < this.startDate)
+          // throw new Error("End date is less than start date");
+          if(new Date(value).getTime() < new Date(this.startDate).getTime())
+          throw new Error("End date is before start state")
         },
         notNull: {
           msg: "End date can't be null"

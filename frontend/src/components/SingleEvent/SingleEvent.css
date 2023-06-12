@@ -1,62 +1,166 @@
+
 .singleEventHeader {
     margin: 1rem auto;
-    width: 35rem;
-    border: 2px dashed yellow;
+    width: 45rem;
+    /* border: 2px dashed yellow; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 5rem;
+    margin-top: 3rem;
+    background-color:white;
+
+}
+#singleEventLinkToEvents {
+    font-size: .85rem;
+    color:teal;
+}
+#singleEventLessThanSign {
+    color:teal;
+    margin-right: .3rem;
+}
+#singleEventName {
+    font-size: 1.5rem;
+}
+#singleEventHost {
+    font-size: .85rem;
+    color:gray;
 }
 
 .middleSingleEvent {
     width: 45rem;
-    height: 25rem;
+    height: 16rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 5rem auto;
-    border: 2px dashed blue;
+    gap: 1rem;
+
+    margin-top: 2rem;
+    margin-bottom:1rem;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .eventImage {
-    width: 30rem;
-    height: auto;
-    margin: 1rem;
-    border: 2px dashed red;
+    width: 60%;
+    height: 100%;
+    margin-top: 1rem;
+    margin-bottom: .5rem;
 }
 
 #eventImagePic {
     width: 100%;
-    height: 100%;
+    height: 95%;
 }
 
 .rightSection {
-    width: 14rem;
+    width: 40%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    margin: 1rem;
-    border: 2px dashed green;
+    margin: .5rem;
+    gap: 1rem;
 }
-.groupImage {
-    width: 100%;
+.rightSection div {
+    word-wrap: break-word;
+    overflow: scroll;
 }
-#groupImagePic {
-    max-width: 60%;
-}
-
 .rightTop {
+    background-color: white;
+    flex: 1 1 0;
+    padding: 1rem;
+    border-radius:20px;
+    margin-top: .5rem;
+
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
-    border: 2px dashed orange;
+    justify-content:space-between;
+}
+.groupImage {
+    width: 30%;
+    height: 100%;
+    margin-right: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.groupInfoOnSingleEvent {
+    width: 70%;
+    display: flex;
+    flex-direction:column;
+    justify-content:space-evenly;
+}
+#groupImagePic {
+    width: 100%;
+    height:60%;
+}
+#singleEventPrivate {
+    font-size: .85rem;
+    color: gray;
 }
 
 .rightBottom {
+    background-color: white;
+    border-radius:20px;
+
+    flex: 2 1 0;
+
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
+    color:gray;
+    font-size: .85rem;
+
+    padding-left: 1rem;
+}
+.dateTimeSectionSingleEvent {
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    /* justify-content:space-between; */
+    /* font-size: .85rem; */
+}
+.rightBottom i {
+    margin-right: .5rem;
+}
+.priceSectionSingleEvent {
+    display: flex;
+    flex-direction:row;
+}
+.typeSectionSingleEvent {
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    border: 2px dashed violet;
+}
+.manageEventButtons > button {
+    background-color: #999999;
+    color: whitesmoke;
+    margin-right: 1rem;
+}
+
+#singleEventDetails {
+    font-size: 1.5rem;
+    width: 45rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
 }
 
 .description {
-    width: 35rem;
-    margin: 2rem auto;
+    width: 45rem;
+    margin: 1rem auto;
+    word-wrap: break-word;
+    overflow: scroll;
+}
+
+.backGroundSingleEvent {
+    /*make the gray background extend to the bottom even if no content*/
+    min-height:800px;
+    background-color: #eeedf2;
+    margin: 0 auto;
 }

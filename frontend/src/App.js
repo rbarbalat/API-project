@@ -10,6 +10,7 @@ import SingleEvent from "./components/SingleEvent";
 import LandingPage from "./components/LandingPage";
 import GroupForm from "./components/GroupForm";
 import EventForm from "./components/EventForm";
+import Footer from "./components/Footer";
 
 //current
 function App() {
@@ -49,6 +50,7 @@ function App() {
               <SingleEvent />
             </Route>
         </Switch>}
+        <Footer />
     </>
   );
 }

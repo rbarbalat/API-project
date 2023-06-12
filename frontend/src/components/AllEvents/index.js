@@ -8,10 +8,17 @@ export default function AllEvents()
 {
     //can do obj.values right away b/c allGroups initial state {}, can't be undefined
     let events = useSelector(state => Object.values(state.events.allEvents));
-    events.sort((a,b) => {
+
+    let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
+    let pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
+    upcomingEvents.sort((a,b) => {
         return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
     });
-    //also need to separate into past and future
+    //most recent first, descending order
+    pastEvents.sort((a,b) => {
+        return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+    });
+    events = [...upcomingEvents, ...pastEvents];
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -33,16 +40,10 @@ export default function AllEvents()
         <>
             <div className="allEventsHeader">
                 <div className="EventsGroupsContainer">
-                    <NavLink id="EventsNavLink" to ="/">
-                        Events
-                    </NavLink>
-                    <NavLink to="/groups">
-                        Groups
-                    </NavLink>
+                    <span id="EventsSpan">Events</span>
+                    <NavLink id="linkToGroupsFromEvents" to="/groups">Groups</NavLink>
                 </div>
-                <div>
-                    Events in Meetup
-                </div>
+                <div id="eventsInMeetup">Events in FourLegsGood</div>
             </div>
             <div className="allEventsContainer">
                 {
@@ -54,16 +55,21 @@ export default function AllEvents()
                                 </div>
 
                                 <div className="eventInfoContainer">
-                                    <div>{`Starts on ${ele.startDate.slice(0,10)} `} &bull;  {` ${ele.startDate.slice(10)}`}</div>
-                                    <div>{ele.name}</div>
-                                    {/* add seeder data to get rid of null venues */}
-                                    <div>{ele.Venue !== null && `${ele.Venue.city}, ${ele.Venue.state}`}</div>
+                                    <div className="EventDateTime">
+                                        <span>{`${ele.startDate.slice(0,10)} `}</span>
+                                        <span>&bull;</span>
+                                        <span>{` ${ele.startDate.slice(11, 16)}`}</span>
+                                    </div>
+                                    <div className="eventName">{ele.name}</div>
+                                    <div className="eventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
                                 </div>
                             </div>
 
-                            <div>
+                                {/* change to ele.description */}
+                            <div className="eventBlockBottomDescription">
                                 {ele.description}
                             </div>
+
                         </div>
                     ))
                 }
