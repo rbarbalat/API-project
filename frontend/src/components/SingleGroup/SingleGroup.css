@@ -132,6 +132,12 @@
     margin: 1rem auto 0 auto;
 }
 
+.noEventsAtAll {
+    width: 40rem;
+    margin: 1rem auto 0 auto;
+    font-size: 1.2rem;
+}
+
 .upComingHeader {
     font-size:1.2rem;
     margin-bottom: .4rem;

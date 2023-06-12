@@ -30,8 +30,27 @@ export default function SingleGroup()
         return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
     });
 
-    // pastEvents = upcomingEvents;
-    // upcomingEvents = [];
+    //time string format 2023-06-12T00:39:31.383Z
+    //"remove the T, change to AM/PM time and "AM" or "PM" to the end
+    // upcomingEvents.forEach( ele => {
+    //     let hour = Number(ele.startDate.slice(11,13));
+    //     if(hour > 12)
+    //     {
+    //         hour = "0" + String(hour - 12);
+    //         ele.startDate = ele.startDate.slice(0,10) + hour
+    //                         + ele.startDate.slice(13, 16);
+    //     }
+    //     console.log(ele.startDate);
+    // });
+    // pastEvents.forEach( ele => {
+    //     let hour = Number(ele.startDate.slice(11,13));
+    //     if(hour > 12)
+    //     {
+    //         hour = "0" + String(hour - 12);
+    //         ele.startDate = ele.startDate.slice(0,10) + hour
+    //                         + ele.startDate.slice(13, 16);
+    //     }
+    // });
 
     const sessionUser = useSelector((state) => state.session.user);
     let userIsOrganizer;
@@ -120,6 +139,9 @@ export default function SingleGroup()
                 <div id="singleGroupAboutLabel">What we're about</div>
                 <div id="singleGroupAbout">{group.about}</div>
 
+                {upcomingEvents.length === 0 && pastEvents.length === 0
+                    && <div className="noEventsAtAll">This group has no Upcoming or Past Events</div>}
+
                 {upcomingEvents.length > 0 &&
                 (<div className="upComingWrapper">
                     <div className="upComingHeader">Upcoming Events ({upcomingEvents.length})</div>
@@ -137,7 +159,7 @@ export default function SingleGroup()
                                             <div className="groupEventDateTime">
                                                 <span>{`${ele.startDate.slice(0,10)} `}</span>
                                                 <span>&bull;</span>
-                                                <span>{` ${ele.startDate.slice(10)}`}</span>
+                                                <span>{` ${ele.startDate.slice(11,16)}`}</span>
                                             </div>
                                             <div className="groupEventName">{ele.name}</div>
                                             <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
@@ -172,10 +194,8 @@ export default function SingleGroup()
                                         <div className="groupEventInfoContainer">
                                             <div className="groupEventDateTime">
                                                 <span>{`${ele.startDate.slice(0,10)} `}</span>
-                                                {/* <span>{`${ele.startDate}`}</span> */}
                                                 <span>&bull;</span>
-                                                <span>{` ${ele.startDate.slice(10)}`}</span>
-                                                {/* <span>{` ${ele.startDate}`}</span> */}
+                                                <span>{` ${ele.startDate.slice(11,16)}`}</span>
                                             </div>
                                             <div className="groupEventName">{ele.name}</div>
                                             <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
