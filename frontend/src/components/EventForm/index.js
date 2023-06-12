@@ -80,8 +80,8 @@ export default function EventForm()
         {
             errors.startDate = "Start date is invalid";
         }
-        else if( Number(start.slice(-5,-3)) > 12 ) {
-            errors.startdate = "Start date is invalid"
+        else if( Number(start.slice(-5,-3)) > 12 || Number(start.slice(-5,-3)) === 0 ) {
+            errors.startDate = "Start date is invalid"
         }
 
         AMPM = endDate.slice(-3);
@@ -91,7 +91,7 @@ export default function EventForm()
         if(validEnd === "Invalid Date" || (AMPM !== " AM" && AMPM !== " PM"))
         {
             errors.endDate = "End date is invalid";
-        }else if(end.slice(-5,-3) > 12){
+        }else if( Number(end.slice(-5,-3)) > 12 || Number(end.slice(-5,-3)) === 0 ){
             errors.endDate = "End date is invalid"
         }
 
