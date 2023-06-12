@@ -63,7 +63,7 @@ export default function LandingPage()
                         </div>
                         <div>
                             <div className="sectionThreeText">
-                                No matter the location, date or time we have something for you.
+                                No matter where you are we have an event for you.
                             </div>
                         </div>
                     </div>
