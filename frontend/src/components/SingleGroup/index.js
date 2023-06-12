@@ -17,9 +17,7 @@ export default function SingleGroup()
 
     //state.events.allEvents is initially an empty obj so events is an empty obj before the first useEffect
     let events = useSelector(state => Object.values(state.events.allEvents));
-    // events.sort((a,b) => {
-    //     return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-    // });
+
     let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
     let pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
     upcomingEvents.sort((a,b) => {

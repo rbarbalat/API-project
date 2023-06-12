@@ -8,10 +8,16 @@ export default function AllEvents()
 {
     //can do obj.values right away b/c allGroups initial state {}, can't be undefined
     let events = useSelector(state => Object.values(state.events.allEvents));
-    events.sort((a,b) => {
+
+    let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
+    let pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
+    upcomingEvents.sort((a,b) => {
         return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
     });
-    //also need to separate into past and future
+    //most recent first, descending order
+    pastEvents.sort((a,b) => {
+        return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+    });
 
     const history = useHistory();
     const dispatch = useDispatch();
