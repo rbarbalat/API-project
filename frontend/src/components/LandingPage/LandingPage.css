@@ -92,6 +92,12 @@
 }
 .sectionThreeText {
     font-size: .8rem;
+    /* width: 100%;
+    height: 30%; */
+    /*
+    problem if to much text pushes image up above border
+    and out of alignment with other images that have less text, fix later
+    */
 }
 
 .sectionFour {
