@@ -24,7 +24,7 @@ export default function LandingPage()
                             <div className="bigTitle">become friendships</div>
                         </div>
                         <div className="landingIntroText">
-                                Whatever your interest, from chewing on shoes and drinking from the toilet bowl to running around and barking there are thousands who share it on DogUp.
+                                Whatever your interest, from chewing on shoes and drinking from the toilet bowl to running around and barking there are thousands who share it on FourLegsGood.
                         </div>
                     </div>
                     <div className="infographicWrapper">
@@ -80,11 +80,11 @@ export default function LandingPage()
                             <span className="disabledNavLink">Start a new group</span>
                         }
                         </div>
-                        <div>
-                            <div className="sectionThreeText">
-                                The organizers are the ones who make this place work!
-                            </div>
+
+                        <div className="sectionThreeText">
+                            The organizers are the ones who make this place work!
                         </div>
+
                     </div>
 
                 </div>
