@@ -6,9 +6,10 @@ import "./AllEvents.css";
 
 export default function AllEvents()
 {
-    //can do obj.values right away b/c allGroups initial state {}, can't be undefined
+    // {} is the initial State of allEvents
     let events = useSelector(state => Object.values(state.events.allEvents));
 
+    // can call .filter w/o risk b/c events is an empty array before the useEffect runs
     let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
     let pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
     upcomingEvents.sort((a,b) => {
@@ -35,7 +36,7 @@ export default function AllEvents()
         history.push(`/events/${eventId}`);
     }
 
-    if(events === undefined) return <div> All Events Page Loading</div>
+    if(events.length === 0) return <div> All Events Page Loading</div>
     return (
         <>
             <div className="allEventsHeader">

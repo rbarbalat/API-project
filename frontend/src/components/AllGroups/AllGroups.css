@@ -90,6 +90,7 @@
 .groupName {
     font-size: 1.5rem;
     margin-bottom: .5rem;
+    word-wrap: break-word;
 }
 .groupLocation {
     font-size: .85rem;
