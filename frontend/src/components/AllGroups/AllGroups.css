@@ -42,12 +42,17 @@
     width:65%;
     margin:1rem auto;
 
-    padding-bottom:60px;
+    /* padding-bottom:60px; */
+
+    border-bottom:2px solid lightgray;
+}
+.all_groups_bottom_space{
+    min-height:60px;
 }
 
 
 .groupBlock {
-    height: 15rem;
+    height: 13rem;
     width: 100%;
 
     display: flex;

@@ -36,7 +36,7 @@ export default function AllGroups()
                     <NavLink id="EventsNavLink" to ="/events">Events</NavLink>
                     <span id="GroupsSpan">Groups</span>
                 </div>
-                <div id="groupsInMeetUp">Groups in FourLegsGood</div>
+                <div id="groupsInMeetUp">Groups on FourLegsGood</div>
             </div>
             <div className="allGroupsContainer">
                 {
@@ -64,6 +64,7 @@ export default function AllGroups()
                     ))
                 }
             </div>
+            <div className="all_groups_bottom_space"></div>
         </>
     )
 }

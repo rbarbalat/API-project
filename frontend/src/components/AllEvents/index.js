@@ -44,7 +44,7 @@ export default function AllEvents()
                     <span id="EventsSpan">Events</span>
                     <NavLink id="linkToGroupsFromEvents" to="/groups">Groups</NavLink>
                 </div>
-                <div id="eventsInMeetup">Events in FourLegsGood</div>
+                <div id="eventsInMeetup">Events on FourLegsGood</div>
             </div>
             <div className="allEventsContainer">
                 {
@@ -75,6 +75,7 @@ export default function AllEvents()
                     ))
                 }
             </div>
+            <div className="all_events_bottom_space"></div>
         </>
     )
 }
