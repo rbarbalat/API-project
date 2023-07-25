@@ -26,10 +26,14 @@ export const thunkLoadGroups = () => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionLoadGroups(serverData));
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkLoadGroups");
+            return errorData;
         }
     } catch (error){
-    const errorData = await error.json();
-    return errorData;
+        console.log("caught error from thunkLoadGroups")
+        console.log(error);
     }
 }
 const actionLoadSingleGroup = (singleGroup) => {
@@ -46,10 +50,14 @@ export const thunkLoadSingleGroup = (groupId) => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionLoadSingleGroup(serverData));
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkLoadSingleGroup");
+            return errorData;
         }
     } catch (error){
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error from thunkLoadSinglegroup");
+        console.log(error);
     }
 }
 
@@ -81,11 +89,16 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (d
                 const serverData = await res.json();
                 dispatch(actionUpdateGroup(serverData));
                 return serverData;
+            }else{
+                const errorData = await res.json();
+                console.log("bad response from thunkReceiveGroup");
+                return errorData;
             }
         }catch (error)
         {
-            const errorData = await error.json();
-            return errorData;
+            console.log("caught error from thunkReceiveGroup")
+            console.log(error);
+            return;
         }
     }
     const imgBody = {
@@ -127,8 +140,8 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (d
         }
     } catch (error)
     {
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error from thunkReceiveGroup")
+        console.log(error);
     }
 }
 
@@ -150,11 +163,15 @@ export const thunkDeleteGroup = (groupId) => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionDeleteGroup(groupId))
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkDeleteGroup");
+            return errorData;
         }
     } catch(error)
     {
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error response from thunkDeleteGroup");
+        console.log(error);
     }
 }
 
