@@ -9,17 +9,21 @@ import { thunkLoadSingleGroup } from "../../store/groups.js";
 export default function GroupForm({formType})
 {
     const create = (formType === "Create");
-    //on updates, the singleGroup in the store holds current group data
-    //if user refreshes while on the update page, group is empty before useEffect runs
-    //and group.name, group.about etc are undefined, for project don't have to worry
-    //about not being guaranteed to have data in state from refresh/direct browser navigation
+
     const group = useSelector(state => state.groups.singleGroup);
-    const [name, setName] = useState(create ? "" : group.name);
-    const [about, setAbout] = useState(create ? "" : group.about);
-    const [type, setType] = useState(create ? "(select one)" : group.type);
-    const [privatepublic, setPrivatePublic]  = useState(create ? "(select one)" : (group.private === true ? "Private" : "Public"));
-    const [city, setCity] = useState(create ? "" : group.city);
-    const [state, setState] = useState(create ? "" : group.state);
+
+    const emptyGroup = Object.values(group).length === 0;
+
+    // create || emptyGroup b/c if just create name, city, state...etc set to undefined (in the edit case)
+    // and then in the useEffect, undefined.trim() causes a typeError
+
+    console.log("create or emptyGroup is ", create || emptyGroup);
+    const [name, setName] = useState(create || emptyGroup ? "" : group.name);
+    const [about, setAbout] = useState(create || emptyGroup ? "" : group.about);
+    const [type, setType] = useState(create || emptyGroup ? "(select one)" : group.type);
+    const [privatepublic, setPrivatePublic]  = useState(create || emptyGroup ? "(select one)" : (group.private === true ? "Private" : "Public"));
+    const [city, setCity] = useState(create || emptyGroup ? "" : group.city);
+    const [state, setState] = useState(create || emptyGroup ? "" : group.state);
     const [url, setUrl] = useState("");
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
@@ -43,6 +47,7 @@ export default function GroupForm({formType})
         // if str === "", then str[0] is undefined, remember for strings that
         //spaces
 
+        console.log("city.length is ", city.length);
         if(city.trim().length === 0 || city.length === 0)
         errors.city = "City is required";
 
