@@ -29,6 +29,7 @@ export const thunkLoadGroups = () => async (dispatch) => {
         }else{
             const errorData = await res.json();
             console.log("bad response from thunkLoadGroups");
+            console.log(errorData);
             return errorData;
         }
     } catch (error){
@@ -53,6 +54,7 @@ export const thunkLoadSingleGroup = (groupId) => async (dispatch) => {
         }else{
             const errorData = await res.json();
             console.log("bad response from thunkLoadSingleGroup");
+            console.log(errorData);
             return errorData;
         }
     } catch (error){
@@ -92,6 +94,7 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (d
             }else{
                 const errorData = await res.json();
                 console.log("bad response from thunkReceiveGroup");
+                console.log(errorData);
                 return errorData;
             }
         }catch (error)
@@ -166,6 +169,7 @@ export const thunkDeleteGroup = (groupId) => async (dispatch) => {
         }else{
             const errorData = await res.json();
             console.log("bad response from thunkDeleteGroup");
+            console.log(errorData);
             return errorData;
         }
     } catch(error)

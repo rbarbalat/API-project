@@ -22,10 +22,15 @@ export const thunkLoadEvents = () => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionLoadEvents(serverData));
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkLoadEvents")
+            console.log(errorData);
+            return errorData;
         }
     } catch(error){
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error response from thunkLoadEvents")
+        console.log(error);
     }
 }
 //get all events by group ID
@@ -37,10 +42,15 @@ export const thunkLoadEventsByGroupId = (groupId) => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionLoadEvents(serverData));
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkLoadEventsbyGroupdId");
+            console.log(errorData);
+            return errorData;
         }
     } catch(error){
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error response from thunkLoadEventsbyGroupId")
+        console.log(error);
     }
 }
 
@@ -59,10 +69,15 @@ export const thunkLoadSingleEvent = (eventId) => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionLoadSingleEvent(serverData));
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkLoadSingleEvent");
+            console.log(errorData);
+            return errorData;
         }
     } catch(error){
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error response from thunkLoadSingleEvent");
+        console.log(error);
     }
 }
 
@@ -114,11 +129,16 @@ export const thunkReceiveEvent = (group, event) => async (dispatch) => {
             }
             //only possible error response for posting to eventImages is if the event doesn't exist
             //but we created it before trying to post to it
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkReceiveEvent");
+            console.log(errorData);
+            return errorData;
         }
     } catch (error)
     {
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error response from thunkReceiveEvent");
+        console.log(error);
     }
 }
 
@@ -140,11 +160,16 @@ export const thunkDeleteEvent = (eventId) => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionDeleteEvent(eventId))
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkDeleteEvent");
+            console.log(errorData);
+            return errorData;
         }
     } catch(error)
     {
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error response from thunkDeleteEvent");
+        console.log(error);
     }
 }
 
