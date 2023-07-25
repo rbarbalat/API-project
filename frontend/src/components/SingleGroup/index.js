@@ -10,12 +10,12 @@ import DeleteModal from "../DeleteModal/index.js";
 export default function SingleGroup()
 {
     const { groupId } = useParams();
-    //group is an empty object before the useEffect runs
-    //it shouldn't be empty if linked from create group/update group? if the store was just updated
+    //group is an empty object before the useEffect runs if coming from the allGroups page
+    //if coming here after submission of group create/update form, should get the info right away from the store
     const group = useSelector(state => state.groups.singleGroup);
     const groupIsNotEmpty = Object.keys(group).length !== 0;
 
-    //state.events.allEvents is initially an empty obj so events is an empty obj before the first useEffect
+    //events initialized to [] before useEffect b/c intialState of allEvents is {}
     let events = useSelector(state => Object.values(state.events.allEvents));
 
     let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
@@ -28,31 +28,10 @@ export default function SingleGroup()
         return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
     });
 
-    //time string format 2023-06-12T00:39:31.383Z
-    //"remove the T, change to AM/PM time and "AM" or "PM" to the end
-    // upcomingEvents.forEach( ele => {
-    //     let hour = Number(ele.startDate.slice(11,13));
-    //     if(hour > 12)
-    //     {
-    //         hour = "0" + String(hour - 12);
-    //         ele.startDate = ele.startDate.slice(0,10) + hour
-    //                         + ele.startDate.slice(13, 16);
-    //     }
-    //     console.log(ele.startDate);
-    // });
-    // pastEvents.forEach( ele => {
-    //     let hour = Number(ele.startDate.slice(11,13));
-    //     if(hour > 12)
-    //     {
-    //         hour = "0" + String(hour - 12);
-    //         ele.startDate = ele.startDate.slice(0,10) + hour
-    //                         + ele.startDate.slice(13, 16);
-    //     }
-    // });
-
     const sessionUser = useSelector((state) => state.session.user);
-    let userIsOrganizer;
+    //initial state of user is null
 
+    let userIsOrganizer;
     if(groupIsNotEmpty && sessionUser)
     {
         group.organizerId === sessionUser.id ?
@@ -61,18 +40,25 @@ export default function SingleGroup()
     let showJoinButton = true;
     if(userIsOrganizer || sessionUser === null) showJoinButton = false;
     const joinButton = <div className="singleGroupJoinButton"><button onClick={onJoinClick}>Join this group</button></div>;
-    const manageButtons = (<div className="singleGroupManageButtons">
+    const manageButtons = (
+                            <div className="singleGroupManageButtons">
                                 <button onClick={onCreateEventClick}>Create Event</button>
                                 <button onClick={onUpdateClick}>Update</button>
                                 <OpenModalButton id="deleteGroup" buttonText="Delete Group"
                                 modalComponent={<DeleteModal typeId={groupId} type="group"/>}/>
-                            </div>);
+                            </div>
+                );
 
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
         if(Number(groupId) !== group.id)
         {
+            //won't be triggered if coming from group create/edit page b/c the singleGroup
+            //in the store is the right group
+
+            //but if coming from allGroups, group is {} so group.id is undef the first time
+            //the useEffect runs, so this thunk is dispatched
             dispatch(thunkLoadSingleGroup(groupId));
         }
         //must reload this b/c even if the current group is there, might go to
