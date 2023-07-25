@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadSingleEvent } from "../../store/events.js";
-//import { thunkDeleteGroup } from "../../store/groups.js";
-import "./SingleEvent.css";
 import OpenModalButton from "../OpenModalButton/index.js";
 import DeleteModal from "../DeleteModal/index.js";
 import { thunkLoadSingleGroup } from "../../store/groups.js";
+import { reformatTime } from "../../helpers";
+import "./SingleEvent.css";
 
 export default function SingleEvent()
 {
@@ -82,8 +82,8 @@ export default function SingleEvent()
                         <div className="dateTimeSectionSingleEvent">
                             <i className="fa-regular fa-clock"></i>
                             <div>
-                                <div>START {event.startDate.slice(0,10)} &bull; {event.startDate.slice(11, 16)}</div>
-                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {event.endDate.slice(11, 16)}</div>
+                                <div>START {event.startDate.slice(0,10)} &bull; {reformatTime(event.startDate)}</div>
+                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {reformatTime(event.endDate)}</div>
                             </div>
                         </div>
                         <div className="priceSectionSingleEvent">

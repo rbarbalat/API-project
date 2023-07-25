@@ -3,9 +3,10 @@ import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadSingleGroup } from "../../store/groups.js";
 import { thunkLoadEventsByGroupId } from "../../store/events.js";
-import "./SingleGroup.css";
 import OpenModalButton from "../OpenModalButton/index.js";
 import DeleteModal from "../DeleteModal/index.js";
+import { reformatTime } from "../../helpers/index.js";
+import "./SingleGroup.css";
 
 export default function SingleGroup()
 {
@@ -143,7 +144,7 @@ export default function SingleGroup()
                                             <div className="groupEventDateTime">
                                                 <span>{`${ele.startDate.slice(0,10)} `}</span>
                                                 <span>&bull;</span>
-                                                <span>{` ${ele.startDate.slice(11,16)}`}</span>
+                                                <span>{` ${reformatTime(ele.startDate)}`}</span>
                                             </div>
                                             <div className="groupEventName">{ele.name}</div>
                                             <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
@@ -179,7 +180,7 @@ export default function SingleGroup()
                                             <div className="groupEventDateTime">
                                                 <span>{`${ele.startDate.slice(0,10)} `}</span>
                                                 <span>&bull;</span>
-                                                <span>{` ${ele.startDate.slice(11,16)}`}</span>
+                                                <span>{` ${reformatTime(ele.startDate)}`}</span>
                                             </div>
                                             <div className="groupEventName">{ele.name}</div>
                                             <div className="groupEventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
