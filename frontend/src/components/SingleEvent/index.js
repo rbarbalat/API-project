@@ -43,10 +43,13 @@ export default function SingleEvent()
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {
+        //on a refresh or first render event will be {} and event.id is undefined
+        //so the if block is entered
         if(Number(eventId) !== event.id)
         {
             dispatch(thunkLoadSingleEvent(eventId));
         }
+        //groupId is pulled from the event object, undef on a refresh // first render
         if(groupId !== undefined) dispatch(thunkLoadSingleGroup(groupId));
     }, [dispatch, eventId, groupId])
 
