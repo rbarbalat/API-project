@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadEvents } from "../../store/events";
 import {NavLink, useHistory} from "react-router-dom";
+import { reformatTime } from "../../helpers";
 import "./AllEvents.css";
 
 export default function AllEvents()
@@ -59,24 +60,7 @@ export default function AllEvents()
                                     <div className="EventDateTime">
                                         <span>{`${ele.startDate.slice(0,10)} `}</span>
                                         <span>&bull;</span>
-                                        {/* <span>{` ${ele.startDate.slice(11, 16)}`}</span> */}
-                                        {
-                                            Number(ele.startDate.slice(11,13)) >= 13 &&
-                                            <span>{` ${Number(ele.startDate.slice(11,13) - 12)}${ele.startDate.slice(13, 16)} pm`}</span>
-                                        }
-                                        {
-                                            Number(ele.startDate.slice(11,13)) === 12 &&
-                                            <span>{` ${ele.startDate.slice(11, 16)} pm`}</span>
-                                        }
-                                        {
-                                            Number(ele.startDate.slice(11,13)) < 12 &&
-                                            Number(ele.startDate.slice(11,13)) > 0 &&
-                                            <span>{` ${ele.startDate.slice(12, 16)} am`}</span>
-                                        }
-                                        {
-                                            Number(ele.startDate.slice(11,13)) === 0 &&
-                                            <span>{` 12${ele.startDate.slice(13, 16)} am`}</span>
-                                        }
+                                        <span>{` ${reformatTime(ele.startDate)}`}</span>
                                     </div>
                                     <div className="eventName">{ele.name}</div>
                                     <div className="eventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
