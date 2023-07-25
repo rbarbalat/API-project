@@ -6,6 +6,7 @@ import OpenModalButton from "../OpenModalButton/index.js";
 import DeleteModal from "../DeleteModal/index.js";
 import { thunkLoadSingleGroup } from "../../store/groups.js";
 import { reformatTime } from "../../helpers";
+import VenueCard from "../VenueCard/index.js";
 import "./SingleEvent.css";
 
 export default function SingleEvent()
@@ -89,6 +90,22 @@ export default function SingleEvent()
                                 <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {reformatTime(event.endDate)}</div>
                             </div>
                         </div>
+                    {
+                        event.Venue ?
+                        <div className="single_event_venue_wrapper">
+                            <i class="fa-solid fa-location-pin"></i>
+                            <div className="single_event_venue_details">
+                                {event.Venue.address}, {event.Venue.city}, {event.Venue.state}
+                            </div>
+                        </div>
+                        :
+                        <div className="single_event_venue_wrapper">
+                            <i class="fa-solid fa-location-pin"></i>
+                            <div className="single_event_venue_details">
+                                Location To Be Determined
+                            </div>
+                        </div>
+                    }
                         <div className="priceSectionSingleEvent">
                             <i className="fa-solid fa-dollar-sign"></i>
                             <div>{event.price === 0 ? "FREE" : event.price}</div>

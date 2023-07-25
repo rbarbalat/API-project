@@ -119,12 +119,24 @@
 
     padding-left: 1rem;
 }
+/* .single_event_venue{
+    border:1px dashed red;
+    display:flex;
+} */
 .dateTimeSectionSingleEvent {
     display: flex;
     flex-direction: row;
     align-items:center;
     /* justify-content:space-between; */
     /* font-size: .85rem; */
+}
+.single_event_venue_wrapper{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+
+    word-wrap:break-word;
+    overflow:scroll;
 }
 .rightBottom i {
     margin-right: .5rem;
