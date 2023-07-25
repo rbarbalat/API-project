@@ -198,7 +198,7 @@ export default function SingleGroup()
                     </div>
                 </div>)}
 
-
+                <div className="single_group_bottom_space"></div>
             </div>
         </>
     )
