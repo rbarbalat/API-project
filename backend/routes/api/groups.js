@@ -201,13 +201,13 @@ router.post("/", requireAuth, async (req,res) => {
         status: "Organizer",
         memberId: 1
     });
-    console.log(newMember);
-        res.status(201);//201!!!!
-        res.json(newGroup);
+    // console.log(newMember);
+    res.status(201);//201!!!!
+    res.json(newGroup);
 });
 
 //Add an image to a group based on Group's id, authent true, ORGANIZER ONLY
-router.post("/:groupId/images", singleMulterUpload("image"), requireAuth, async (req,res) => {
+router.post("/:groupId/images", requireAuth, singleMulterUpload("image"), async (req,res) => {
     const group = await Group.findByPk(req.params.groupId);
     if(group == null){
         res.status(404);
@@ -219,7 +219,6 @@ router.post("/:groupId/images", singleMulterUpload("image"), requireAuth, async 
         return res.json({message: "Forbidden"});
     }
     const url = req.file ? await singleFileUpload({ file: req.file, public: true }) : null;
-    // const {url , preview} = req.body;
     const { preview } = req.body;
     const image = await group.createGroupImage({
         url,

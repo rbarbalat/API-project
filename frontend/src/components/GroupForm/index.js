@@ -17,7 +17,7 @@ export default function GroupForm({formType})
     // create || emptyGroup b/c if just create name, city, state...etc set to undefined (in the edit case)
     // and then in the useEffect, undefined.trim() causes a typeError
 
-    console.log("create or emptyGroup is ", create || emptyGroup);
+    // console.log("create or emptyGroup is ", create || emptyGroup);
     const [name, setName] = useState(create || emptyGroup ? "" : group.name);
     const [about, setAbout] = useState(create || emptyGroup ? "" : group.about);
     const [type, setType] = useState(create || emptyGroup ? "(select one)" : group.type);
@@ -50,7 +50,7 @@ export default function GroupForm({formType})
         // if str === "", then str[0] is undefined, remember for strings that
         //spaces
 
-        console.log("city.length is ", city.length);
+        // console.log("city.length is ", city.length);
         if(city.trim().length === 0 || city.length === 0)
         errors.city = "City is required";
 
@@ -74,16 +74,16 @@ export default function GroupForm({formType})
         url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
         validEnding = true : validEnding = false;
 
-        if(!validEnding && create) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
+        // if(!validEnding && create) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
         if(create)
         {
-            if(url.trim().length === 0 || url.length === 0)
-            errors.url = "Url is required";
+            // if(url.trim().length === 0 || url.length === 0)
+            // errors.url = "Url is required";
 
             //and some other checks for allowed extensions?
-            if(!image)
-            errors.image = "Image is required";
+            // if(!image)
+            // errors.image = "Image is required";
         }
 
         setValidationErrors(errors);
@@ -125,6 +125,9 @@ export default function GroupForm({formType})
                     lastName: sessionUser.lastName
                 };
                 groupId = null;
+
+                console.log("image inside onsubmit");
+                console.log(image);
                 const formData = new FormData();
                 formData.append("preview", true);
                 //check if image is the right name, maybe needs to be url?

@@ -14,8 +14,11 @@ const singleFileUpload = async ({ file, public = false }) => {
     const Key = new Date().getTime().toString() + path.extname(originalname);
     const uploadParams = {
       Bucket: NAME_OF_BUCKET,
-      Key: public ? `public/${Key}` : Key,
-      Body: buffer
+      // Key: public ? `public/${Key}` : Key,
+      // specified an ACL instead of follwing the public folder example from the repo above
+      Key: Key,
+      Body: buffer,
+      ACL: "public-read",
     };
     const result = await s3.upload(uploadParams).promise();
 

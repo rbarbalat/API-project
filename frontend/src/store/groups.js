@@ -131,6 +131,8 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) =
                 //headers: { "Content-Type":  "application/json" },
                 //body: JSON.stringify(imgBody)
             }
+            console.log("formData inside the thunk");
+            console.log(formData)
             const imageRes = await csrfFetch(`/api/groups/${serverData.id}/images`, imgOptions);
             if(imageRes.ok)
             {
