@@ -88,12 +88,12 @@ const actionReceiveEvent = (event) => {
     }
 }
 
-export const thunkReceiveEvent = (group, event) => async (dispatch) => {
-    const imgBody = {
-            url: event.url,
-            preview: true
-        }
-    delete event.url;
+export const thunkReceiveEvent = (group, event, formData) => async (dispatch) => {
+    // const imgBody = {
+    //         url: event.url,
+    //         preview: true
+    //     }
+    // delete event.url;
     const options = {
         method: "Post",
         headers: { "Content-Type":  "application/json" },
@@ -113,8 +113,9 @@ export const thunkReceiveEvent = (group, event) => async (dispatch) => {
 
             const imgOptions = {
                 method: "Post",
-                headers: { "Content-Type":  "application/json" },
-                body: JSON.stringify(imgBody)
+                body: formData
+                //headers: { "Content-Type":  "application/json" },
+                //body: JSON.stringify(imgBody)
             }
             const imageRes = await csrfFetch(`/api/events/${serverData.id}/images`, imgOptions);
             if(imageRes.ok)

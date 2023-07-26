@@ -126,12 +126,10 @@ export default function GroupForm({formType})
                 };
                 groupId = null;
 
-                console.log("image inside onsubmit");
-                console.log(image);
                 const formData = new FormData();
                 formData.append("preview", true);
-                //check if image is the right name, maybe needs to be url?
                 if(image) formData.append("image", image);
+
                 //commented out the url key and addedd an image argument to thunkRecGroup
                 const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, groupId, {
                     name,

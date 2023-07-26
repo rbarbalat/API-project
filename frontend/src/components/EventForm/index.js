@@ -15,7 +15,10 @@ export default function EventForm()
     const capacity = 100;
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+
     const [url, setUrl] = useState("");
+    const [image, setImage] = useState(null);
+
     const [about, setAbout] = useState("");
 
     const [validationErrors, setValidationErrors] = useState({});
@@ -46,6 +49,11 @@ export default function EventForm()
         let newDate = date.slice(0, 11) + hour +  date.slice(13);
         return newDate;
     }
+    function updateFile(e)
+    {
+        const file = e.target.files[0];
+        if (file) setImage(file);
+    }
 
     useEffect(() => {
         const errors = {};
@@ -56,7 +64,7 @@ export default function EventForm()
         if(Number(price) < 0)
         errors.price = "Price can't be lower than zero";
 
-        if(Number(price) != price)
+        if(Number(price) !== price)
         errors.price = "Price must be a number";
 
         if(price.length === 0)
@@ -95,13 +103,13 @@ export default function EventForm()
             errors.endDate = "End date is invalid"
         }
 
-        let validEnding = false;
-        url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
-        validEnding = true : validEnding = false;
-        if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
+        // let validEnding = false;
+        // url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
+        // validEnding = true : validEnding = false;
+        // if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
 
-        if(url.trim().length === 0 || url.length === 0)
-        errors.url = "Image Url is required";
+        // if(url.trim().length === 0 || url.length === 0)
+        // errors.url = "Image Url is required";
 
         setValidationErrors(errors);
     }, [name, about, type, price, startDate, endDate,  url])
@@ -116,6 +124,7 @@ export default function EventForm()
         setType("(select one)");
         setStartDate("");
         setEndDate("");
+        setImage(null);
 
         setDisplayErrors(false);
         setValidationErrors({});
@@ -141,6 +150,10 @@ export default function EventForm()
             if(startDate.slice(-2) === "PM") start = adjustForPM(start);
             if(endDate.slice(-2) === "PM") end = adjustForPM(end);
 
+            const formData = formData();
+            formData.append("preview", true);
+            if(image) formData.append("image", image);
+
             const serverObject = await dispatch(thunkReceiveEvent(groupKey, {
                 venueId: null,
                 name,
@@ -149,9 +162,9 @@ export default function EventForm()
                 price: Number(price),
                 description: about,
                 startDate: new Date(new Date(start) + "UTC"),
-                endDate: new Date(new Date(end) + "UTC"),
-                url
-            }));
+                endDate: new Date(new Date(end) + "UTC")
+                //url
+            }, formData));
             if(serverObject.errors === undefined)
             {
                 const newId = serverObject.id;
@@ -231,10 +244,11 @@ export default function EventForm()
                 <div className="eventFormSection">
                     <div className="subSection">
                         <div className="eventFormLabel">Please add in image url for your event below:</div>
-                        <input type="text" name="url" placeholder="Image URL"
+                        {/* <input type="text" name="url" placeholder="Image URL"
                             value={url} onChange={e => setUrl(e.target.value)}
                             className="eventUrlInput"
-                        />
+                        /> */}
+                        <input type="file" onChange={updateFile} />
                     </div>
                 </div>
 
