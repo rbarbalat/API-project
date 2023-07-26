@@ -24,7 +24,10 @@ export default function GroupForm({formType})
     const [privatepublic, setPrivatePublic]  = useState(create || emptyGroup ? "(select one)" : (group.private === true ? "Private" : "Public"));
     const [city, setCity] = useState(create || emptyGroup ? "" : group.city);
     const [state, setState] = useState(create || emptyGroup ? "" : group.state);
+
     const [url, setUrl] = useState("");
+    const [image, setImage] = useState(null);
+
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
 
@@ -77,6 +80,10 @@ export default function GroupForm({formType})
         {
             if(url.trim().length === 0 || url.length === 0)
             errors.url = "Url is required";
+
+            //and some other checks for allowed extensions?
+            if(!image)
+            errors.image = "Image is required";
         }
 
         setValidationErrors(errors);
@@ -96,6 +103,12 @@ export default function GroupForm({formType})
         setValidationErrors({});
     }
 
+    function updateFile(e)
+    {
+        const file = e.target.files[0];
+        if (file) setImage(file);
+    }
+
     async function onSubmit(event)
     {
         event.preventDefault();
@@ -106,22 +119,27 @@ export default function GroupForm({formType})
             //get rid of if statements and set all values with ternaries, create ?
             if(create === true)
             {
-                //may have accidnetially changed osmething here double check this
                 const Organizer = {
                     id: sessionUser.id,
                     firstName: sessionUser.firstName,
                     lastName: sessionUser.lastName
                 };
                 groupId = null;
+                const formData = new FormData();
+                formData.append("preview", true);
+                //check if image is the right name, maybe needs to be url?
+                if(image) formData.append("image", image);
+                //commented out the url key and addedd an image argument to thunkRecGroup
                 const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, groupId, {
                     name,
                     about,
                     type,
                     private: privatepublic === "Private" ? true : false,
                     city,
-                    state,
-                    url
-                }));
+                    state
+                    //url
+                }, formData));
+
                 if(serverObject.errors === undefined)
                 {
                     const newId = serverObject.id;
@@ -280,6 +298,12 @@ export default function GroupForm({formType})
                     </p>
 
                     {urlSection}
+
+                    <div className="file_input_label">Please add a file</div>
+                    <input type="file" onChange={updateFile} />
+                    <p className="errors">
+                        {validationErrors.image && displayErrors && validationErrors.image}
+                    </p>
 
                 </div>
 

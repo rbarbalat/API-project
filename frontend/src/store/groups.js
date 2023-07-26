@@ -75,7 +75,7 @@ const actionUpdateGroup = (group) => {
         group
     }
 }
-export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (dispatch) => {
+export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) => async (dispatch) => {
     //let method = create ? "Post" : "Put";
     if(create === false)
     {
@@ -104,11 +104,13 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (d
             return;
         }
     }
-    const imgBody = {
-            url: group.url,
-            preview: true
-        }
-    delete group.url;
+    //start create === true, added a formData parameter to this thunk, replaces imgBody
+    // const imgBody = {
+    //         url: group.url,
+    //         preview: true
+    //     }
+    //commenting out this delete b/c i already removed the url key from the obj in onSubmit func
+    //delete group.url;
     const options = {
         method: "Post",
         headers: { "Content-Type":  "application/json" },
@@ -122,10 +124,12 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (d
             serverData.numMembers = 1;
             serverData.Organizer = Organizer;
 
+            //remove headers b/c using formdata
             const imgOptions = {
                 method: "Post",
-                headers: { "Content-Type":  "application/json" },
-                body: JSON.stringify(imgBody)
+                body: formData
+                //headers: { "Content-Type":  "application/json" },
+                //body: JSON.stringify(imgBody)
             }
             const imageRes = await csrfFetch(`/api/groups/${serverData.id}/images`, imgOptions);
             if(imageRes.ok)
