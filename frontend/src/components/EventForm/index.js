@@ -64,8 +64,10 @@ export default function EventForm()
         if(Number(price) < 0)
         errors.price = "Price can't be lower than zero";
 
-        if(Number(price) !== price)
+        if(Number(price) != price)
         errors.price = "Price must be a number";
+        // console.log("Number(price) ", Number(price));
+        // console.log("price ", price)
 
         if(price.length === 0)
         errors.price = "Price is required";
@@ -150,7 +152,7 @@ export default function EventForm()
             if(startDate.slice(-2) === "PM") start = adjustForPM(start);
             if(endDate.slice(-2) === "PM") end = adjustForPM(end);
 
-            const formData = formData();
+            const formData = new FormData();
             formData.append("preview", true);
             if(image) formData.append("image", image);
 

@@ -378,6 +378,7 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
     });
     if(authorized == null)
     {
+        console.log("i'm really in here");
         res.status(403);
         return res.json({ message: "Forbidden"});
     }
