@@ -14,11 +14,15 @@ export default function SingleEvent()
     const event = useSelector(state => state.events.singleEvent);
     const eventIsNotEmpty = Object.keys(event).length !== 0;
     const { eventId } = useParams();
+    console.log("eventId is ", eventId);
+    console.log("event.id is ",event.id)
+
     let groupId;
     if(eventIsNotEmpty) groupId = event.Group.id;
 
     const sessionUser = useSelector((state) => state.session.user);
     const group = useSelector(state => state.groups.singleGroup);
+    console.log("group.id is ", group.id)
     const groupIsNotEmpty = Object.keys(group).length !== 0;
 
     let userIsOrganizer;
@@ -46,6 +50,11 @@ export default function SingleEvent()
     useEffect(() => {
         //on a refresh or first render event will be {} and event.id is undefined
         //so the if block is entered
+
+        console.log("inside useEffect")
+        console.log("eventId ", eventId);
+        console.log("event.id ", event.id)
+        console.log("Number(eventId !== event.id is ", Number(eventId) !== event.id )
         if(Number(eventId) !== event.id)
         {
             dispatch(thunkLoadSingleEvent(eventId));

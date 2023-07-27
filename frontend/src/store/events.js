@@ -78,6 +78,7 @@ export const thunkLoadSingleEvent = (eventId) => async (dispatch) => {
     } catch(error){
         console.log("caught error response from thunkLoadSingleEvent");
         console.log(error);
+        console.log(await error.json())
     }
 }
 
