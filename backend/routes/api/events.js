@@ -231,7 +231,7 @@ router.put("/:eventId", requireAuth, async (req, res) => {
     const findVenue = await Venue.findByPk(venueId);
     if(findVenue == null && venueId != null)
     {
-        console.log("goodbye");
+        // console.log("goodbye");
         res.status(404);
         return res.json({message: "Venue couldn't be found"});
     }
@@ -276,6 +276,8 @@ router.get("/:eventId", async (req, res) => {
     });
     if(event == null)
     {
+        console.log(`eventId is ${req.params.eventId}`);
+        console.log("no such event");
         res.status(404);
         return res.json({ message: "Event couldn't be found"});
     }
