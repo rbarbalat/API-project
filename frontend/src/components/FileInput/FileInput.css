@@ -16,4 +16,5 @@
 
 .fa-pen-to-square, .fa-upload{
     font-size:25px;
+    cursor:pointer;
 }
