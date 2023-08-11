@@ -14,16 +14,21 @@ export default function SingleEvent()
     const event = useSelector(state => state.events.singleEvent);
     const eventIsNotEmpty = Object.keys(event).length !== 0;
     const { eventId } = useParams();
-    console.log("eventId is ", eventId);
-    console.log("event.id is ",event.id)
 
     let groupId;
     if(eventIsNotEmpty) groupId = event.Group.id;
 
     const sessionUser = useSelector((state) => state.session.user);
     const group = useSelector(state => state.groups.singleGroup);
-    console.log("group.id is ", group.id)
     const groupIsNotEmpty = Object.keys(group).length !== 0;
+
+    let startDate;
+    if(event.startDate) startDate = new Date(new Date(event.startDate).toString() + "UTC").toISOString();
+    console.log("startDate ", startDate);
+
+    let endDate;
+    if(event.endDate) endDate = new Date(new Date(event.endDate).toString() + "UTC").toISOString();
+    console.log("endDate ", endDate);
 
     let userIsOrganizer;
     if(groupIsNotEmpty && sessionUser)
@@ -33,6 +38,8 @@ export default function SingleEvent()
     }
     let showButtons = false;
     if(userIsOrganizer) showButtons = true;
+
+
     function featureComingSoon()
     {
         return window.alert("Feature Coming Soon");
@@ -50,11 +57,6 @@ export default function SingleEvent()
     useEffect(() => {
         //on a refresh or first render event will be {} and event.id is undefined
         //so the if block is entered
-
-        console.log("inside useEffect")
-        console.log("eventId ", eventId);
-        console.log("event.id ", event.id)
-        console.log("Number(eventId !== event.id is ", Number(eventId) !== event.id )
         if(Number(eventId) !== event.id)
         {
             dispatch(thunkLoadSingleEvent(eventId));
@@ -95,8 +97,10 @@ export default function SingleEvent()
                         <div className="dateTimeSectionSingleEvent">
                             <i className="fa-regular fa-clock"></i>
                             <div>
-                                <div>START {event.startDate.slice(0,10)} &bull; {reformatTime(event.startDate)}</div>
-                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {reformatTime(event.endDate)}</div>
+                                <div>START {startDate.slice(0,10)} &bull; {reformatTime(startDate)}</div>
+                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{endDate.slice(0,10)} &bull; {reformatTime(endDate)}</div>
+                                {/* <div>START {event.startDate.slice(0,10)} &bull; {reformatTime(event.startDate)}</div>
+                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {reformatTime(event.endDate)}</div> */}
                             </div>
                         </div>
                     {

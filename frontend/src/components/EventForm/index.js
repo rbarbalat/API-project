@@ -34,23 +34,6 @@ export default function EventForm()
     //must be organizer but only organizer should be allowed to click
     const sessionUser = useSelector((state) => state.session.user);
 
-    //const alphabet = "abcdefghijklmnopqrstywzABCDEFGHIJKLMNOPQRSTYZ";
-
-    //input format is MM/DD/YYYY, HH/mm AM(orPM)
-    //converting MM/DD/YYYY, HH/mm where HH is from 00 to 24
-    function reformatDateString(date)
-    {
-        let AMPM = date.slice(-3);
-        let newDate = date.slice(0, -3); //remove space and AM or PM
-        newDate = newDate.slice(0,-3) + ":" + newDate.slice(-2);//replace slash with :
-        return newDate;
-    }
-    function adjustForPM(date)
-    {
-        let hour = String(Number(date.slice(11,13)) + 12);
-        let newDate = date.slice(0, 11) + hour +  date.slice(13);
-        return newDate;
-    }
     function updateFile(e)
     {
         // const file = e.target.files[0];
@@ -72,50 +55,30 @@ export default function EventForm()
 
         if(Number(price) != price)
         errors.price = "Price must be a number";
-        // console.log("Number(price) ", Number(price));
-        // console.log("price ", price)
 
         if(price.length === 0)
         errors.price = "Price is required";
 
-        //the backend validation is < 50, need to change backend?
         if(about.trim().length < 30 || about.length < 30)
         errors.about = "Description must be at least 30 characters long";
 
         if(!["Online", "In person"].includes(type))
         errors.type = "Group Type is required";
 
-        //input format is MM/DD/YYYY, HH/mm AM(orPM)
-        //convert into acceptable format, if it becomes an invalid
-        //Date object then didn't start with the right format
+        let date = new Date(startDate);
+        console.log("startDate, ", date.toString());
+        if(date.toString() === "Invalid Date")
+        errors.startDate = "Invalid Start Date";
 
-        let AMPM = startDate.slice(-3);
-        let start = reformatDateString(startDate);
-        const validStart = new Date(start).toString();
-        if(validStart === "Invalid Date" || (AMPM !== " AM" && AMPM !== " PM"))
-        {
-            errors.startDate = "Start date is invalid";
-        }
-        else if( Number(start.slice(-5,-3)) > 12 || Number(start.slice(-5,-3)) === 0 ) {
-            errors.startDate = "Start date is invalid"
-        }
-
-        AMPM = endDate.slice(-3);
-        let end = reformatDateString(endDate);
-        //valid end before accounting for something > 12 like 16:00 AM
-        const validEnd = new Date(end).toString();
-        if(validEnd === "Invalid Date" || (AMPM !== " AM" && AMPM !== " PM"))
-        {
-            errors.endDate = "End date is invalid";
-        }else if( Number(end.slice(-5,-3)) > 12 || Number(end.slice(-5,-3)) === 0 ){
-            errors.endDate = "End date is invalid"
-        }
+        date = new Date(endDate);
+        if(date.toString() === "Invalid Date")
+        errors.endDate = "Invalid End Date";
 
         if(!image)
         errors.image = "Image File is required";
 
         setValidationErrors(errors);
-    }, [name, about, type, price, startDate, endDate])
+    }, [name, about, type, price, startDate, endDate, image])
 
     function reset()
     {
@@ -147,11 +110,6 @@ export default function EventForm()
                 state: group.state
             };
 
-            let start = reformatDateString(startDate);
-            let end = reformatDateString(endDate);
-            if(startDate.slice(-2) === "PM") start = adjustForPM(start);
-            if(endDate.slice(-2) === "PM") end = adjustForPM(end);
-
             const formData = new FormData();
             formData.append("preview", true);
             if(image) formData.append("image", image);
@@ -163,9 +121,8 @@ export default function EventForm()
                 capacity: Number(capacity),//capacity hardcoded for now
                 price: Number(price),
                 description: about,
-                startDate: new Date(new Date(start) + "UTC"),
-                endDate: new Date(new Date(end) + "UTC")
-                //url
+                startDate: new Date(startDate),
+                endDate: new Date(endDate)
             }, formData));
             if(serverObject.errors === undefined)
             {
