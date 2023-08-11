@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import FileInput from "../FileInput";
 import "./EventForm.css";
 import { thunkReceiveEvent } from "../../store/events";
 
@@ -16,13 +17,9 @@ export default function EventForm()
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
-    const [url, setUrl] = useState("");
-    const [image, setImage] = useState(null);
-
-    // const url = create || emptyGroup ? "" : group.GroupImages[0].url;
-
-    // const [image, setImage] = useState("");
-    // const image_file = useRef(null);
+    const [image, setImage] = useState("");
+    // const url = create || emptyGroup ? "" : group.EventImages[0].url;
+    const image_file = useRef(null);
 
     const [about, setAbout] = useState("");
 
@@ -56,8 +53,12 @@ export default function EventForm()
     }
     function updateFile(e)
     {
-        const file = e.target.files[0];
-        if (file) setImage(file);
+        // const file = e.target.files[0];
+        // if (file) setImage(file);
+        setImage(e.target.files[0]);
+        const errors = {...validationErrors};
+        delete errors.image;
+        setValidationErrors(errors);
     }
 
     useEffect(() => {
@@ -110,16 +111,11 @@ export default function EventForm()
             errors.endDate = "End date is invalid"
         }
 
-        // let validEnding = false;
-        // url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
-        // validEnding = true : validEnding = false;
-        // if(!validEnding) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
-
-        // if(url.trim().length === 0 || url.length === 0)
-        // errors.url = "Image Url is required";
+        if(!image)
+        errors.image = "Image File is required";
 
         setValidationErrors(errors);
-    }, [name, about, type, price, startDate, endDate,  url])
+    }, [name, about, type, price, startDate, endDate])
 
     function reset()
     {
@@ -127,11 +123,10 @@ export default function EventForm()
         setName("");
         setAbout("");
         setPrice(0);
-        setUrl("");
         setType("(select one)");
         setStartDate("");
         setEndDate("");
-        setImage(null);
+        setImage("");
 
         setDisplayErrors(false);
         setValidationErrors({});
@@ -194,7 +189,7 @@ export default function EventForm()
                 {validationErrors.price && displayErrors && <div className="errors">{validationErrors.price}</div>}
                 {validationErrors.startDate && displayErrors && <div className="errors">{validationErrors.startDate}</div>}
                 {validationErrors.endDate && displayErrors && <div className="errors">{validationErrors.endDate}</div>}
-                {validationErrors.url && displayErrors && <div className="errors">{validationErrors.url}</div>}
+                {validationErrors.image && displayErrors && <div className="errors">{validationErrors.image}</div>}
                 {validationErrors.about && displayErrors && <div className="errors">{validationErrors.about}</div>}
 
                 <div className="eventFormHeader">Create an event for {group.name} </div>
@@ -251,11 +246,9 @@ export default function EventForm()
                 <div className="eventFormSection">
                     <div className="subSection">
                         <div className="eventFormLabel">Please add in image url for your event below:</div>
-                        {/* <input type="text" name="url" placeholder="Image URL"
-                            value={url} onChange={e => setUrl(e.target.value)}
-                            className="eventUrlInput"
-                        /> */}
-                        <input type="file" accept="image/*" onChange={updateFile} />
+                        <input type="file" accept="image/*" onChange={updateFile}
+                         ref = {image_file} style = {{display: "none"}} />
+                        <FileInput url={null} image={image} upload = {() => image_file.current.click()} />
                     </div>
                 </div>
 
