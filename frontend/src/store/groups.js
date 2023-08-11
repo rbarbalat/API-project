@@ -90,23 +90,19 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) =
             const res = await csrfFetch(`/api/groups/${groupId}`, options);
             if(res.ok)
             {
-                console.log("line 91")
                 const serverData = await res.json();
                 const imgOptions = formData ? {method: "Put", body: formData } : null;
-                console.log("imgOptions ", imgOptions)
                 const imageRes = imgOptions ? await csrfFetch(`/api/group-images/${imageId}`, imgOptions)
                                             : null;
 
-                if(imageRes.ok)
+                if(imageRes?.ok)//opt chaining b/c imageRes can be null
                 {
                     const imageServerData = await imageRes.json();
                     serverData.previewImage = imageServerData.url;
                     serverData.GroupImages = [imageServerData];
-                    dispatch(actionUpdateGroup(serverData));
-                    return serverData;
                 }
-                // dispatch(actionUpdateGroup(serverData));
-                // return serverData;
+                dispatch(actionUpdateGroup(serverData));
+                return serverData;
             }else{
                 const errorData = await res.json();
                 console.log("bad response from thunkReceiveGroup");
@@ -117,7 +113,6 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) =
         {
             console.log("caught error from thunkReceiveGroup")
             console.log(error);
-            return;
         }
     }
     const options = {

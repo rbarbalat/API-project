@@ -73,7 +73,7 @@ export default function GroupForm({formType})
         if(!["Private", "Public"].includes(privatepublic))
         errors.privatepublic = "Visibility Type is required";
 
-        if(!image)
+        if(!image && create)
         errors.image = "Image File is required";
 
         setValidationErrors(errors);
