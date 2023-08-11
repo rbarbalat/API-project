@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import "./GroupForm.css";
 import { thunkReceiveGroup } from "../../store/groups";
 import { thunkLoadSingleGroup } from "../../store/groups.js";
+import FileInput from "../FileInput";
+import "./GroupForm.css";
 
 
 export default function GroupForm({formType})
@@ -25,8 +26,10 @@ export default function GroupForm({formType})
     const [city, setCity] = useState(create || emptyGroup ? "" : group.city);
     const [state, setState] = useState(create || emptyGroup ? "" : group.state);
 
-    const [url, setUrl] = useState("");
-    const [image, setImage] = useState(null);
+    const url = create || emptyGroup ? "" : group.GroupImages[0].url;
+
+    const [image, setImage] = useState("");
+    const image_file = useRef(null);
 
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
@@ -70,21 +73,8 @@ export default function GroupForm({formType})
         if(!["Private", "Public"].includes(privatepublic))
         errors.privatepublic = "Visibility Type is required";
 
-        let validEnding = false;
-        url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
-        validEnding = true : validEnding = false;
-
-        // if(!validEnding && create) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
-
-        if(create)
-        {
-            // if(url.trim().length === 0 || url.length === 0)
-            // errors.url = "Url is required";
-
-            //and some other checks for allowed extensions?
-            // if(!image)
-            // errors.image = "Image is required";
-        }
+        if(!image)
+        errors.image = "Image File is required";
 
         setValidationErrors(errors);
     }, [name, about, type, privatepublic, city, state, url, create])
@@ -96,17 +86,22 @@ export default function GroupForm({formType})
         setAbout("");
         setCity("");
         setState("");
-        setUrl("");
+        // setUrl("");
         setType("(select one)");
         setPrivatePublic("(select one)");
+        setImage("");
         setDisplayErrors(false);
         setValidationErrors({});
     }
 
     function updateFile(e)
     {
-        const file = e.target.files[0];
-        if (file) setImage(file);
+        // const file = e.target.files[0];
+        // if (file) setImage(file);
+        setImage(e.target.files[0]);
+        const errors = {...validationErrors};
+        delete errors.image;
+        setValidationErrors(errors);
     }
 
     async function onSubmit(event)
@@ -128,6 +123,7 @@ export default function GroupForm({formType})
 
                 const formData = new FormData();
                 formData.append("preview", true);
+                //image should always be true here
                 if(image) formData.append("image", image);
 
                 //commented out the url key and addedd an image argument to thunkRecGroup
@@ -138,7 +134,6 @@ export default function GroupForm({formType})
                     private: privatepublic === "Private" ? true : false,
                     city,
                     state
-                    //url
                 }, formData));
 
                 if(serverObject.errors === undefined)
@@ -154,6 +149,13 @@ export default function GroupForm({formType})
             }
             if(create === false)
             {
+                let formData = null;
+                if(image)
+                {
+                    formData = new FormData();
+                    formData.append("preview", true);
+                    formData.append("image", image);
+                }
                 const Organizer = null;
                 const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, groupId, {
                     name,
@@ -161,9 +163,9 @@ export default function GroupForm({formType})
                     type,
                     private: privatepublic === "Private" ? true : false,
                     city,
-                    state
-                    //url
-                }));
+                    state,
+                    imageId: group.GroupImages[0].id
+                }, formData));
                 if(serverObject.errors === undefined)
                 {
                     const newId = serverObject.id;
@@ -186,22 +188,6 @@ export default function GroupForm({formType})
         <div className="startOrUpdate">UPDATE YOUR GROUP'S INFORMATION</div>
         <div className="formSectionHeader">We'll walk you through a few steps to update your group's information</div>
     </div>)
-
-    const urlSection = create ?
-    ( <div>
-        <div className="urlLabel">Please add in image url for your group below:</div>
-        <input className="urlInput" type="text" name="url" placeholder="Image Url"
-            value={url} onChange={e => setUrl(e.target.value)}
-        />
-        <p className="errors">
-        {
-            validationErrors.url !== undefined && displayErrors
-            && validationErrors.url
-        }
-        </p>
-    </div>)
-    :
-    (<div></div>);
 
     //for now, adjust when adding links to this page (only available to logged in users)
     if(sessionUser === null) return <div>unauthorized</div>;
@@ -298,10 +284,13 @@ export default function GroupForm({formType})
                     }
                     </p>
 
-                    {urlSection}
-
                     <div className="file_input_label">Please add a file</div>
-                    <input type="file" onChange={updateFile} />
+
+                    <input type="file" accept="image/*" onChange={updateFile}
+                        ref = {image_file} style = {{display: "none"}} />
+
+                    <FileInput url={url} image={image} upload = {() => image_file.current.click()} />
+
                     <p className="errors">
                         {validationErrors.image && displayErrors && validationErrors.image}
                     </p>

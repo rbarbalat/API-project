@@ -1,0 +1,19 @@
+.image_and_upload_button{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    gap:1rem;
+    width:15%;
+}
+
+.form_image{
+    height:50px;
+    width:75px;
+    border-radius:5px;
+    object-fit:cover;
+}
+
+.fa-pen-to-square, .fa-upload{
+    font-size:25px;
+}

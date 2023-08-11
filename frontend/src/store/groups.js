@@ -79,6 +79,8 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) =
     //let method = create ? "Post" : "Put";
     if(create === false)
     {
+        const imageId = group.imageId;
+        delete group.imageId;
         const options = {
             method: "Put",
             headers: { "Content-Type":  "application/json" },
@@ -88,7 +90,15 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) =
             const res = await csrfFetch(`/api/groups/${groupId}`, options);
             if(res.ok)
             {
+                console.log("line 91")
                 const serverData = await res.json();
+                const imgOptions = formData ? {method: "Put", body: formData } : null;
+                console.log("imgOptions ", imgOptions)
+                const imageRes = imgOptions ? await csrfFetch(`/api/group-images/${imageId}`, imgOptions)
+                                            : null;
+
+                if(!imageRes.ok) console.log("OKOKOKOKOKO")
+
                 dispatch(actionUpdateGroup(serverData));
                 return serverData;
             }else{
@@ -104,13 +114,6 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) =
             return;
         }
     }
-    //start create === true, added a formData parameter to this thunk, replaces imgBody
-    // const imgBody = {
-    //         url: group.url,
-    //         preview: true
-    //     }
-    //commenting out this delete b/c i already removed the url key from the obj in onSubmit func
-    //delete group.url;
     const options = {
         method: "Post",
         headers: { "Content-Type":  "application/json" },
@@ -124,12 +127,9 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) =
             serverData.numMembers = 1;
             serverData.Organizer = Organizer;
 
-            //remove headers b/c using formdata
             const imgOptions = {
                 method: "Post",
                 body: formData
-                //headers: { "Content-Type":  "application/json" },
-                //body: JSON.stringify(imgBody)
             }
             console.log("formData inside the thunk");
             console.log(formData)
