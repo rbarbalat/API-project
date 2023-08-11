@@ -19,6 +19,11 @@ export default function EventForm()
     const [url, setUrl] = useState("");
     const [image, setImage] = useState(null);
 
+    // const url = create || emptyGroup ? "" : group.GroupImages[0].url;
+
+    // const [image, setImage] = useState("");
+    // const image_file = useRef(null);
+
     const [about, setAbout] = useState("");
 
     const [validationErrors, setValidationErrors] = useState({});
@@ -250,7 +255,7 @@ export default function EventForm()
                             value={url} onChange={e => setUrl(e.target.value)}
                             className="eventUrlInput"
                         /> */}
-                        <input type="file" onChange={updateFile} />
+                        <input type="file" accept="image/*" onChange={updateFile} />
                     </div>
                 </div>
 
