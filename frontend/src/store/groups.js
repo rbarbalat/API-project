@@ -97,10 +97,16 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) =
                 const imageRes = imgOptions ? await csrfFetch(`/api/group-images/${imageId}`, imgOptions)
                                             : null;
 
-                if(!imageRes.ok) console.log("OKOKOKOKOKO")
-
-                dispatch(actionUpdateGroup(serverData));
-                return serverData;
+                if(imageRes.ok)
+                {
+                    const imageServerData = await imageRes.json();
+                    serverData.previewImage = imageServerData.url;
+                    serverData.GroupImages = [imageServerData];
+                    dispatch(actionUpdateGroup(serverData));
+                    return serverData;
+                }
+                // dispatch(actionUpdateGroup(serverData));
+                // return serverData;
             }else{
                 const errorData = await res.json();
                 console.log("bad response from thunkReceiveGroup");
