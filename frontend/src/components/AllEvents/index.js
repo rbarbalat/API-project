@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLoadEvents } from "../../store/events";
 import {NavLink, useHistory} from "react-router-dom";
+import { reformatTime } from "../../helpers";
 import "./AllEvents.css";
 
 export default function AllEvents()
 {
-    //can do obj.values right away b/c allGroups initial state {}, can't be undefined
+    // {} is the initial State of allEvents
     let events = useSelector(state => Object.values(state.events.allEvents));
 
+    // can call .filter w/o risk b/c events is an empty array before the useEffect runs
     let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
     let pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
     upcomingEvents.sort((a,b) => {
@@ -19,6 +21,11 @@ export default function AllEvents()
         return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
     });
     events = [...upcomingEvents, ...pastEvents];
+
+    events.forEach(ele => {
+        //only displaying startDate on this component
+        ele.startDate = new Date(new Date(ele.startDate).toString() + "UTC").toISOString();
+    })
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -35,7 +42,7 @@ export default function AllEvents()
         history.push(`/events/${eventId}`);
     }
 
-    if(events === undefined) return <div> All Events Page Loading</div>
+    if(events.length === 0) return <div> All Events Page Loading</div>
     return (
         <>
             <div className="allEventsHeader">
@@ -43,7 +50,7 @@ export default function AllEvents()
                     <span id="EventsSpan">Events</span>
                     <NavLink id="linkToGroupsFromEvents" to="/groups">Groups</NavLink>
                 </div>
-                <div id="eventsInMeetup">Events in FourLegsGood</div>
+                <div id="eventsInMeetup">Events on FourLegsGood</div>
             </div>
             <div className="allEventsContainer">
                 {
@@ -58,7 +65,7 @@ export default function AllEvents()
                                     <div className="EventDateTime">
                                         <span>{`${ele.startDate.slice(0,10)} `}</span>
                                         <span>&bull;</span>
-                                        <span>{` ${ele.startDate.slice(11, 16)}`}</span>
+                                        <span>{` ${reformatTime(ele.startDate)}`}</span>
                                     </div>
                                     <div className="eventName">{ele.name}</div>
                                     <div className="eventLocation">{ele.Venue !== null ? `${ele.Venue.city}, ${ele.Venue.state}` : `Denver, CO`}</div>
@@ -74,6 +81,7 @@ export default function AllEvents()
                     ))
                 }
             </div>
+            <div className="all_events_bottom_space"></div>
         </>
     )
 }

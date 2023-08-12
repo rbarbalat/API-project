@@ -6,12 +6,11 @@ import "./AllGroups.css";
 
 export default function AllGroups()
 {
-    //can do obj.values right away b/c allGroups initial state {}, can't be undefined
+    // {} is the initial state of allGroups
     const groups = useSelector(state => Object.values(state.groups.allGroups));
     const history = useHistory();
     const dispatch = useDispatch();
-    // const [neverLoaded, setNeverLoaded] = useState(true);
-    // console.log("neverLoaded -----  ", neverLoaded);
+    // const [loaded, setLoaded] = useState(false);
     useEffect(() => {
         //dispatch if groups empty but problem is you create a group before
         //ever loading, now won't load the remaining groups unless you delete
@@ -27,7 +26,9 @@ export default function AllGroups()
         history.push(`/groups/${groupId}`);
     }
 
-    if(groups === undefined) return <div> All Groups Page Loading</div>
+    // groups is an empty array before the useEffect runs
+    // maybe change this to depend on if the thunk returned a good response
+    if(groups.length === 0) return <div> All Groups Page Loading</div>
     return (
         <>
             <div className="allGroupsHeader">
@@ -35,7 +36,7 @@ export default function AllGroups()
                     <NavLink id="EventsNavLink" to ="/events">Events</NavLink>
                     <span id="GroupsSpan">Groups</span>
                 </div>
-                <div id="groupsInMeetUp">Groups in FourLegsGood</div>
+                <div id="groupsInMeetUp">Groups on FourLegsGood</div>
             </div>
             <div className="allGroupsContainer">
                 {
@@ -63,6 +64,7 @@ export default function AllGroups()
                     ))
                 }
             </div>
+            <div className="all_groups_bottom_space"></div>
         </>
     )
 }

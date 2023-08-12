@@ -1,26 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import "./GroupForm.css";
 import { thunkReceiveGroup } from "../../store/groups";
 import { thunkLoadSingleGroup } from "../../store/groups.js";
+import FileInput from "../FileInput";
+import "./GroupForm.css";
 
 
 export default function GroupForm({formType})
 {
     const create = (formType === "Create");
-    //on updates, the singleGroup in the store holds current group data
-    //if user refreshes while on the update page, group is empty before useEffect runs
-    //and group.name, group.about etc are undefined, for project don't have to worry
-    //about not being guaranteed to have data in state from refresh/direct browser navigation
+
     const group = useSelector(state => state.groups.singleGroup);
-    const [name, setName] = useState(create ? "" : group.name);
-    const [about, setAbout] = useState(create ? "" : group.about);
-    const [type, setType] = useState(create ? "(select one)" : group.type);
-    const [privatepublic, setPrivatePublic]  = useState(create ? "(select one)" : (group.private === true ? "Private" : "Public"));
-    const [city, setCity] = useState(create ? "" : group.city);
-    const [state, setState] = useState(create ? "" : group.state);
-    const [url, setUrl] = useState("");
+
+    const emptyGroup = Object.values(group).length === 0;
+
+    // create || emptyGroup b/c if just create name, city, state...etc set to undefined (in the edit case)
+    // and then in the useEffect, undefined.trim() causes a typeError
+
+    // console.log("create or emptyGroup is ", create || emptyGroup);
+    const [name, setName] = useState(create || emptyGroup ? "" : group.name);
+    const [about, setAbout] = useState(create || emptyGroup ? "" : group.about);
+    const [type, setType] = useState(create || emptyGroup ? "(select one)" : group.type);
+    const [privatepublic, setPrivatePublic]  = useState(create || emptyGroup ? "(select one)" : (group.private === true ? "Private" : "Public"));
+    const [city, setCity] = useState(create || emptyGroup ? "" : group.city);
+    const [state, setState] = useState(create || emptyGroup ? "" : group.state);
+
+    const url = create || emptyGroup ? "" : group.GroupImages[0].url;
+
+    const [image, setImage] = useState("");
+    const image_file = useRef(null);
+
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
 
@@ -43,6 +53,7 @@ export default function GroupForm({formType})
         // if str === "", then str[0] is undefined, remember for strings that
         //spaces
 
+        // console.log("city.length is ", city.length);
         if(city.trim().length === 0 || city.length === 0)
         errors.city = "City is required";
 
@@ -62,17 +73,8 @@ export default function GroupForm({formType})
         if(!["Private", "Public"].includes(privatepublic))
         errors.privatepublic = "Visibility Type is required";
 
-        let validEnding = false;
-        url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") ?
-        validEnding = true : validEnding = false;
-
-        if(!validEnding && create) errors.url = "Image URL must end in .png, .jpg, or .jpeg"
-
-        if(create)
-        {
-            if(url.trim().length === 0 || url.length === 0)
-            errors.url = "Url is required";
-        }
+        if(!image && create)
+        errors.image = "Image File is required";
 
         setValidationErrors(errors);
     }, [name, about, type, privatepublic, city, state, url, create])
@@ -84,11 +86,22 @@ export default function GroupForm({formType})
         setAbout("");
         setCity("");
         setState("");
-        setUrl("");
+        // setUrl("");
         setType("(select one)");
         setPrivatePublic("(select one)");
+        setImage("");
         setDisplayErrors(false);
         setValidationErrors({});
+    }
+
+    function updateFile(e)
+    {
+        // const file = e.target.files[0];
+        // if (file) setImage(file);
+        setImage(e.target.files[0]);
+        const errors = {...validationErrors};
+        delete errors.image;
+        setValidationErrors(errors);
     }
 
     async function onSubmit(event)
@@ -101,22 +114,28 @@ export default function GroupForm({formType})
             //get rid of if statements and set all values with ternaries, create ?
             if(create === true)
             {
-                //may have accidnetially changed osmething here double check this
                 const Organizer = {
                     id: sessionUser.id,
                     firstName: sessionUser.firstName,
                     lastName: sessionUser.lastName
                 };
                 groupId = null;
+
+                const formData = new FormData();
+                formData.append("preview", true);
+                //image should always be true here
+                if(image) formData.append("image", image);
+
+                //commented out the url key and addedd an image argument to thunkRecGroup
                 const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, groupId, {
                     name,
                     about,
                     type,
                     private: privatepublic === "Private" ? true : false,
                     city,
-                    state,
-                    url
-                }));
+                    state
+                }, formData));
+
                 if(serverObject.errors === undefined)
                 {
                     const newId = serverObject.id;
@@ -130,6 +149,13 @@ export default function GroupForm({formType})
             }
             if(create === false)
             {
+                let formData = null;
+                if(image)
+                {
+                    formData = new FormData();
+                    formData.append("preview", true);
+                    formData.append("image", image);
+                }
                 const Organizer = null;
                 const serverObject = await dispatch(thunkReceiveGroup(Organizer, create, groupId, {
                     name,
@@ -137,9 +163,9 @@ export default function GroupForm({formType})
                     type,
                     private: privatepublic === "Private" ? true : false,
                     city,
-                    state
-                    //url
-                }));
+                    state,
+                    imageId: group.GroupImages[0].id
+                }, formData));
                 if(serverObject.errors === undefined)
                 {
                     const newId = serverObject.id;
@@ -162,22 +188,6 @@ export default function GroupForm({formType})
         <div className="startOrUpdate">UPDATE YOUR GROUP'S INFORMATION</div>
         <div className="formSectionHeader">We'll walk you through a few steps to update your group's information</div>
     </div>)
-
-    const urlSection = create ?
-    ( <div>
-        <div className="urlLabel">Please add in image url for your group below:</div>
-        <input className="urlInput" type="text" name="url" placeholder="Image Url"
-            value={url} onChange={e => setUrl(e.target.value)}
-        />
-        <p className="errors">
-        {
-            validationErrors.url !== undefined && displayErrors
-            && validationErrors.url
-        }
-        </p>
-    </div>)
-    :
-    (<div></div>);
 
     //for now, adjust when adding links to this page (only available to logged in users)
     if(sessionUser === null) return <div>unauthorized</div>;
@@ -274,7 +284,16 @@ export default function GroupForm({formType})
                     }
                     </p>
 
-                    {urlSection}
+                    <div className="file_input_label">Please add a file</div>
+
+                    <input type="file" accept="image/*" onChange={updateFile}
+                        ref = {image_file} style = {{display: "none"}} />
+
+                    <FileInput url={url} image={image} upload = {() => image_file.current.click()} />
+
+                    <p className="errors">
+                        {validationErrors.image && displayErrors && validationErrors.image}
+                    </p>
 
                 </div>
 

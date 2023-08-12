@@ -22,6 +22,10 @@ function App() {
 
   return (
     <>
+    <div className = "media_message">
+      This website should be viewed at a width of at least 800 pixels.
+    </div>
+    <div className = "application_wrapper">
       <Navigation isLoaded={isLoaded} />
       {isLoaded &&
         <Switch>
@@ -51,6 +55,7 @@ function App() {
             </Route>
         </Switch>}
         <Footer />
+      </div>
     </>
   );
 }

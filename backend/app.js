@@ -18,6 +18,8 @@ const app = express();
 app.use(morgan('dev'));
 
 app.use(cookieParser());
+//this line for aws
+//app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Security Middleware
@@ -54,6 +56,8 @@ app.use((_req, _res, next) => {
   err.title = "Resource Not Found";
   err.errors = { message: "The requested resource couldn't be found." };
   err.status = 404;
+
+  // console.log("line 60");
   next(err);
 });
 
@@ -71,6 +75,7 @@ app.use((err, _req, _res, next) => {
     //inside the final formatter
     err.roman = true;
   }
+  // console.log("line 78");
   next(err);
 });
 
@@ -93,6 +98,7 @@ app.use((err, _req, res, _next) => {
   }
   res.status(err.status || 500);
   console.error(err);
+  // console.log("line 101");
   res.json({
     title: err.title || 'Server Error',
     message: err.message,

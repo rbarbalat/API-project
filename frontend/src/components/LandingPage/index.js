@@ -24,7 +24,7 @@ export default function LandingPage()
                             <div className="bigTitle">become friendships</div>
                         </div>
                         <div className="landingIntroText">
-                                Whatever your interest, from chewing on shoes and drinking from the toilet bowl to running around and barking there are thousands who share it on DogUp.
+                                Whatever your interest, from chewing on shoes and drinking from the toilet bowl to running around and barking there are thousands who share it on FourLegsGood.
                         </div>
                     </div>
                     <div className="infographicWrapper">
@@ -56,7 +56,7 @@ export default function LandingPage()
 
                     <div className="sectionThreePart">
                         <div className="sectionThreeImage">
-                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_Retriever_Dukedestiny01_drvd.jpg"></img>
+                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/3/34/Labrador_on_Quantock_%282175262184%29.jpg"></img>
                         </div>
                         <div className="sectionThreeLink">
                             <NavLink className="nL" exact to="/events">Find an event</NavLink>
@@ -70,7 +70,7 @@ export default function LandingPage()
 
                     <div className="sectionThreePart">
                         <div className="sectionThreeImage">
-                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/1/18/Samojed00.jpg"></img>
+                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/a/aa/FTCB181207.jpg"></img>
                         </div>
                         <div className="sectionThreeLink">
                         {
@@ -80,11 +80,11 @@ export default function LandingPage()
                             <span className="disabledNavLink">Start a new group</span>
                         }
                         </div>
-                        <div>
-                            <div className="sectionThreeText">
-                                The organizers are the ones who make this place work!
-                            </div>
+
+                        <div className="sectionThreeText">
+                            The organizers are the ones who make this place work!
                         </div>
+
                     </div>
 
                 </div>

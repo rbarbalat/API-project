@@ -8,6 +8,8 @@ const router = express.Router();
 const { Op } = require("sequelize");
 const { check } = require('express-validator');
 
+const { singleFileUpload, singleMulterUpload } = require("../../awsS3");
+
 //get all events authentication false
 router.get("/", async (req,res) => {
     let { page, size, name, type, startDate } = req.query;
@@ -144,7 +146,7 @@ router.get("/", async (req,res) => {
 
 //Add an Image to a Event based on the Event's id, authenticated user
 //must be host,co-host or attendde of event, checked w/ TA host/co-host = of the group holding event
-router.post("/:eventId/images", requireAuth, async (req,res) => {
+router.post("/:eventId/images", requireAuth, singleMulterUpload("image"), async (req,res) => {
     const { user } = req;
     const event = await Event.findByPk(req.params.eventId);
     if(event == null)
@@ -176,7 +178,11 @@ router.post("/:eventId/images", requireAuth, async (req,res) => {
         res.status(403);
         return res.json({ message: "Forbidden"});
     }
-    const { url, preview } = req.body;
+
+    const url = req.file ? await singleFileUpload({ file: req.file, public: true }) : null;
+    const { preview } = req.body;
+    // const { url, preview } = req.body;
+
     //could also EventImage.create() and put eventId: event.id in there
     const newImage = await event.createEventImage({
         url,
@@ -225,7 +231,7 @@ router.put("/:eventId", requireAuth, async (req, res) => {
     const findVenue = await Venue.findByPk(venueId);
     if(findVenue == null && venueId != null)
     {
-        console.log("goodbye");
+        // console.log("goodbye");
         res.status(404);
         return res.json({message: "Venue couldn't be found"});
     }
@@ -270,6 +276,8 @@ router.get("/:eventId", async (req, res) => {
     });
     if(event == null)
     {
+        console.log(`eventId is ${req.params.eventId}`);
+        console.log("no such event");
         res.status(404);
         return res.json({ message: "Event couldn't be found"});
     }

@@ -26,10 +26,15 @@ export const thunkLoadGroups = () => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionLoadGroups(serverData));
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkLoadGroups");
+            console.log(errorData);
+            return errorData;
         }
     } catch (error){
-    const errorData = await error.json();
-    return errorData;
+        console.log("caught error from thunkLoadGroups")
+        console.log(error);
     }
 }
 const actionLoadSingleGroup = (singleGroup) => {
@@ -46,10 +51,15 @@ export const thunkLoadSingleGroup = (groupId) => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionLoadSingleGroup(serverData));
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkLoadSingleGroup");
+            console.log(errorData);
+            return errorData;
         }
     } catch (error){
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error from thunkLoadSinglegroup");
+        console.log(error);
     }
 }
 
@@ -65,10 +75,12 @@ const actionUpdateGroup = (group) => {
         group
     }
 }
-export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (dispatch) => {
+export const thunkReceiveGroup = (Organizer, create, groupId, group, formData) => async (dispatch) => {
     //let method = create ? "Post" : "Put";
     if(create === false)
     {
+        const imageId = group.imageId;
+        delete group.imageId;
         const options = {
             method: "Put",
             headers: { "Content-Type":  "application/json" },
@@ -79,20 +91,30 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (d
             if(res.ok)
             {
                 const serverData = await res.json();
+                const imgOptions = formData ? {method: "Put", body: formData } : null;
+                const imageRes = imgOptions ? await csrfFetch(`/api/group-images/${imageId}`, imgOptions)
+                                            : null;
+
+                if(imageRes?.ok)//opt chaining b/c imageRes can be null
+                {
+                    const imageServerData = await imageRes.json();
+                    serverData.previewImage = imageServerData.url;
+                    serverData.GroupImages = [imageServerData];
+                }
                 dispatch(actionUpdateGroup(serverData));
                 return serverData;
+            }else{
+                const errorData = await res.json();
+                console.log("bad response from thunkReceiveGroup");
+                console.log(errorData);
+                return errorData;
             }
         }catch (error)
         {
-            const errorData = await error.json();
-            return errorData;
+            console.log("caught error from thunkReceiveGroup")
+            console.log(error);
         }
     }
-    const imgBody = {
-            url: group.url,
-            preview: true
-        }
-    delete group.url;
     const options = {
         method: "Post",
         headers: { "Content-Type":  "application/json" },
@@ -108,9 +130,10 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (d
 
             const imgOptions = {
                 method: "Post",
-                headers: { "Content-Type":  "application/json" },
-                body: JSON.stringify(imgBody)
+                body: formData
             }
+            console.log("formData inside the thunk");
+            console.log(formData)
             const imageRes = await csrfFetch(`/api/groups/${serverData.id}/images`, imgOptions);
             if(imageRes.ok)
             {
@@ -127,8 +150,8 @@ export const thunkReceiveGroup = (Organizer, create, groupId, group) => async (d
         }
     } catch (error)
     {
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error from thunkReceiveGroup")
+        console.log(error);
     }
 }
 
@@ -150,11 +173,16 @@ export const thunkDeleteGroup = (groupId) => async (dispatch) => {
             const serverData = await res.json();
             dispatch(actionDeleteGroup(groupId))
             return serverData;
+        }else{
+            const errorData = await res.json();
+            console.log("bad response from thunkDeleteGroup");
+            console.log(errorData);
+            return errorData;
         }
     } catch(error)
     {
-        const errorData = await error.json();
-        return errorData;
+        console.log("caught error response from thunkDeleteGroup");
+        console.log(error);
     }
 }
 

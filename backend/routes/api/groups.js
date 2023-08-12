@@ -8,6 +8,8 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const { singleFileUpload, singleMulterUpload } = require("../../awsS3");
+
 const { Op } = require("sequelize");
 
 //GET all groups, authentication = false
@@ -199,13 +201,13 @@ router.post("/", requireAuth, async (req,res) => {
         status: "Organizer",
         memberId: 1
     });
-    console.log(newMember);
-        res.status(201);//201!!!!
-        res.json(newGroup);
+    // console.log(newMember);
+    res.status(201);//201!!!!
+    res.json(newGroup);
 });
 
 //Add an image to a group based on Group's id, authent true, ORGANIZER ONLY
-router.post("/:groupId/images", requireAuth, async (req,res) => {
+router.post("/:groupId/images", requireAuth, singleMulterUpload("image"), async (req,res) => {
     const group = await Group.findByPk(req.params.groupId);
     if(group == null){
         res.status(404);
@@ -216,9 +218,9 @@ router.post("/:groupId/images", requireAuth, async (req,res) => {
         res.status(403);
         return res.json({message: "Forbidden"});
     }
-    const {url , preview} = req.body;
-    //do I have to validate url and preview?
-    let image = await group.createGroupImage({
+    const url = req.file ? await singleFileUpload({ file: req.file, public: true }) : null;
+    const { preview } = req.body;
+    const image = await group.createGroupImage({
         url,
         preview
     });
@@ -376,6 +378,7 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
     });
     if(authorized == null)
     {
+        console.log("i'm really in here");
         res.status(403);
         return res.json({ message: "Forbidden"});
     }
