@@ -56,7 +56,7 @@ export default function LandingPage()
 
                     <div className="sectionThreePart">
                         <div className="sectionThreeImage">
-                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_Retriever_Dukedestiny01_drvd.jpg"></img>
+                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/3/34/Labrador_on_Quantock_%282175262184%29.jpg"></img>
                         </div>
                         <div className="sectionThreeLink">
                             <NavLink className="nL" exact to="/events">Find an event</NavLink>
@@ -70,7 +70,7 @@ export default function LandingPage()
 
                     <div className="sectionThreePart">
                         <div className="sectionThreeImage">
-                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/1/18/Samojed00.jpg"></img>
+                            <img alt="alt" src="https://upload.wikimedia.org/wikipedia/commons/a/aa/FTCB181207.jpg"></img>
                         </div>
                         <div className="sectionThreeLink">
                         {

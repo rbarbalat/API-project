@@ -55,10 +55,24 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 1.5rem;
+    gap: 1rem;
 
-    height: 25vh;
-    /* border: 2px dashed red; */
+    height: 22vh;
+}
+@media screen and (min-width:1000px) {
+    .sectionThree{
+        height:25vh;
+    }
+}
+@media screen and (min-width:1150px) {
+    .sectionThree{
+        height:28vh;
+    }
+}
+@media screen and (min-width:1350px) {
+    .sectionThree{
+        height:32vh;
+    }
 }
 .sectionThreePart {
     width: 30%;
@@ -66,15 +80,12 @@
 
     display: flex;
     flex-direction: column;
-    justify-content:center;
     gap: .1rem;
-
-    /* border: 2px dashed green; */
 }
 
 .sectionThreeImage {
     width: 100%;
-    height: 60%;
+    height: 70%;
 }
 .sectionThreeImage > img {
     height: 100%;
