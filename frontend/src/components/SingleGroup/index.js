@@ -29,6 +29,13 @@ export default function SingleGroup()
         return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
     });
 
+    upcomingEvents.forEach(ele => {
+        ele.startDate = new Date(new Date(ele.startDate).toString() + "UTC").toISOString();
+    })
+    pastEvents.forEach(ele => {
+        ele.startDate = new Date(new Date(ele.startDate).toString() + "UTC").toISOString();
+    })
+
     const sessionUser = useSelector((state) => state.session.user);
     //initial state of user is null
 

@@ -42,8 +42,10 @@ function Root() {
 }
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Root />
-  </React.StrictMode>,
+  //installHook.js was overriding my values somehow when I was changing the startDate in the AllEvents component
+  //commenting out strictmode fixed the issue
+  //<React.StrictMode>
+    <Root />,
+  //</React.StrictMode>,
   document.getElementById('root')
 );

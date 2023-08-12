@@ -22,6 +22,11 @@ export default function AllEvents()
     });
     events = [...upcomingEvents, ...pastEvents];
 
+    events.forEach(ele => {
+        //only displaying startDate on this component
+        ele.startDate = new Date(new Date(ele.startDate).toString() + "UTC").toISOString();
+    })
+
     const history = useHistory();
     const dispatch = useDispatch();
     useEffect(() => {

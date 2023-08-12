@@ -24,11 +24,12 @@ export default function SingleEvent()
 
     let startDate;
     if(event.startDate) startDate = new Date(new Date(event.startDate).toString() + "UTC").toISOString();
+    console.log("event.startDate ", event?.startDate)
     console.log("startDate ", startDate);
 
     let endDate;
     if(event.endDate) endDate = new Date(new Date(event.endDate).toString() + "UTC").toISOString();
-    console.log("endDate ", endDate);
+    // console.log("endDate ", endDate);
 
     let userIsOrganizer;
     if(groupIsNotEmpty && sessionUser)
@@ -113,7 +114,7 @@ export default function SingleEvent()
                         </div>
                         :
                         <div className="single_event_venue_wrapper">
-                            <i class="fa-solid fa-location-pin"></i>
+                            <i className="fa-solid fa-location-pin"></i>
                             <div className="single_event_venue_details">
                                 Location To Be Determined
                             </div>
