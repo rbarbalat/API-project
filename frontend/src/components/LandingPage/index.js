@@ -14,6 +14,7 @@ export default function LandingPage()
         </div>
                         );
     return (
+        <>
             <div className="landingWrapper">
 
                 <div className="sectionOne">
@@ -94,5 +95,8 @@ export default function LandingPage()
                 </div>
 
             </div>
+
+            <div className="landing_page_bottom_space"></div>
+        </>
     )
 }
