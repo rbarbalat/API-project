@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import FileInput from "../FileInput";
 import "./EventForm.css";
 import { thunkReceiveEvent } from "../../store/events";
+import { thunkLoadSingleGroup } from "../../store/groups";
 
 export default function EventForm()
 {
@@ -18,7 +19,7 @@ export default function EventForm()
     const [endDate, setEndDate] = useState("");
 
     const [image, setImage] = useState("");
-    // const url = create || emptyGroup ? "" : group.EventImages[0].url;
+
     const image_file = useRef(null);
 
     const [about, setAbout] = useState("");
@@ -26,23 +27,47 @@ export default function EventForm()
     const [validationErrors, setValidationErrors] = useState({});
     const [displayErrors, setDisplayErrors] = useState(false);
 
-    // at /groups/:groupId/events/new or get groupId from the group state
-    //let {groupId} = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
+
+    const { groupId } = useParams();
 
     //must be organizer but only organizer should be allowed to click
     const sessionUser = useSelector((state) => state.session.user);
 
-    function updateFile(e)
+    function insertZeroIfNec(str)
     {
-        // const file = e.target.files[0];
-        // if (file) setImage(file);
-        setImage(e.target.files[0]);
-        const errors = {...validationErrors};
-        delete errors.image;
-        setValidationErrors(errors);
+        if(str.length === 1) return "0" + str;
+        return str;
     }
+
+    function minStartDate(date)
+    {
+        let str = "";
+        str += String(date.getFullYear());
+        str += "-";
+
+        str += insertZeroIfNec(String(date.getMonth() + 1));
+        str += "-";
+
+        str += insertZeroIfNec(String(date.getDate()));
+        str += "T";
+
+        str += insertZeroIfNec(String(date.getHours()));
+        str += ":"
+
+        str += insertZeroIfNec(String(date.getMinutes()));
+        str += ":"
+
+        str += "00.000"
+
+        return str;
+    }
+
+    useEffect(() => {
+        if(Object.keys(group).length === 0)
+            dispatch(thunkLoadSingleGroup(groupId));
+    }, [])
 
     useEffect(() => {
         const errors = {};
@@ -66,7 +91,6 @@ export default function EventForm()
         errors.type = "Group Type is required";
 
         let date = new Date(startDate);
-        console.log("startDate, ", date.toString());
         if(date.toString() === "Invalid Date")
         errors.startDate = "Invalid Start Date";
 
@@ -80,9 +104,16 @@ export default function EventForm()
         setValidationErrors(errors);
     }, [name, about, type, price, startDate, endDate, image])
 
+    function updateFile(e)
+    {
+        setImage(e.target.files[0]);
+        const errors = {...validationErrors};
+        delete errors.image;
+        setValidationErrors(errors);
+    }
+
     function reset()
     {
-        //might not need this function
         setName("");
         setAbout("");
         setPrice(0);
@@ -102,6 +133,7 @@ export default function EventForm()
         {
             setDisplayErrors(true);
         }else{
+            console.log(group);
             const groupKey = {
                 id: group.id,
                 name: group.name,
@@ -127,7 +159,6 @@ export default function EventForm()
             if(serverObject.errors === undefined)
             {
                 const newId = serverObject.id;
-                //maybe not necessary to reset since going to new page
                 reset();
                 history.push(`/events/${newId}`);
                 return;
@@ -172,9 +203,8 @@ export default function EventForm()
                     <div className="subSection">
                         <div className="eventFormLabel">What is the price of your event?</div>
                         <div className="inputAndIcon">
-                            {/* <i id="eventDollar" className="fa-solid fa-dollar-sign"></i> */}
-                            <input type="text" name="price" placeholder="0"
-                                value={price} onChange={e => setPrice(e.target.value)}
+                            <input type="number" name="price"
+                                min="0" value={price} onChange={e => setPrice(e.target.value)}
                                 className="eventPriceInput"
                             />
                         </div>
@@ -185,17 +215,20 @@ export default function EventForm()
                 <div className="eventFormSection">
                     <div className="subSection">
                         <div className="eventFormLabel">When does your event start?</div>
-                        <input type="text" name="startDate" placeholder="MM/DD/YYYY HH:mm AM"
-                            value={startDate} onChange={e => setStartDate(e.target.value)}
+                        <input type="datetime-local" name="startDate" value={startDate}
                             className="eventDateInput eventStartInput"
+                            min={minStartDate(new Date())}
+                            onChange={e => setStartDate(e.target.value)}
                         />
                     </div>
 
                     <div className="subSection">
                         <div className="eventFormLabel">When does your event end?</div>
-                        <input type="text" name="endDate" placeholder="MM/DD/YYYY HH:mm PM"
-                            value={endDate} onChange={e => setEndDate(e.target.value)}
-                            className="eventDateInput"
+                        <input type="datetime-local" name="endDate"
+                            className={startDate ? "eventDateInput" : "eventDateInput hideEndDate"}
+                            value={endDate}
+                            min={ `${startDate}:00.000`}
+                            onChange={e => setEndDate(e.target.value)}
                         />
                     </div>
                 </div>
@@ -212,7 +245,7 @@ export default function EventForm()
                 <div className="eventFormSection">
                     <div className="subSection">
                         <div className="eventFormLabel">Please describe your event:</div>
-                        <textarea type="text" name="about" placeholder="Please include at least 30 characters?"
+                        <textarea type="text" name="about" placeholder="Please include at least 30 characters"
                             value={about} onChange={e => setAbout(e.target.value)}
                         />
                     </div>
