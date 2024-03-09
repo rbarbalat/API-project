@@ -9,12 +9,11 @@ const { Op } = require("sequelize");
 router.delete("/:imageId", requireAuth, async (req, res) => {
     const { user } = req;
     const image = await EventImage.findByPk(req.params.imageId);
-    if(image == null)
+    if(image === null)
     {
         res.status(404);
         return res.json({ message: "Event Image couldn't be found"});
     }
-    //console.log(Object.getOwnPropertyNames(EventImage.prototype));
     const event = await image.getEvent();
     const authorized = await Membership.findOne({
         where: {
@@ -25,7 +24,7 @@ router.delete("/:imageId", requireAuth, async (req, res) => {
             }
         }
     });
-    if(authorized == null)
+    if(authorized === null)
     {
         res.status(403);
         return res.json({ message: "Forbidden"});

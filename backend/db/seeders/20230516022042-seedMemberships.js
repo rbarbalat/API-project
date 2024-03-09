@@ -10,26 +10,42 @@ const arr =
   {
     userId: 1,
     groupId: 1,
-    status: "Organizer",
-    memberId: 1
+    status: "Organizer"
   },
   {
     userId: 2,
     groupId: 1,
-    status: "co-host",
-    memberId: 2
+    status: "co-host"
   },
   {
     userId: 3,
     groupId: 1,
-    status: "member",
-    memberId: 3
+    status: "member"
   },
   {
     userId: 4,
     groupId: 1,
-    status: "pending",
-    memberId: 4
+    status: "pending"
+  },
+  {
+    userId: 1,
+    groupId: 2,
+    status: "Organizer"
+  },
+  {
+    userId: 1,
+    groupId: 3,
+    status: "Organizer"
+  },
+  {
+    userId: 2,
+    groupId: 4,
+    status: "Organizer"
+  },
+  {
+    userId: 2,
+    groupId: 5,
+    status: "Organizer"
   }
 ];
 
@@ -43,8 +59,8 @@ module.exports = {
     options.tableName = "Memberships";
     const Op = Sequelize.Op;
     return await queryInterface.bulkDelete(options, {
-      memberId: {
-      [Op.in]: [1, 2, 3, 4]
+      status: {
+      [Op.in]: ["Organizer", "co-host", "member", "pending"]
     }
   }, {});
   }

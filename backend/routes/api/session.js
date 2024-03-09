@@ -9,10 +9,6 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
-
-/*
-The validateLogin middleware is composed of the check and handleValidationErrors middleware. It checks to see whether or not req.body.credential and req.body.password are empty. If one of them is empty, then an error will be returned as the response.
-*/
 const validateLogin =
 [
   check('credential').exists({ checkFalsy: true }).notEmpty()
@@ -37,7 +33,6 @@ router.post('/', validateLogin, async (req, res, next) => {
         }
       });
       //if user not found or the input pw does not generate an equiv hashed pw
-      //toString() b/c the hashedPW is a binary string?
       if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
         const err = new Error('Login failed');
         err.status = 401;
