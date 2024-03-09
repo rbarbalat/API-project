@@ -11,7 +11,7 @@ const { Op } = require("sequelize");
 router.put("/:venueId", requireAuth, async (req, res) => {
     const { user } = req;
     const venue = await Venue.findByPk(req.params.venueId);
-    if(venue == null)
+    if(venue === null)
     {
         res.status(404);
         return res.json({ message: "Venue couldn't be found"});
@@ -26,7 +26,7 @@ router.put("/:venueId", requireAuth, async (req, res) => {
             }
         }
     });
-    if(authorized == null)
+    if(authorized === null)
     {
         res.status(403);
         return res.json({ message: "Forbidden"});
@@ -48,15 +48,13 @@ router.put("/:venueId", requireAuth, async (req, res) => {
 
 //Delete a group, authent = true, authorization true, Organizer, co-host
 router.delete("/:venueId", requireAuth, async (req,res) => {
-    //seems to work
     const { user } = req;
     let venue = await venue.findByPk(req.params.venueId);
-    if(venue == null)
+    if(venue === null)
     {
         res.status(404);
         return res.json({ message: "Venue couldn't be found" })
     }
-    //venue.groupId is the group
     const authorized = await Membership.findOne({
         where: {
             groupId: venue.groupId,
@@ -66,7 +64,7 @@ router.delete("/:venueId", requireAuth, async (req,res) => {
             }
         }
     });
-    if(authorized == null)
+    if(authorized === null)
     {
         res.status(403);
         return res.json({ message: "Forbidden"});

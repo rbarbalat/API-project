@@ -12,6 +12,12 @@ const { singleFileUpload, singleMulterUpload } = require("../../awsS3");
 
 const { Op } = require("sequelize");
 
+/*
+    Per the specs,
+    where memberId appears in the request body or response object
+    it refers to the user's id in the Users table (PK)
+*/
+
 // get all groups, auth not required
 router.get("/", async (req, res) => {
     let allGroups = await Group.findAll({
@@ -185,8 +191,7 @@ router.post("/", requireAuth, async (req,res) => {
     const newMember = await Membership.create({
         userId: user.id,
         groupId: newGroup.id,
-        status: "Organizer",
-        memberId: 1
+        status: "Organizer"
     });
 
     res.status(201);
@@ -196,7 +201,7 @@ router.post("/", requireAuth, async (req,res) => {
 //Add an image to a group based on Group's id, authent true, ORGANIZER ONLY
 router.post("/:groupId/images", requireAuth, singleMulterUpload("image"), async (req,res) => {
     const group = await Group.findByPk(req.params.groupId);
-    if(group == null){
+    if(group === null){
         res.status(404);
         return res.json({message: "Group couldn't be found"});
     }
@@ -251,7 +256,7 @@ router.delete("/:groupdId", requireAuth, async (req,res) => {
     //seems to work
     const { user } = req;
     let group = await Group.findByPk(req.params.groupdId);
-    if(group == null)
+    if(group === null)
     {
         res.status(404);
         return res.json({ message: "Group couldn't be found" })
@@ -269,7 +274,7 @@ router.delete("/:groupdId", requireAuth, async (req,res) => {
 router.get("/:groupId/venues", requireAuth, async (req,res) => {
     const { user } = req;
     const group = await Group.findByPk(req.params.groupId);
-    if(group == null)
+    if(group === null)
     {
         res.status(404);
         return res.json({ message: "Group couldn't be found"});
@@ -456,7 +461,7 @@ router.get("/:groupId/events", async (req, res) => {
 //Get all Members of a Group specified by its id, authent false
 router.get("/:groupId/members", async (req, res) => {
     const group = await Group.findByPk(req.params.groupId);
-    if(group == null)
+    if(group === null)
     {
         res.status(404);
         return res.json({ message: "Group couldn't be found"});
@@ -510,7 +515,7 @@ router.get("/:groupId/members", async (req, res) => {
 //request a membership for a group based on the gorup's id, requireAuth
 router.post("/:groupId/membership", requireAuth, async (req,res) => {
     const group = await Group.findByPk(req.params.groupId);
-    if(group == null)
+    if(group === null)
     {
         res.status(404);
         return res.json({ message: "Group couldn't be found"});
@@ -523,17 +528,14 @@ router.post("/:groupId/membership", requireAuth, async (req,res) => {
             userId: user.id
         }
     })
-    if(inTheGroup == null)
+    if(inTheGroup === null)
     {
-        //create a pending member
         await Membership.create({
             userId: user.id,
             groupId: group.id,
             status: "pending",
         })
         return res.json({
-            //Specs specify the specs response has a key called "memberId"
-            //corresponding to user's id fromt he users table
             memberId: user.id,
             status: "pending"
         })
@@ -561,8 +563,6 @@ router.post("/:groupId/membership", requireAuth, async (req,res) => {
     });
     if(acceptedMember !== null)
     {
-        //this is based on the logged in user and his user.id
-        //does not depend on the claimed memberId in the req.body
         res.status(400);
         return res.json({ message: "User is already a member of the group"});
     }
@@ -597,12 +597,11 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
         return res.json({ message: "Forbidden"});
     }
 
-    // memberId refers to the id in the users table
     const { memberId, status } = req.body;
     const findUserToBeChanged = await User.findOne({
         where: { id: memberId }
     });
-    if(findUserToBeChanged == null)
+    if(findUserToBeChanged === null)
     {
         res.status(400);
         return res.json({
@@ -640,7 +639,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
     //findMembership from above is not null and req.user is authent as either a cohost or organizer
     if(status === "member")
     {
-        if(findMembership.status == "pending")
+        if(findMembership.status === "pending")
         {
             findMembership.status = "member";
             await findMembership.save();
@@ -652,9 +651,9 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
             });
         }
     }
-    if(status == "co-host" && organizer != null)
+    if(status === "co-host" && organizer != null)
     {
-        if(findMembership.status = "member")
+        if(findMembership.status === "member")
         {
             findMembership.status = "co-host";
             await findMembership.save();

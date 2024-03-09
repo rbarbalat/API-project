@@ -24,16 +24,15 @@ module.exports = (sequelize, DataTypes) => {
     groupId: DataTypes.INTEGER,
     status: {
       type: DataTypes.ENUM,
-      values: ["pending", "member", "co-host", "host", "Organizer"],
+      values: ["pending", "member", "co-host", "Organizer"],
       validate: {
         isValidStatus(value)
         {
-          if(["pending", "member", "co-host", "host", "Organizer"].includes(value) == false)
+          if(["pending", "member", "co-host", "Organizer"].includes(value) == false)
           throw new Error("Invalid status update message later");
         }
       }
-    },
-    memberId: DataTypes.INTEGER
+    }
   }, {
     sequelize,
     modelName: 'Membership',

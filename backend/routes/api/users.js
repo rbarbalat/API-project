@@ -8,14 +8,9 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
-/*
-The validateSignup middleware is composed of the check and handleValidationErrors middleware. It checks to see if req.body.email exists and is an email, req.body.username is a minimum length of 4 and is not an email, and req.body.password is not empty and has a minimum length of 6. If at least one of the req.body values fail the check, an error will be returned as the response.
-*/
 
 const validateSignup =
 [
-    // check('email').exists({ checkFalsy: true }).isEmail()
-    // .withMessage('Please provide a valid email.'),
 
     check('email').isEmail()
     .withMessage('The provided email is invalid.'),
@@ -49,7 +44,6 @@ const validateSignup =
 
 //signup
 router.post('/', validateSignup, async (req, res) => {
-//router.post('/', async (req, res) => {
     const { email, password, username, firstName, lastName } = req.body;
     const hashedPassword = bcrypt.hashSync(password);
     const user = await User.create({ email, username, hashedPassword, firstName, lastName });
