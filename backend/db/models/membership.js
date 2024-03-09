@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     groupId: DataTypes.INTEGER,
     status: {
       type: DataTypes.ENUM,
-      //might have to remove host as host and Organizer interchangeable
       values: ["pending", "member", "co-host", "host", "Organizer"],
       validate: {
         isValidStatus(value)

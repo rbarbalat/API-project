@@ -65,11 +65,9 @@ module.exports = (sequelize, DataTypes) => {
           if(value.length > 60)
           {
             let err =  new Error("Name must be 60 characters or less");
-            //err.roman = true;
             throw err;
           }
         },
-        //this works but i'm not sure yet w/o tagging it but others need the tag...
         notNull: {
           msg: "Name can't be null"
         }

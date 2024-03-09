@@ -34,14 +34,10 @@ module.exports = {
         onDelete: "CASCADE"
       },
       status: {
-        //may have to check regular host and cap O on organizer
         type: Sequelize.ENUM("pending", "member", "co-host", "host", "Organizer"),
         allowNull: false,
-        //defaulValue pending?
       },
       memberId: {
-        //prob can be null while pending, check later
-        //auto increment?
         type: Sequelize.INTEGER
       },
       createdAt: {
