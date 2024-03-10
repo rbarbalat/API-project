@@ -66,13 +66,24 @@ router.get("/", async (req, res) => {
 //Get all groups joined or organized by the logged in user, auth required
 router.get("/current", requireAuth, async (req,res) => {
     const { user } = req;
+    /*
+        the where clause inside Memberships is necessary to filter for the right groups
+        but each group's Memberships array will only contain the current user's Membership
+        can't use the length of the Memberships array to get the numMembers as in GET /groups
+
+        1)can call countMemberships on each group (n+1 queries)
+        OR
+        2)include the User's model which will attach an array to each group holding ALL users in the group
+        each user instance has a Membership key whose value is an object with a status key
+        filter the array to exclude pending statuses and then numMembers = length of filtered array
+    */
     let allGroups = await Group.findAll({
         include: [
-                    {
-                        model: User,
-                        as: "Regulars",
-                        attributes: ["id"]
-                    },
+                    // {
+                    //     model: User,
+                    //     as: "Regulars",
+                    //     attributes: ["id"]
+                    // },
                     {
                         model: GroupImage,
                         attributes: ["url"],
@@ -91,6 +102,8 @@ router.get("/current", requireAuth, async (req,res) => {
                  ]
     })
 
+    //Filter version, restore the User model in the query above
+    /*
     for(let i = 0; i<allGroups.length; i++)
     {
         allGroups[i] = allGroups[i].toJSON();
@@ -102,6 +115,7 @@ router.get("/current", requireAuth, async (req,res) => {
         delete allGroups[i].Regulars;
         delete allGroups[i].Memberships;
     }
+    */
 
     /*
         n+1 queries version
@@ -109,7 +123,6 @@ router.get("/current", requireAuth, async (req,res) => {
         this probably better than filtering
     */
 
-    /*
     for(let i = 0; i<allGroups.length; i++)
     {
         const numMembers = await allGroups[i].countMemberships({
@@ -123,9 +136,7 @@ router.get("/current", requireAuth, async (req,res) => {
         allGroups[i] = allGroups[i].toJSON();
         allGroups[i].numMembers = numMembers;
         delete allGroups[i].Memberships;
-        delete allGroups[i].Regulars;
     }
-    */
 
     allGroups.forEach(ele => {
         if(ele.GroupImages.length != 0)
@@ -316,19 +327,17 @@ router.get("/:groupId/venues", requireAuth, async (req,res) => {
         return res.json({ message: "Forbidden"});
     }
     const allVenues = await Venue.findAll({
-        where: {
-            groupId: group.id
-        },
+        where: { groupId: group.id },
         attributes: {
             exclude: ["createdAt", "updatedAt"]
         }
     })
+
     res.json({
         Venues: allVenues
     });
 });
 
-//add venue validators and good
 //Create a new venue for a group specified by its id, authent, org/cohost
 router.post("/:groupId/venues", requireAuth, async (req,res) => {
     const { user } = req;
@@ -394,7 +403,8 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
 
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 
-    //check if the venueId input is undefined has a letter or is the empty string
+    //check null vs undefined
+    //check if the venueId input is undefined, has a letter or is the empty string
     if(venueId != Number(venueId) && venueId != null )
     {
         res.status(404);

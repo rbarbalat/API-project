@@ -1,9 +1,7 @@
 const AWS = require("aws-sdk");
 const multer = require("multer");
 const s3 = new AWS.S3({ apiVersion: "2006-03-01" });
-const NAME_OF_BUCKET = "bucket-rb22"; // <-- Use your bucket name here
-
-//https://github.com/appacademy/practice-for-week-16-aws-user-upload/blob/main/README-ph2-backend.md
+const NAME_OF_BUCKET = "bucket-rb22";
 
 const singleFileUpload = async ({ file, public = false }) => {
     const { originalname, buffer } = file;
@@ -15,7 +13,7 @@ const singleFileUpload = async ({ file, public = false }) => {
     const uploadParams = {
       Bucket: NAME_OF_BUCKET,
       // Key: public ? `public/${Key}` : Key,
-      // specified an ACL instead of follwing the public folder example from the repo above
+      // specified an ACL instead of using a public folder
       Key: Key,
       Body: buffer,
       ACL: "public-read",
