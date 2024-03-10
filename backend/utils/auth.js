@@ -48,7 +48,7 @@ const restoreUser = (req, res, next) => {
             const { id } = jwtPayload.data;
             req.user = await User.findByPk(id, {//capturing the user in the new k/v pair of the req obj
                 attributes: {
-                    //overriding the defaultScope which excludes crAt and upAt?
+                    //overriding the defaultScope which excludes crAt and upAt
                     include: ['email', 'createdAt', 'updatedAt']
                 }
             });
@@ -72,9 +72,11 @@ const requireAuth = function (req, _res, next) {
     err.title = 'Authentication required';
     err.errors = { message: 'Authentication required' };
     err.status = 401;
-    //err.authentication is my adjustment
-    //tagged to reformat in the final error handler
+
+    //tag w/ authentication key to reformat this error in the
+    //error formatter in App.js
     err.authentication = true;
+
     return next(err);
 }
 

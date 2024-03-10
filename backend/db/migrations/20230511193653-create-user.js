@@ -18,11 +18,10 @@ module.exports = {
       username: {
         type: Sequelize.STRING(30),
         allowNull: false,
-        unique: true,
-        //create an index or already there b/c unique?
+        unique: true
       },
       email: {
-        type: Sequelize.STRING(256),//256 allowed?
+        type: Sequelize.STRING(256),
         allowNull: false,
         unique: true
       },

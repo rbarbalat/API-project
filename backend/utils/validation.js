@@ -4,7 +4,6 @@ const { validationResult } = require('express-validator');
 // (to customize, see express-validator's documentation)
 const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
-  //console.log(validationErrors.array());
   const arr = validationErrors.array();
   if(arr.length != 0)
   {
@@ -16,7 +15,10 @@ const handleValidationErrors = (req, _res, next) => {
     const err = new Error();
     err.title = "Validation Error"
     err.errors = errors;
-    err.roman = true;
+
+    //tag w/ customValidation key to reformat this error in the
+    //error formatter in App.js
+    err.customValidation = true;
     next(err);
   }
   next();

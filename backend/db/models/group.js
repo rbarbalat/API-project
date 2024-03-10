@@ -10,12 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // A group belongsTo an organizer(user),
       Group.belongsTo(models.User, {
         foreignKey: "organizerId",
         as: "Organizer"
       });
-      //A group belongsToMany (regular) Users
       Group.belongsToMany(models.User, {
         through: models.Membership,
         foreignKey: "groupId",
@@ -25,20 +23,16 @@ module.exports = (sequelize, DataTypes) => {
       Group.hasMany(models.Membership, {
         foreignKey: "groupId"
       })
-      //A group hasMany images
       Group.hasMany(models.GroupImage, {
         foreignKey: "groupId",
         onDelete: "CASCADE",
         hooks: true
-        //onUpdate?
       });
-      //A group hasMany venues
       Group.hasMany(models.Venue, {
         foreignKey: "groupId",
         onDelete: "CASCADE",
         hooks: true
       });
-      //A group belongsToManyVenues
       Group.belongsToMany(models.Venue,{
         through: models.Event,
         foreignKey: "groupId",
@@ -61,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         checkNameLength(value)
         {
-          //can add Validator.isAlpha(value) if necessary later
           if(value.length > 60)
           {
             let err =  new Error("Name must be 60 characters or less");
@@ -114,7 +107,6 @@ module.exports = (sequelize, DataTypes) => {
           if([0, 1, true, false].includes(value) == false)
           {
             let err =  new Error("Private must be a boolean");
-            //err.roman = true;
             throw err;
           }
         },

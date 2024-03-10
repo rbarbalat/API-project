@@ -132,8 +132,9 @@ export default function EventForm()
         if(Object.keys(validationErrors).length !== 0)
         {
             setDisplayErrors(true);
-        }else{
-            console.log(group);
+        }
+        else
+        {
             const groupKey = {
                 id: group.id,
                 name: group.name,

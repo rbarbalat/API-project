@@ -24,12 +24,9 @@ export default function SingleEvent()
 
     let startDate;
     if(event.startDate) startDate = new Date(new Date(event.startDate).toString() + "UTC").toISOString();
-    console.log("event.startDate ", event?.startDate)
-    console.log("startDate ", startDate);
 
     let endDate;
     if(event.endDate) endDate = new Date(new Date(event.endDate).toString() + "UTC").toISOString();
-    // console.log("endDate ", endDate);
 
     let userIsOrganizer;
     if(groupIsNotEmpty && sessionUser)
