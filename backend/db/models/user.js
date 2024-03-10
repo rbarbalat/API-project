@@ -3,20 +3,18 @@ const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // A user(organizer) hasMany Groups
+      //a user can organize many diff groups
       User.hasMany(models.Group, {
         foreignKey: "organizerId",
-        //check if actually need cascade
         onDelete: "CASCADE",
         hooks: true,
-        //onUpdate?
       });
       //a (regular) User belongsToMany Groups
       User.belongsToMany(models.Group, {
         through: models.Membership,
         foreignKey: "userId",
         otherKey: "groupId"
-        //onDelete goes in the migr file if nec
+        //ondelete specified in the migration file
       });
       User.belongsToMany(models.Event, {
         through: models.Attendance,
@@ -38,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         isNotEmail(value)
         {
           if(Validator.isEmail(value))
-          throw new Error("Username can't be an email")
+            throw new Error("Username can't be an email")
         }
       }
     },
@@ -48,7 +46,6 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: {
         len: [3, 256],
-        //isEmail: true
         isEmail: {
           msg: "Invalid Email"
         }
@@ -65,7 +62,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        //len: [1, 30],
         len: {
           args: [1, 30],
           msg: "First name must have between 1 and 30 characters"

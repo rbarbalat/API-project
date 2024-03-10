@@ -18,11 +18,9 @@ export default function DeleteModal({typeId, type, eventGroupId})
             const serverObject = await dispatch(thunkDeleteGroup(typeId));
             if(serverObject.message === "Successfully deleted")
             {
-                // console.log("the group was deleted");
                 history.replace("/groups");
                 closeModal();
             }else{
-                //adjust later
                 return window.alert("Something went wrong");
             }
         }
@@ -31,11 +29,9 @@ export default function DeleteModal({typeId, type, eventGroupId})
             const serverObject = await dispatch(thunkDeleteEvent(typeId));
             if(serverObject.message === "Successfully deleted")
             {
-                console.log("the event was deleted");
                 closeModal();
                 history.replace(`/groups/${eventGroupId}`);
             }else{
-                //adjust later
                 return window.alert("Something went wrong");
             }
         }

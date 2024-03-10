@@ -34,7 +34,6 @@ function LoginFormModal() {
   {
     event.preventDefault();
     setErrors({});
-    //console.log(process.env.DEMO_CREDENTIAL);
     return dispatch(sessionActions.login({
       credential: process.env.REACT_APP_CREDENTIAL,
       password: process.env.REACT_APP_PASSWORD

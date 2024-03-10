@@ -16,60 +16,47 @@ router.get("/", async (req,res) => {
 
     let errors = {};
 
-    if(page != undefined)
-    {
-        if(page == "" || page != Number(page))
-        errors.page = "Page must be number between 1 and 10 inclusive"
-        else if(page < 1)
-        errors.page = "Page must be greater than or equal to 1";
-        else if(page > 10)
-        errors.page = "Page must be less than or equal to 10";
-    }
-    if(size != undefined)
-    {
-        if(size == "" || size != Number(size))
-        errors.size = "Size must be a number between 1 and 20 inclusive";
-        else if(size < 1)
-        errors.size = "Size must be greater than or equal to 1";
-        else if(size > 20)
-        errors.size = "Size must be less than or equal to 20";
-    }
-    if(name != undefined)
-    {
-        if(name.length == 0)
-        errors.name = "Name must must be a non-empty string"
-        // "5" == Number("5") is true but false for other strings, except the empty string
-        else if(name == Number(name))
-        errors.name = "Name must be a string";
-    }
-    if(type != undefined)
-    {
-        console.log(type)
-        if(["Online", "In person"].includes(type) == false)
-        {
-            errors.type = "Type must be 'Online' or 'In person'";
-        }
-    }
-    if(startDate != undefined)
-    {
-        let invalid = false;
-        //startDate is a string, valid yyyy-mm-dd
-        const arr = startDate.split("-");
-        if(arr.length != 3) invalid = true;
-        else if(arr[0].length != 4 || arr[1].length != 2 || arr[2].length != 2) invalid = true;
-        //"05" == Number("05") is true, if string has letters or symbols, not true
-        else if(arr[0] != Number(arr[0])) invalid = true;
-        else if(arr[1] != Number(arr[1])) invalid = true;
-        else if(arr[2] != Number(arr[2])) invalid = true;
-        else if(Number(arr[0]) < 0) invalid = true;
-        else if(Number(arr[1]) < 1 || Number(arr[1]) > 12) invalid = true;
-        else if(Number(arr[2]) < 1 || Number(arr[2]) > 31) invalid = true;
-        else if(Number(arr[1]) == 2 && Number(arr[2]) > 29) invalid = true;
-        else if([4,6,9,11].includes(Number(arr[1])) && Number(arr[2]) > 30) invalid = true;
+    // str == Number(str) is true for strings composed of digits and the empty string, false otherwise
 
-        if(invalid) errors.startDate = "Start date must be a valid datetime";
+    if(page !== undefined)
+    {
+        if(page === "" || page != Number(page))
+            errors.page = "Page must be number between 1 and 10 inclusive"
+        else if(page < 1)
+            errors.page = "Page must be greater than or equal to 1";
+        else if(page > 10)
+            errors.page = "Page must be less than or equal to 10";
+        else if(page != Math.floor(page))
+            errors.page = "Page must be an integer";
     }
-    if(Object.keys(errors).length != 0)
+    if(size !== undefined)
+    {
+        if(size === "" || size != Number(size))
+            errors.size = "Size must be a number between 1 and 20 inclusive";
+        else if(size < 1)
+            errors.size = "Size must be greater than or equal to 1";
+        else if(size > 20)
+            errors.size = "Size must be less than or equal to 20";
+        else if(size != Math.floor(size))
+            errors.size = "Size must be an integer";
+    }
+    if(name !== undefined)
+    {
+        if(name.length === 0)
+            errors.name = "Name must must be a non-empty string"
+        else if(name == Number(name))
+            errors.name = "Name must be a string";
+    }
+    if(type !== undefined)
+    {
+        if(["Online", "In person"].includes(type) === false)
+            errors.type = "Type must be 'Online' or 'In person'";
+    }
+    if(startDate && isNaN(new Date(startDate)))
+    {
+        errors.startDate = "Start date must be a valid datetime";
+    }
+    if(Object.keys(errors).length > 0)
     {
         res.status(400);
         return res.json({
@@ -77,30 +64,28 @@ router.get("/", async (req,res) => {
             errors: errors
         })
     }
-    //defaults 1 and 20 provided in the specs
-    if(page == undefined) page = 1;
-    if(size == undefined) size = 20;
+    //defaults according to the specs
+    if(page === undefined) page = 1;
+    if(size === undefined) size = 20;
+
     let pagination = {};
     pagination.limit = size;
     pagination.offset = size*(page - 1);
 
     let where = {};
-    if(name != undefined) where.name = name;
-    if(type != undefined) where.type = type;
-    if(startDate != undefined)
+    if(name !== undefined) where.name = name;
+    if(type !== undefined) where.type = type;
+    if(startDate !== undefined)
     {
-        //date queries have no time portion so the time is set to 12 am by new Date()
-        //if the date in the database is the same day, it might have a time portion
-        //which will make it greater than the query so it will be included
         where.startDate = {
             [Op.gte]: new Date(startDate)
         }
     }
 
     let allEvents = await Event.findAll({
-        attributes: ["id", "groupId", "venueId", "name", "type", "description", "capacity", "price", "startDate", "endDate"],
-        ...pagination,
         where,
+        ...pagination,
+        attributes: ["id", "groupId", "venueId", "name", "type", "description", "capacity", "price", "startDate", "endDate"],
         include: [
                     {
                         model: Group,
@@ -118,20 +103,22 @@ router.get("/", async (req,res) => {
                     }
                  ]
     });
-    const numAttending = [];
+
     for(let i = 0; i<allEvents.length; i++)
     {
-        numAttending.push(await allEvents[i].countAttendances({
+        const numAttending = await allEvents[i].countAttendances({
             where: {
                 status: "attending"
             }
-        }));
+        });
         allEvents[i] = allEvents[i].toJSON();
-        allEvents[i].numAttending = numAttending[i];
+        allEvents[i].numAttending = numAttending;
     }
-    allEvents.forEach(async ele => {
-        if(ele.EventImages.length != 0) ele.previewImage = ele.EventImages[0].url;
-        else ele.previewImage = "no preview image available";
+    allEvents.forEach(ele => {
+        if(ele.EventImages.length != 0)
+            ele.previewImage = ele.EventImages[0].url;
+        else
+            ele.previewImage = "no preview image available";
         delete ele.EventImages;
     });
     res.json({

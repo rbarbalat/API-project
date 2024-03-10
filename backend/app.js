@@ -57,7 +57,6 @@ app.use((_req, _res, next) => {
   err.errors = { message: "The requested resource couldn't be found." };
   err.status = 404;
 
-  // console.log("line 60");
   next(err);
 });
 
@@ -73,17 +72,15 @@ app.use((err, _req, _res, next) => {
     err.errors = errors;
     //tag sequelize errors and adjust their format
     //inside the final formatter
-    err.roman = true;
+    err.customValidation = true;
   }
-  // console.log("line 78");
   next(err);
 });
 
 // Error formatter
 app.use((err, _req, res, _next) => {
-  //err.roman and err.authentication are my adjustments
-  //adjust later with isProduction
-  if(err.roman == true)
+  //reformat according to api specs
+  if(err.customValidation === true)
   {
     res.status(400);
     return res.json({
@@ -91,14 +88,15 @@ app.use((err, _req, res, _next) => {
       errors: err.errors
     });
   }
-  if(err.authentication == true)
+  //reformat according to api specs
+  if(err.authentication === true)
   {
     res.status(401);
     return res.json({ message: "Authentication required" });
   }
+
+
   res.status(err.status || 500);
-  console.error(err);
-  // console.log("line 101");
   res.json({
     title: err.title || 'Server Error',
     message: err.message,

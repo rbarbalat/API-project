@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         isValidStatus(value)
         {
           if(["pending", "member", "co-host", "Organizer"].includes(value) == false)
-          throw new Error("Invalid status update message later");
+            throw new Error("Invalid status");
         }
       }
     }

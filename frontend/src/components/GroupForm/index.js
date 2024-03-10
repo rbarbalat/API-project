@@ -18,7 +18,6 @@ export default function GroupForm({formType})
     // create || emptyGroup b/c if just create name, city, state...etc set to undefined (in the edit case)
     // and then in the useEffect, undefined.trim() causes a typeError
 
-    // console.log("create or emptyGroup is ", create || emptyGroup);
     const [name, setName] = useState(create || emptyGroup ? "" : group.name);
     const [about, setAbout] = useState(create || emptyGroup ? "" : group.about);
     const [type, setType] = useState(create || emptyGroup ? "(select one)" : group.type);
@@ -53,7 +52,6 @@ export default function GroupForm({formType})
         // if str === "", then str[0] is undefined, remember for strings that
         //spaces
 
-        // console.log("city.length is ", city.length);
         if(city.trim().length === 0 || city.length === 0)
         errors.city = "City is required";
 
@@ -63,7 +61,6 @@ export default function GroupForm({formType})
         if(name.trim().length === 0 || name.length === 0)
         errors.name = "Name is required"
 
-        //the backend validation is < 50, need to change backend?
         if(about.trim().length < 30 || about.length < 30)
         errors.about = "Description must be at least 30 characters long";
 
@@ -81,7 +78,6 @@ export default function GroupForm({formType})
 
     function reset()
     {
-        //might not need this function
         setName("");
         setAbout("");
         setCity("");
@@ -96,8 +92,6 @@ export default function GroupForm({formType})
 
     function updateFile(e)
     {
-        // const file = e.target.files[0];
-        // if (file) setImage(file);
         setImage(e.target.files[0]);
         const errors = {...validationErrors};
         delete errors.image;

@@ -15,7 +15,7 @@ const { Op } = require("sequelize");
 /*
     Per the specs,
     where memberId appears in the request body or response object
-    it refers to the user's id in the Users table (PK)
+    it refers to the id (PK) in the users table
 */
 
 // get all groups, auth not required
@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
         delete allGroups[i].Memberships;
     }
 
-    allGroups.forEach(async ele => {
+    allGroups.forEach(ele => {
         if(ele.GroupImages.length != 0)
             ele.previewImage = ele.GroupImages[0].url;
         else
@@ -71,43 +71,63 @@ router.get("/current", requireAuth, async (req,res) => {
                     {
                         model: User,
                         as: "Regulars",
-                        where: { id: user.id }
+                        attributes: ["id"]
                     },
                     {
                         model: GroupImage,
                         attributes: ["url"],
-                        where: { preview: true},
+                        where: { preview: true },
                         required: false
                     },
                     {
                         model: Membership,
                         where: {
                             userId: user.id,
-                            status:{ [Op.ne]: "pending" }
+                            status:{
+                                [Op.ne]: "pending"
+                            }
                         }
                     }
                  ]
     })
-    const numMembers = [];
+
     for(let i = 0; i<allGroups.length; i++)
     {
-        numMembers.push(await allGroups[i].countMemberships(
-            {
-                where: {
-                    status:{
-                        [Op.ne]: "pending"
-                    }
-                }
-            }
-        ));
         allGroups[i] = allGroups[i].toJSON();
-        allGroups[i].numMembers = numMembers[i];
+        let counter = 0;
+        allGroups[i].Regulars.forEach(user => {
+            if(user.Membership.status !== "pending") counter += 1
+        });
+        allGroups[i].numMembers = counter;
         delete allGroups[i].Regulars;
-        //Memberships was only included to filter out groups where
-        //the current user is pending
         delete allGroups[i].Memberships;
     }
-    allGroups.forEach(async ele => {
+
+    /*
+        n+1 queries version
+        if users are in few groups, and groups are very large
+        this probably better than filtering
+    */
+
+    /*
+    for(let i = 0; i<allGroups.length; i++)
+    {
+        const numMembers = await allGroups[i].countMemberships({
+            where:{
+                status:{
+                    [Op.ne]: "pending"
+                }
+            }
+        });
+
+        allGroups[i] = allGroups[i].toJSON();
+        allGroups[i].numMembers = numMembers;
+        delete allGroups[i].Memberships;
+        delete allGroups[i].Regulars;
+    }
+    */
+
+    allGroups.forEach(ele => {
         if(ele.GroupImages.length != 0)
             ele.previewImage = ele.GroupImages[0].url;
         else
@@ -201,7 +221,8 @@ router.post("/", requireAuth, async (req,res) => {
 //Add an image to a group based on Group's id, authent true, ORGANIZER ONLY
 router.post("/:groupId/images", requireAuth, singleMulterUpload("image"), async (req,res) => {
     const group = await Group.findByPk(req.params.groupId);
-    if(group === null){
+    if(group === null)
+    {
         res.status(404);
         return res.json({message: "Group couldn't be found"});
     }
@@ -261,7 +282,7 @@ router.delete("/:groupdId", requireAuth, async (req,res) => {
         res.status(404);
         return res.json({ message: "Group couldn't be found" })
     }
-    if(user.id != group.organizerId )
+    if(user.id != group.organizerId)
     {
         res.status(403);
         return res.json({ message: "Forbidden"});
@@ -412,12 +433,8 @@ router.get("/:groupId/events", async (req, res) => {
         return res.json({ message: "Group couldn't be found"});
     }
     const allEvents = await Event.findAll({
-        where: {
-            groupId: group.id,
-        },
-        attributes: {
-            exclude: ["createdAt", "updatedAt"]
-        },
+        where: { groupId: group.id },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
         include: [
                     {
                         model: Group,
