@@ -6,13 +6,8 @@ export const RECEIVE_GROUP = 'groups/RECEIVE_GROUP';
 export const UPDATE_GROUP = 'groups/UPDATE_GROUP';
 export const REMOVE_GROUP = 'groups/REMOVE_GROUP';
 
-//click "See all groups" on the loading page
-//redirected to "/groups";
-//want a single column in which each row is a group
-//each row contains/ Name, Location, description, public/private, events
 
 const actionLoadGroups = (groups) => {
-    //groups is an obj with a key of "Groups" whose val is an array
     return {
         type: LOAD_GROUPS,
         groups
@@ -199,7 +194,6 @@ const groupsReducer = (state = initialState, action) => {
             });
             return {...state, allGroups: normGroups };
         case LOAD_SINGLE_GROUP:
-            //double check if needs to be a new ref at every level of nesting
             return {...state, singleGroup: {...action.singleGroup} }
         case RECEIVE_GROUP:
             //action.group is the new group object, its id is action.group.id which will be used as its key in allGroups
