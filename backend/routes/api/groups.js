@@ -408,12 +408,14 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
 
     //null is a valid value for the venueId field in the request body
     //the venueId field may be excluded for the request (in that case venueId will be undefined)
-    if( ![null, undefined].includes(venueId) && isNaN(parseInt(venueId)))
+
+    //eliminate venueIds of the form empty string, "0", "12hzy45"
+    if( ![null, undefined].includes(venueId) && !Number(venueId) )
     {
         res.status(404);
         return res.json({message: "Venue couldn't be found"});
     }
-    if(parseInt(venueId))
+    if(Number(venueId))
     {
         const findVenue = await Venue.findByPk(venueId);
         if(findVenue === null)
@@ -488,6 +490,8 @@ router.get("/:groupId/events", async (req, res) => {
 });
 
 //Get all Members of a Group specified by its id, authent false
+//organizer/co-host can see all members
+//all others (inc logged out users) can see only non-pending members
 router.get("/:groupId/members", async (req, res) => {
     const group = await Group.findByPk(req.params.groupId);
     if(group === null)
@@ -495,8 +499,10 @@ router.get("/:groupId/members", async (req, res) => {
         res.status(404);
         return res.json({ message: "Group couldn't be found"});
     }
+
+    //restoreUser middleware sets req.user = null for logged out users
     const { user } = req;
-    //does not requireAuth so we don't know if user is defined (logged in)
+
     if(user)
     {
         const authorized = await Membership.findOne({
@@ -511,33 +517,44 @@ router.get("/:groupId/members", async (req, res) => {
         //the user is co-host or Organizer
         if(authorized !== null)
         {
-            let members = await group.getRegulars({
+            const members = await group.getRegulars({
                 attributes: ["id", "firstName", "lastName"]
             });
-            members = members.map(ele => ele.toJSON());
-            members.forEach(ele => {
-                ele.Membership = {
-                    status: ele.Membership.status
+            for(let i = 0; i<members.length; i++)
+            {
+                members[i] = members[i].toJSON();
+                members[i].Membership = {
+                    status: members[i].Membership.status
                 }
-            });
+            }
             return res.json({
                 Members: members
             });
         }
+        //if user && not authorized, handled below
     }
-    //not a logged in or logged in but not cohost/organizer
-    let members = await group.getRegulars({
+    //all cases when the user is not organizer/co-host (including not logged in)
+    const members = await group.getRegulars({
         attributes: ["id", "firstName", "lastName"]
     });
-    members = members.map(ele => ele.toJSON());
-    members.forEach(ele => {
-        ele.Membership = {
-            status: ele.Membership.status
+
+    const nonPendingMembers = [];
+    for(let i = 0; i<members.length; i++)
+    {
+        members[i] = members[i].toJSON();
+        members[i].Membership = {
+            status: members[i].Membership.status
         }
-    });
-    members = members.filter(ele => ele.Membership.status != "pending");
+
+        if(members[i].Membership.status !== "pending")
+            nonPendingMembers.push(members[i])
+
+            //alternative to this conditional is to add a 1 User to many Memberships association
+            //then include Memberships inside getRegulars and add a where for non pending
+    }
+
     return res.json({
-        Members: members
+        Members: nonPendingMembers
     });
 });
 
@@ -620,7 +637,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
             status: "co-host"
         }
     });
-    if( !organizer && !coHost)
+    if(!organizer && !coHost)
     {
         res.status(403);
         return res.json({ message: "Forbidden"});
@@ -680,7 +697,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
             });
         }
     }
-    if(status === "co-host" && organizer != null)
+    if(status === "co-host" && organizer !== null)
     {
         if(findMembership.status === "member")
         {

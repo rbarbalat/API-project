@@ -176,7 +176,8 @@ router.post("/:eventId/images", requireAuth, singleMulterUpload("image"), async 
 router.put("/:eventId", requireAuth, async (req, res) => {
     const { user } = req;
     const event = await Event.findByPk(req.params.eventId);
-    if(event == null)
+
+    if(event === null)
     {
         res.status(404);
         return res.json({ message: "Event couldn't be found"});
@@ -191,28 +192,35 @@ router.put("/:eventId", requireAuth, async (req, res) => {
             }
         }
     });
+
     if(authorized === null)
     {
         res.status(403);
         return res.json({ message: "Forbidden"});
     }
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
-    //check if the venueId input is undefined has a letter or is the empty string
-    if(venueId != Number(venueId) && venueId != null)
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+    //venueId column is allowed to be null
+
+    //eliminate venueIds of the form empty string, "0", "12hzy45"
+    if( ![null, undefined].includes(venueId) && !Number(venueId) )
     {
         res.status(404);
         return res.json({message: "Venue couldn't be found"});
     }
-    const findVenue = await Venue.findByPk(venueId);
-    if(findVenue == null && venueId != null)
+
+    if(Number(venueId))
     {
-        res.status(404);
-        return res.json({message: "Venue couldn't be found"});
+        const findVenue = await Venue.findByPk(venueId);
+        if(findVenue === null)
+        {
+            res.status(404);
+            return res.json({message: "Venue couldn't be found"});
+        }
     }
-    //it is ok if the input was venueId:null b/c the column does not have a non-null restriction
+
     await event.set({
-        venueId,
+        venueId: (venueId === undefined) ? event.venueId : venueId,
         name,
         type,
         capacity,
@@ -314,33 +322,41 @@ router.get("/:eventId/attendees", async (req, res) => {
         //the user is co-host or Organizer
         if(authorized !== null)
         {
-            let attendees = await event.getUsers({
+            const attendees = await event.getUsers({
                 attributes: ["id", "firstName", "lastName"]
             });
-            attendees = attendees.map(ele => ele.toJSON());
-            attendees.forEach(ele => {
-                ele.Attendance = {
-                    status: ele.Attendance.status
+
+            for(let i = 0; i<attendees.length; i++)
+            {
+                attendees[i] = attendees[i].toJSON();
+                attendees[i].Attendance = {
+                    status: attendees[i].Attendance.status
                 }
-            });
+            }
+
             return res.json({
                 Attendees: attendees
             });
         }
     }
     //if the user is not logged in or is logged but not org/cohost
-    let attendees = await event.getUsers({
+    const attendees = await event.getUsers({
         attributes: ["id", "firstName", "lastName"]
     });
-    attendees = attendees.map(ele => ele.toJSON());
-    attendees.forEach(ele => {
-        ele.Attendance = {
-            status: ele.Attendance.status
+
+    const nonPendingAttendees = [];
+    for(let i = 0; i<attendees.length; i++)
+    {
+        attendees[i] = attendees[i].toJSON();
+        attendees[i].Attendance = {
+            status: attendees[i].Attendance.status
         }
-    });
-    attendees = attendees.filter(ele => ele.Attendance.status !== "pending");
+
+        if(attendees[i].Attendance.status !== "pending")
+            nonPendingAttendees.push(attendees[i])
+    }
     return res.json({
-        Attendees: attendees
+        Attendees: nonPendingAttendees
     });
 });
 
@@ -467,7 +483,7 @@ router.put("/:eventId/attendance", requireAuth, async (req,res) => {
 });
 
 //Delete an attendance to an eent specified by id
-//usr must be the organizer or the use whose attendance is being deleted
+//usr must be the organizer OR the USER is deleting his OWN attendance
 router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
     const event = await Event.findByPk(req.params.eventId);
     if(event === null)
