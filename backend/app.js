@@ -6,7 +6,7 @@ const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
-const routes = require('./routes');//routes/index.js
+const routes = require('./routes');
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';
@@ -46,11 +46,9 @@ app.use(
   })
 );
 
-//everything handled through routers, routes is required at the top
 app.use(routes);
 
 // Catch unhandled requests and forward to error handler.
-//_req and _res b/c they aren't used?
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
   err.title = "Resource Not Found";

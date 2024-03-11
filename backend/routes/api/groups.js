@@ -66,13 +66,24 @@ router.get("/", async (req, res) => {
 //Get all groups joined or organized by the logged in user, auth required
 router.get("/current", requireAuth, async (req,res) => {
     const { user } = req;
+    /*
+        the where clause inside Memberships is necessary to filter for the right groups
+        but each group's Memberships array will only contain the current user's Membership
+        can't use the length of the Memberships array to get the numMembers as in GET /groups
+
+        1)can call countMemberships on each group (n+1 queries)
+        OR
+        2)include the User's model which will attach an array to each group holding ALL users in the group
+        each user instance has a Membership key whose value is an object with a status key
+        filter the array to exclude pending statuses and then numMembers = length of filtered array
+    */
     let allGroups = await Group.findAll({
         include: [
-                    {
-                        model: User,
-                        as: "Regulars",
-                        attributes: ["id"]
-                    },
+                    // {
+                    //     model: User,
+                    //     as: "Regulars",
+                    //     attributes: ["id"]
+                    // },
                     {
                         model: GroupImage,
                         attributes: ["url"],
@@ -91,6 +102,8 @@ router.get("/current", requireAuth, async (req,res) => {
                  ]
     })
 
+    //Filter version, restore the User model in the query above
+    /*
     for(let i = 0; i<allGroups.length; i++)
     {
         allGroups[i] = allGroups[i].toJSON();
@@ -102,6 +115,7 @@ router.get("/current", requireAuth, async (req,res) => {
         delete allGroups[i].Regulars;
         delete allGroups[i].Memberships;
     }
+    */
 
     /*
         n+1 queries version
@@ -109,7 +123,6 @@ router.get("/current", requireAuth, async (req,res) => {
         this probably better than filtering
     */
 
-    /*
     for(let i = 0; i<allGroups.length; i++)
     {
         const numMembers = await allGroups[i].countMemberships({
@@ -123,9 +136,7 @@ router.get("/current", requireAuth, async (req,res) => {
         allGroups[i] = allGroups[i].toJSON();
         allGroups[i].numMembers = numMembers;
         delete allGroups[i].Memberships;
-        delete allGroups[i].Regulars;
     }
-    */
 
     allGroups.forEach(ele => {
         if(ele.GroupImages.length != 0)
@@ -227,7 +238,7 @@ router.post("/:groupId/images", requireAuth, singleMulterUpload("image"), async 
         return res.json({message: "Group couldn't be found"});
     }
     const { user } = req;
-    if(group.organizerId != user.id){
+    if(group.organizerId !== user.id){
         res.status(403);
         return res.json({message: "Forbidden"});
     }
@@ -254,7 +265,7 @@ router.put("/:groupdId", requireAuth, async (req,res) => {
         res.status(404);
         return res.json({message: "Group couldn't be found"})
     }
-    if(group.organizerId != user.id)
+    if(group.organizerId !== user.id)
     {
         res.status(403);
         return res.json({message: "Forbidden"})
@@ -282,7 +293,7 @@ router.delete("/:groupdId", requireAuth, async (req,res) => {
         res.status(404);
         return res.json({ message: "Group couldn't be found" })
     }
-    if(user.id != group.organizerId)
+    if(user.id !== group.organizerId)
     {
         res.status(403);
         return res.json({ message: "Forbidden"});
@@ -291,7 +302,7 @@ router.delete("/:groupdId", requireAuth, async (req,res) => {
     return res.json({ message: "Successfully deleted" });
 })
 
-//GET all venues for a group based on ID, requireAuth, organizer or co-host
+//GET all venues for a group based on ID, requireAuth (organizer or co-host)
 router.get("/:groupId/venues", requireAuth, async (req,res) => {
     const { user } = req;
     const group = await Group.findByPk(req.params.groupId);
@@ -300,7 +311,7 @@ router.get("/:groupId/venues", requireAuth, async (req,res) => {
         res.status(404);
         return res.json({ message: "Group couldn't be found"});
     }
-    //try to find the logged in user in the member table w/ the right group and status
+
     const authorized = await Membership.findOne({
         where: {
             groupId: group.id,
@@ -316,20 +327,18 @@ router.get("/:groupId/venues", requireAuth, async (req,res) => {
         return res.json({ message: "Forbidden"});
     }
     const allVenues = await Venue.findAll({
-        where: {
-            groupId: group.id
-        },
+        where: { groupId: group.id },
         attributes: {
             exclude: ["createdAt", "updatedAt"]
         }
     })
+
     res.json({
         Venues: allVenues
     });
 });
 
-//add venue validators and good
-//Create a new venue for a group specified by its id, authent, org/cohost
+//Create a new venue for a group specified by its id, requireAuth organizer or co-host
 router.post("/:groupId/venues", requireAuth, async (req,res) => {
     const { user } = req;
     const group = await Group.findByPk(req.params.groupId);
@@ -338,7 +347,7 @@ router.post("/:groupId/venues", requireAuth, async (req,res) => {
         res.status(404);
         return res.json({ message: "Group couldn't be found"});
     }
-    //try to find the logged in user in the member table w/ the right group and status
+
     const authorized = await Membership.findOne({
         where: {
             groupId: group.id,
@@ -361,9 +370,12 @@ router.post("/:groupId/venues", requireAuth, async (req,res) => {
         lat,
         lng
     });
+
     newVenue = newVenue.toJSON();
     delete newVenue.createdAt;
     delete newVenue.updatedAt;
+
+    res.status(201);
     res.json(newVenue);
 });
 
@@ -376,7 +388,7 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
         res.status(404);
         return res.json({ message: "Group couldn't be found"});
     }
-    //try to find the logged in user in the member table w/ the right group and status
+
     const authorized = await Membership.findOne({
         where: {
             groupId: group.id,
@@ -394,22 +406,27 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
 
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 
-    //check if the venueId input is undefined has a letter or is the empty string
-    if(venueId != Number(venueId) && venueId != null )
+    //null is a valid value for the venueId field in the request body
+    //the venueId field may be excluded for the request (in that case venueId will be undefined)
+    if( ![null, undefined].includes(venueId) && isNaN(parseInt(venueId)))
     {
         res.status(404);
         return res.json({message: "Venue couldn't be found"});
     }
-    const findVenue = await Venue.findByPk(venueId);
-    if(findVenue == null && venueId != null)
+    if(parseInt(venueId))
     {
-        res.status(404);
-        return res.json({message: "Venue couldn't be found"});
+        const findVenue = await Venue.findByPk(venueId);
+        if(findVenue === null)
+        {
+            res.status(404);
+            return res.json({message: "Venue couldn't be found"});
+        }
     }
-    //it is ok if the input was venueId:null b/c the column does not have a non-null restriction
-    //however that must be the user's input, won't set the col value to null if venueId undefined
+
+    //an attendance is NOT created for the organizer or co-host who created the Event
+    //numAttending for the new event starts at 0
     let newEvent = await group.createEvent({
-        venueId,
+        venueId: (venueId === undefined) ? null : venueId,
         name,
         type,
         capacity,
@@ -421,6 +438,7 @@ router.post("/:groupId/events", requireAuth, async (req,res) => {
     newEvent = newEvent.toJSON();
     delete newEvent.createdAt;
     delete newEvent.updatedAt;
+
     res.json(newEvent);
 });
 
@@ -446,28 +464,22 @@ router.get("/:groupId/events", async (req, res) => {
                     }
                  ]
     });
-    const numAttending = [];
-    const prevImages = [];
+
     for(let i = 0; i<allEvents.length; i++)
     {
-        numAttending.push(await allEvents[i].countAttendances({
-            where: {
-                status: "attending"
-            }
-        }));
-        const images = await allEvents[i].getEventImages({
-            where: {
-                preview: true
-            }
+        const numAttending = await allEvents[i].countAttendances({
+            where: { status: "attending" }
         });
-        if(images.length == 0)
-            prevImages.push("No preview image");
-        else
-            prevImages.push(images[0].url);
+
+        const images = await allEvents[i].getEventImages({
+            where: { preview: true }
+        });
+
+        const prevImage = (images.length === 0) ? "No preview image" : images[0].url
 
         allEvents[i] = allEvents[i].toJSON();
-        allEvents[i].numAttending = numAttending[i];
-        allEvents[i].previewImage = prevImages[i];
+        allEvents[i].numAttending = numAttending;
+        allEvents[i].previewImage = prevImage;
     }
 
     res.json({
