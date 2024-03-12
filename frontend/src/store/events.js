@@ -15,42 +15,32 @@ const actionLoadEvents = (events) => {
 }
 //get all events
 export const thunkLoadEvents = () => async (dispatch) => {
-    try {
-        const res = await csrfFetch("/api/events");
-        if(res.ok)
-        {
-            const serverData = await res.json();
-            dispatch(actionLoadEvents(serverData));
-            return serverData;
-        }else{
-            const errorData = await res.json();
-            console.log("bad response from thunkLoadEvents")
-            console.log(errorData);
-            return errorData;
-        }
-    } catch(error){
-        console.log("caught error response from thunkLoadEvents")
-        console.log(error);
+    const res = await csrfFetch("/api/events");
+    if(res.ok)
+    {
+        const serverData = await res.json();
+        dispatch(actionLoadEvents(serverData));
+        return serverData;
+    }
+    else
+    {
+        const errorData = await res.json();
+        return errorData;
     }
 }
 //get all events by group ID
 export const thunkLoadEventsByGroupId = (groupId) => async (dispatch) => {
-    try {
-        const res = await csrfFetch(`/api/groups/${groupId}/events`);
-        if(res.ok)
-        {
-            const serverData = await res.json();
-            dispatch(actionLoadEvents(serverData));
-            return serverData;
-        }else{
-            const errorData = await res.json();
-            console.log("bad response from thunkLoadEventsbyGroupdId");
-            console.log(errorData);
-            return errorData;
-        }
-    } catch(error){
-        console.log("caught error response from thunkLoadEventsbyGroupId")
-        console.log(error);
+    const res = await csrfFetch(`/api/groups/${groupId}/events`);
+    if(res.ok)
+    {
+        const serverData = await res.json();
+        dispatch(actionLoadEvents(serverData));
+        return serverData;
+    }
+    else
+    {
+        const errorData = await res.json();
+        return errorData;
     }
 }
 
@@ -62,23 +52,16 @@ const actionLoadSingleEvent = (singleEvent) => {
 }
 
 export const thunkLoadSingleEvent = (eventId) => async (dispatch) => {
-    try{
-        const res = await csrfFetch(`/api/events/${eventId}`);
-        if(res.ok)
-        {
-            const serverData = await res.json();
-            dispatch(actionLoadSingleEvent(serverData));
-            return serverData;
-        }else{
-            const errorData = await res.json();
-            console.log("bad response from thunkLoadSingleEvent");
-            console.log(errorData);
-            return errorData;
-        }
-    } catch(error){
-        console.log("caught error response from thunkLoadSingleEvent");
-        console.log(error);
-        console.log(await error.json())
+    const res = await csrfFetch(`/api/events/${eventId}`);
+    if(res.ok)
+    {
+        const serverData = await res.json();
+        dispatch(actionLoadSingleEvent(serverData));
+        return serverData;
+    }else
+    {
+        const errorData = await res.json();
+        return errorData;
     }
 }
 
@@ -90,17 +73,11 @@ const actionReceiveEvent = (event) => {
 }
 
 export const thunkReceiveEvent = (group, event, formData) => async (dispatch) => {
-    // const imgBody = {
-    //         url: event.url,
-    //         preview: true
-    //     }
-    // delete event.url;
     const options = {
         method: "Post",
         headers: { "Content-Type":  "application/json" },
         body: JSON.stringify(event)
     };
-    try {
         const res = await csrfFetch(`/api/groups/${group.id}/events`, options);
         if(res.ok)
         {
@@ -108,15 +85,14 @@ export const thunkReceiveEvent = (group, event, formData) => async (dispatch) =>
 
             //assume event creator will attend
             serverData.numAttending = 1;
-            //might hardcore a venue later
+
+            //adjust venue
             serverData.Venue = null;
             serverData.Group = group;
 
             const imgOptions = {
                 method: "Post",
                 body: formData
-                //headers: { "Content-Type":  "application/json" },
-                //body: JSON.stringify(imgBody)
             }
             const imageRes = await csrfFetch(`/api/events/${serverData.id}/images`, imgOptions);
             if(imageRes.ok)
@@ -131,17 +107,12 @@ export const thunkReceiveEvent = (group, event, formData) => async (dispatch) =>
             }
             //only possible error response for posting to eventImages is if the event doesn't exist
             //but we created it before trying to post to it
-        }else{
+        }
+        else
+        {
             const errorData = await res.json();
-            console.log("bad response from thunkReceiveEvent");
-            console.log(errorData);
             return errorData;
         }
-    } catch (error)
-    {
-        console.log("caught error response from thunkReceiveEvent");
-        console.log(error);
-    }
 }
 
 const actionDeleteEvent = (eventId) => {
@@ -155,23 +126,17 @@ export const thunkDeleteEvent = (eventId) => async (dispatch) => {
     const options = {
         method: "Delete"
     }
-    try{
-        const res = await csrfFetch(`/api/events/${eventId}`, options);
-        if(res.ok)
-        {
-            const serverData = await res.json();
-            dispatch(actionDeleteEvent(eventId))
-            return serverData;
-        }else{
-            const errorData = await res.json();
-            console.log("bad response from thunkDeleteEvent");
-            console.log(errorData);
-            return errorData;
-        }
-    } catch(error)
+    const res = await csrfFetch(`/api/events/${eventId}`, options);
+    if(res.ok)
     {
-        console.log("caught error response from thunkDeleteEvent");
-        console.log(error);
+        const serverData = await res.json();
+        dispatch(actionDeleteEvent(eventId))
+        return serverData;
+    }else{
+        const errorData = await res.json();
+        console.log("bad response from thunkDeleteEvent");
+        console.log(errorData);
+        return errorData;
     }
 }
 
