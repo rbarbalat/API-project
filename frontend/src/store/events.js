@@ -7,13 +7,12 @@ export const UPDATE_EVENT = 'events/UPDATE_EVENT';
 export const REMOVE_EVENT = 'events/REMOVE_event';
 
 const actionLoadEvents = (events) => {
-    //events is an object with a key of "Events" whose val is an array
     return {
         type: LOAD_EVENTS,
         events
     }
 }
-//get all events
+
 export const thunkLoadEvents = () => async (dispatch) => {
     const res = await csrfFetch("/api/events");
     if(res.ok)
@@ -28,7 +27,7 @@ export const thunkLoadEvents = () => async (dispatch) => {
         return errorData;
     }
 }
-//get all events by group ID
+
 export const thunkLoadEventsByGroupId = (groupId) => async (dispatch) => {
     const res = await csrfFetch(`/api/groups/${groupId}/events`);
     if(res.ok)
@@ -86,7 +85,6 @@ export const thunkReceiveEvent = (group, event, formData) => async (dispatch) =>
             //assume event creator will attend
             serverData.numAttending = 1;
 
-            //adjust venue
             serverData.Venue = null;
             serverData.Group = group;
 
@@ -105,8 +103,7 @@ export const thunkReceiveEvent = (group, event, formData) => async (dispatch) =>
                 dispatch(actionReceiveEvent(serverData));
                 return serverData;
             }
-            //only possible error response for posting to eventImages is if the event doesn't exist
-            //but we created it before trying to post to it
+            //only way that !imageRes.ok is if the event d.n exist but we are inside res.ok for event creation
         }
         else
         {
@@ -169,111 +166,3 @@ const eventsReducer = (state = initialState, action) => {
 };
 
 export default eventsReducer;
-
-/*
-all events
-
-    {
-      "id": 1,
-      "groupId": 1,
-      "venueId": 1,
-      "name": "Tennis Singles",
-      "type": "In Person",
-      "startDate": "2021-11-20 20:00:00",
-      "endDate": "2021-11-19 22:00:00",
-      "numAttending": 4,
-      "previewImage": "image url",
-      "Group": {
-        "id": 1,
-        "name": "Evening Tennis on the Water",
-        "city": "New York",
-        "state": "NY"
-      },
-      "Venue": {
-        "id": 1,
-        "city": "New York",
-        "state": "NY",
-      },
-    },
-
-*/
-
-/*
-single event
-
-{
-  "id": 1,
-  "groupId": 1,
-  "venueId": 1,
-  "name": "Tennis Group First Meet and Greet",
-  "description": "First meet and greet event for the evening tennis on the water group! Join us online for happy times!",
-  "type": "Online",
-  "capacity": 10,
-  "price": 18.50,
-  "startDate": "2021-11-19 20:00:00",
-  "endDate": "2021-11-19 22:00:00",
-  "numAttending": 8,
-  "Group": {
-    "id": 1,
-    "name": "Evening Tennis on the Water",
-    "private": true,
-    "city": "New York",
-    "state": "NY"
-  },
-  "Venue": {
-    "id": 1,
-    "address": "123 Disney Lane",
-    "city": "New York",
-    "state": "NY",
-    "lat": 37.7645358,
-    "lng": -122.4730327,
-  },
-  "EventImages": [
-    {
-      "id": 1,
-      "url": "image url",
-      "preview": true
-    },
-    {
-      "id": 2,
-      "url": "image url",
-      "preview": false
-    }
-  ],
-}
-
-
-*/
-
-/*
-
-succesful for creating an event
-{
-  "id": 1,
-  "groupId": 1,
-  "venueId": 1,
-  "name": "Tennis Group First Meet and Greet",
-  "type": "Online",
-  "capacity": 10,
-  "price": 18.50,
-  "description": "The first meet and greet for our group! Come say hello!",
-  "startDate": "2021-11-19 20:00:00",
-  "endDate": "2021-11-19 22:00:00",
-}
-
-*/
-
-/*
-request body
-{
-  "venueId": 1,
-  "name": "Tennis Group First Meet and Greet",
-  "type": "Online",
-  "capacity": 10,
-  "price": 18.50,
-  "description": "The first meet and greet for our group! Come say hello!",
-  "startDate": "2021-11-19 20:00:00",
-  "endDate": "2021-11-19 22:00:00",
-}
-
-*/
