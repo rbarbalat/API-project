@@ -7,10 +7,9 @@ import "./AllEvents.css";
 
 export default function AllEvents()
 {
-    // {} is the initial State of allEvents
     let events = useSelector(state => Object.values(state.events.allEvents));
 
-    // can call .filter w/o risk b/c events is an empty array before the useEffect runs
+    //events can be [], can't be undefined
     let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
     let pastEvents = events.filter(ele => new Date(ele.startDate).getTime() < new Date().getTime());
     upcomingEvents.sort((a,b) => {
@@ -20,12 +19,8 @@ export default function AllEvents()
     pastEvents.sort((a,b) => {
         return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
     });
-    events = [...upcomingEvents, ...pastEvents];
 
-    events.forEach(ele => {
-        //only displaying startDate on this component
-        ele.startDate = new Date(new Date(ele.startDate).toString() + "UTC").toISOString();
-    })
+    events = [...upcomingEvents, ...pastEvents];
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -35,7 +30,6 @@ export default function AllEvents()
 
     function onClick(e)
     {
-        //clicking anywhere on the div that has details for groupId links to the group details page
         //the id is `eventBlock${ele.id}` and groupBlock is 10 chars long
         //slice(10) starts at INDEX 10
         const eventId = e.currentTarget.id.slice(10);
@@ -72,7 +66,6 @@ export default function AllEvents()
                                 </div>
                             </div>
 
-                                {/* change to ele.description */}
                             <div className="eventBlockBottomDescription">
                                 {ele.description}
                             </div>

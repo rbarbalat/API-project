@@ -22,12 +22,6 @@ export default function SingleEvent()
     const group = useSelector(state => state.groups.singleGroup);
     const groupIsNotEmpty = Object.keys(group).length !== 0;
 
-    let startDate;
-    if(event.startDate) startDate = new Date(new Date(event.startDate).toString() + "UTC").toISOString();
-
-    let endDate;
-    if(event.endDate) endDate = new Date(new Date(event.endDate).toString() + "UTC").toISOString();
-
     let userIsOrganizer;
     if(groupIsNotEmpty && sessionUser)
     {
@@ -66,7 +60,7 @@ export default function SingleEvent()
     if( eventIsNotEmpty === false || groupIsNotEmpty === false) return <div>loading</div>
     return (
         <>
-    {/* <div className="testBackGround"> */}
+
         <div className='singleEventHeader'>
             <div>
                 <i id="singleEventLessThanSign" className="fa-light fa-less-than"></i>
@@ -85,7 +79,7 @@ export default function SingleEvent()
                 <div className="rightSection">
                     <div className="rightTop">
                         <div className="groupImage"><img id="groupImagePic" alt="alt" src={group.GroupImages[0].url}></img></div>
-                        {/* <img id="groupImagePic" alt="alt" src={group.GroupImages[0].url}></img> */}
+
                         <div className="groupInfoOnSingleEvent">
                             <div>{group.name}</div>
                             <div id="singleEventPrivate">Private</div>
@@ -95,10 +89,8 @@ export default function SingleEvent()
                         <div className="dateTimeSectionSingleEvent">
                             <i className="fa-regular fa-clock"></i>
                             <div>
-                                <div>START {startDate.slice(0,10)} &bull; {reformatTime(startDate)}</div>
-                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{endDate.slice(0,10)} &bull; {reformatTime(endDate)}</div>
-                                {/* <div>START {event.startDate.slice(0,10)} &bull; {reformatTime(event.startDate)}</div>
-                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {reformatTime(event.endDate)}</div> */}
+                                <div>START {event.startDate.slice(0,10)} &bull; {reformatTime(event.startDate)}</div>
+                                <div>END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{event.endDate.slice(0,10)} &bull; {reformatTime(event.endDate)}</div>
                             </div>
                         </div>
                     {
@@ -128,13 +120,12 @@ export default function SingleEvent()
                             </div>
                             {showButtons && buttons}
                         </div>
-                        {/* {showButtons && buttons} */}
+
                     </div>
                 </div>
         </div>
 
         <div id="singleEventDetails">Details</div>
-        {/* <div className="description">{event.description}</div> */}
         <div className="description"> {event.description} </div>
 </div>
         </>
