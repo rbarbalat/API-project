@@ -1,24 +1,15 @@
 export function reformatTime(str)
 {
-    //reformating from 24 hour time to AM/PM and getting rid of leading zeroes
-    //e.g 09:30 am => 9:30 am
-    let time;
-    const hour = Number(str.slice(11,13));
+    //generate a string to represent time in the format "6:15 pm"
+    const date = new Date(str);
 
-    if(hour >= 13)
-    time = `${hour - 12}${str.slice(13, 16)} pm`;
+    let hour = date.getHours();
+    const AmPm = (hour >= 12) ? "pm" : "am";
+    if(hour >= 13) hour = hour - 12;
+    if(hour === 0) hour = 12;
 
-    if(hour === 12)
-    time = `${str.slice(11, 16)} pm`;
+    let minutes = date.getMinutes();
+    if(minutes <= 9) minutes = `0${minutes}`;
 
-    if(hour < 12 && hour >= 10 )
-    time = `${str.slice(11, 16)} am`;
-
-    if(hour > 0 && hour < 10)
-    time = `${str.slice(12, 16)} am`;
-
-    if(hour === 0)
-    time = `12${str.slice(13, 16)} am`;
-
-    return time;
+    return `${hour}:${minutes} ${AmPm}`;
 }

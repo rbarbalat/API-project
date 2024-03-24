@@ -16,7 +16,6 @@ export default function SingleGroup()
     const group = useSelector(state => state.groups.singleGroup);
     const groupIsNotEmpty = Object.keys(group).length !== 0;
 
-    //events initialized to [] before useEffect b/c intialState of allEvents is {}
     let events = useSelector(state => Object.values(state.events.allEvents));
 
     let upcomingEvents = events.filter(ele => new Date(ele.startDate).getTime() > new Date().getTime());
@@ -29,15 +28,7 @@ export default function SingleGroup()
         return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
     });
 
-    upcomingEvents.forEach(ele => {
-        ele.startDate = new Date(new Date(ele.startDate).toString() + "UTC").toISOString();
-    })
-    pastEvents.forEach(ele => {
-        ele.startDate = new Date(new Date(ele.startDate).toString() + "UTC").toISOString();
-    })
-
     const sessionUser = useSelector((state) => state.session.user);
-    //initial state of user is null
 
     let userIsOrganizer;
     if(groupIsNotEmpty && sessionUser)
@@ -80,12 +71,10 @@ export default function SingleGroup()
     }
     function onUpdateClick()
     {
-        //button only visible if userIsOrganizer
         history.push(`/groups/${groupId}/edit`);
     }
     function onCreateEventClick()
     {
-        //button only visible if userIsOrganizer
         history.push(`/groups/${groupId}/events/new`);
     }
     function linkToEvent(e)
@@ -120,7 +109,6 @@ export default function SingleGroup()
                 </div>
             </div>
 
-            {/* visible if upcomingEvents.length > 0 || pastEvents.length > 0 */}
             <div className="grayBottom">
 
                 <div className="singleGroupOrganizerInfo">
@@ -158,7 +146,7 @@ export default function SingleGroup()
                                         </div>
                                     </div>
 
-                                    {/* change to ele.description */}
+
                                     <div className="groupEventBlockBottomDescription">
                                        {ele.description}
                                     </div>
@@ -194,7 +182,7 @@ export default function SingleGroup()
                                         </div>
                                     </div>
 
-                                    {/* change to ele.description */}
+
                                     <div className="groupEventBlockBottomDescription">
                                         {ele.description}
                                     </div>
